@@ -6,6 +6,7 @@ import CalculatorPage from "@/pages/CalculatorPage";
 import ComparePage from "@/pages/ComparePage";
 import FeaturesPage from "@/pages/FeaturesPage";
 import BlogPage from "@/pages/BlogPage";
+import BlogArticlePage from "@/pages/BlogArticlePage";
 import FAQPage from "@/pages/FAQPage";
 import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
 import AboutPage from "@/pages/AboutPage";
@@ -23,6 +24,7 @@ export default function App() {
             <Route path="/calculator" element={<CalculatorPage />} />
             <Route path="/compare" element={<ComparePage />} />
             <Route path="/blog" element={<BlogPage />} />
+            <Route path="/blog/:id" element={<BlogArticlePage />} />
             <Route path="/faq" element={<FAQPage />} />
             <Route path="/privacy" element={<PrivacyPolicyPage />} />
             <Route path="/about" element={<AboutPage />} />
