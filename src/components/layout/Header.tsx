@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Car, BarChart3, Fuel, Zap, Languages, ArrowLeftRight, Check, Calculator } from "lucide-react";
+import { Car, BarChart3, Fuel, Zap, Languages, ArrowLeftRight, Check, Calculator, BookOpen, HelpCircle } from "lucide-react";
 import { useVehicleStore } from "@/store/useVehicleStore";
 import { useLanguageStore } from "@/store/useLanguageStore";
 
@@ -52,6 +52,22 @@ export default function Header() {
                 {t.footer.features}
               </Link>
             )}
+
+            <Link
+              to="/blog"
+              className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full text-sm font-medium bg-slate-700 hover:bg-slate-600 transition-colors duration-200"
+            >
+              <BookOpen className="w-4 h-4" />
+              <span className="hidden sm:inline">{t.nav.blog}</span>
+            </Link>
+
+            <Link
+              to="/faq"
+              className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full text-sm font-medium bg-slate-700 hover:bg-slate-600 transition-colors duration-200"
+            >
+              <HelpCircle className="w-4 h-4" />
+              <span className="hidden sm:inline">{t.nav.faq}</span>
+            </Link>
 
             {isCalculator && (
               <>

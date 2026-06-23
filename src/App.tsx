@@ -5,6 +5,8 @@ import CookieConsent from "@/components/layout/CookieConsent";
 import CalculatorPage from "@/pages/CalculatorPage";
 import ComparePage from "@/pages/ComparePage";
 import FeaturesPage from "@/pages/FeaturesPage";
+import BlogPage from "@/pages/BlogPage";
+import FAQPage from "@/pages/FAQPage";
 import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
 import AboutPage from "@/pages/AboutPage";
 import DisclaimerPage from "@/pages/DisclaimerPage";
@@ -20,6 +22,8 @@ export default function App() {
             <Route path="/" element={<FeaturesPage />} />
             <Route path="/calculator" element={<CalculatorPage />} />
             <Route path="/compare" element={<ComparePage />} />
+            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/faq" element={<FAQPage />} />
             <Route path="/privacy" element={<PrivacyPolicyPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/disclaimer" element={<DisclaimerPage />} />

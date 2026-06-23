@@ -10,7 +10,6 @@ import CompareChart from "@/components/compare/CompareChart";
 import CompareTable from "@/components/compare/CompareTable";
 import MultiYearChart from "@/components/compare/MultiYearChart";
 import AdBanner from "@/components/layout/AdBanner";
-import AdSidebar from "@/components/layout/AdSidebar";
 import type { CompareData, VehicleType } from "@/types";
 
 const YEAR_OPTIONS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -426,10 +425,6 @@ export default function ComparePage() {
           </div>
 
           <AdBanner />
-        </div>
-        <div className="hidden lg:flex flex-col gap-6 shrink-0">
-          <AdSidebar />
-          <AdSidebar slot="XXXXXXXXX2" />
         </div>
       </div>
     </div>
