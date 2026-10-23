@@ -48,10 +48,10 @@ export default function CompareChart({ data }: CompareChartProps) {
             <YAxis
               tick={{ fontSize: 12, fill: "#64748B" }}
               axisLine={{ stroke: "#CBD5E1" }}
-              tickFormatter={(v) => `¥${(v / 1000).toFixed(0)}k`}
+              tickFormatter={(v) => `${t.currency}${(v / 1000).toFixed(0)}k`}
             />
             <Tooltip
-              formatter={(value: number) => [`¥${value.toLocaleString()}`, ""]}
+              formatter={(value: number) => [`${t.currency}${value.toLocaleString()}`, ""]}
               contentStyle={{
                 borderRadius: "8px",
                 border: "1px solid #E2E8F0",

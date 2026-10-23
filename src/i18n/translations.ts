@@ -359,7 +359,7 @@ export const translations = {
       subtitle: "Estimate annual maintenance cost",
       includeMaintenance: "Include maintenance cost",
       yearlyCost: "Annual Maintenance Cost",
-      hintFuel: "Fuel car: minor service ~¥500, major service ~¥1,500",
+      hintFuel: "Use your recent service receipts or a local annual maintenance estimate.",
       hintEV: "EV maintenance is simpler: mainly tires, brakes & filters",
     },
     carWash: {
@@ -549,7 +549,7 @@ export const translations = {
       moreHelp: "More Questions?",
       moreHelpDesc: "If you have other questions or suggestions, contact us through the \"Contact Us\" page. We'll respond as soon as possible.",
     },
-    currency: "",
+    currency: "$",
   },
 } as const;
 

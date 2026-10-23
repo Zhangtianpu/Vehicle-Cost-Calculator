@@ -8,9 +8,10 @@ import { calculateChargingCost } from "@/utils/quickTools";
 export default function ChargingCostPage() {
   const { locale } = useLanguageStore();
   const isZh = locale === "zh";
+  const currency = isZh ? "¥" : "$";
   const [distance, setDistance] = useState(500);
   const [consumptionPer100Km, setConsumptionPer100Km] = useState(15);
-  const [electricityPrice, setElectricityPrice] = useState(0.8);
+  const [electricityPrice, setElectricityPrice] = useState(0.18);
   const [chargingLossPercent, setChargingLossPercent] = useState(10);
   const result = useMemo(
     () => calculateChargingCost({ distance, consumptionPer100Km, electricityPrice, chargingLossPercent }),
@@ -41,7 +42,7 @@ export default function ChargingCostPage() {
           <div className="grid gap-4 sm:grid-cols-2">
             <NumberField id="charging-distance" label={isZh ? "预计行驶里程" : "Distance"} value={distance} onChange={setDistance} suffix={isZh ? "公里" : "km"} step={10} />
             <NumberField id="charging-consumption" label={isZh ? "百公里电耗" : "Energy consumption"} value={consumptionPer100Km} onChange={setConsumptionPer100Km} suffix="kWh/100km" step={0.1} hint={isZh ? "优先使用车辆长期平均电耗，而不是单次最佳数据。" : "Prefer a long-term average rather than a single best trip."} />
-            <NumberField id="charging-price" label={isZh ? "综合充电电价" : "Blended electricity price"} value={electricityPrice} onChange={setElectricityPrice} suffix={isZh ? "元/kWh" : "CNY/kWh"} step={0.01} hint={isZh ? "按家充、公共慢充和快充的实际比例加权。" : "Weight home, public AC and fast-charging prices by actual usage."} />
+            <NumberField id="charging-price" label={isZh ? "综合充电电价" : "Blended electricity price"} value={electricityPrice} onChange={setElectricityPrice} suffix={isZh ? "元/kWh" : "USD/kWh"} step={0.01} hint={isZh ? "按家充、公共慢充和快充的实际比例加权。" : "Weight home, public AC and fast-charging prices by actual usage."} />
             <NumberField id="charging-loss" label={isZh ? "充电损耗" : "Charging loss"} value={chargingLossPercent} onChange={setChargingLossPercent} suffix="%" min={0} max={50} step={1} hint={isZh ? "包括充电转换、温控等造成的电网取电差额。" : "Accounts for conversion, thermal management and other grid-to-battery losses."} />
           </div>
         </section>
@@ -49,7 +50,7 @@ export default function ChargingCostPage() {
         <aside className="space-y-4">
           <div className="rounded-xl bg-slate-900 p-6 text-white">
             <p className="text-sm text-slate-300">{isZh ? "预计充电费用" : "Estimated charging cost"}</p>
-            <p className="mt-1 text-4xl font-bold text-emerald-400">¥{number(result.totalCost, 2)}</p>
+            <p className="mt-1 text-4xl font-bold text-emerald-400">{currency}{number(result.totalCost, 2)}</p>
             <div className="mt-6 grid grid-cols-2 gap-4 border-t border-slate-700 pt-5">
               <div>
                 <p className="text-xs text-slate-400">{isZh ? "电网取电量" : "Grid energy"}</p>
@@ -57,7 +58,7 @@ export default function ChargingCostPage() {
               </div>
               <div>
                 <p className="text-xs text-slate-400">{isZh ? "每公里电费" : "Cost per km"}</p>
-                <p className="mt-1 text-xl font-semibold">{result.costPerKm === null ? "—" : `¥${number(result.costPerKm, 2)}`}</p>
+                <p className="mt-1 text-xl font-semibold">{result.costPerKm === null ? "—" : `${currency}${number(result.costPerKm, 2)}`}</p>
               </div>
             </div>
           </div>
@@ -68,7 +69,7 @@ export default function ChargingCostPage() {
             </div>
             <div className="rounded-xl border border-slate-200 bg-white p-4">
               <p className="text-xs text-slate-500">{isZh ? "百公里电费" : "Cost per 100 km"}</p>
-              <p className="mt-1 text-lg font-semibold text-slate-800">¥{number(result.costPer100Km, 2)}</p>
+              <p className="mt-1 text-lg font-semibold text-slate-800">{currency}{number(result.costPer100Km, 2)}</p>
             </div>
           </div>
           <div className="flex gap-2 rounded-lg border border-amber-200 bg-amber-50 p-4 text-xs leading-relaxed text-amber-900">
@@ -91,7 +92,7 @@ export default function ChargingCostPage() {
 
         <section>
           <h2 className="mb-2 text-lg font-semibold text-slate-800">{isZh ? "综合充电电价如何填写？" : "How to calculate a blended charging price"}</h2>
-          <p>{isZh ? "把不同渠道的含税、含服务费实际支付单价按充电量占比加权。例如 70% 电量来自 0.50 元/度的家充，30% 来自 1.60 元/度的快充，综合电价为 0.50×70% + 1.60×30% = 0.83 元/度。只填最低谷电价通常会低估支出。" : "Weight the actual paid price of each charging source by its energy share. For example, 70% at 0.50 CNY/kWh and 30% at 1.60 gives a blended price of 0.83 CNY/kWh."}</p>
+          <p>{isZh ? "把不同渠道的含税、含服务费实际支付单价按充电量占比加权。例如 70% 电量来自 0.50 元/度的家充，30% 来自 1.60 元/度的快充，综合电价为 0.50×70% + 1.60×30% = 0.83 元/度。只填最低谷电价通常会低估支出。" : "Weight the actual paid price of each charging source by its energy share. For example, 70% at $0.15/kWh and 30% at $0.35 gives a blended price of $0.21/kWh."}</p>
         </section>
 
         <section>
@@ -101,9 +102,9 @@ export default function ChargingCostPage() {
             <table className="w-full min-w-[520px] text-left text-sm">
               <thead><tr className="border-b border-slate-200 text-slate-500"><th className="px-3 py-2 font-medium">{isZh ? "综合电价" : "Price"}</th><th className="px-3 py-2 font-medium">{isZh ? "车辆用电" : "Vehicle energy"}</th><th className="px-3 py-2 font-medium">{isZh ? "电网取电" : "Grid energy"}</th><th className="px-3 py-2 font-medium">{isZh ? "充电费" : "Cost"}</th></tr></thead>
               <tbody>
-                <tr className="border-b border-slate-100"><td className="px-3 py-2">¥0.50/kWh</td><td className="px-3 py-2">75 kWh</td><td className="px-3 py-2">83.33 kWh</td><td className="px-3 py-2 font-medium text-slate-800">¥41.67</td></tr>
-                <tr className="border-b border-slate-100"><td className="px-3 py-2">¥0.80/kWh</td><td className="px-3 py-2">75 kWh</td><td className="px-3 py-2">83.33 kWh</td><td className="px-3 py-2 font-medium text-slate-800">¥66.67</td></tr>
-                <tr><td className="px-3 py-2">¥1.50/kWh</td><td className="px-3 py-2">75 kWh</td><td className="px-3 py-2">83.33 kWh</td><td className="px-3 py-2 font-medium text-slate-800">¥125.00</td></tr>
+                <tr className="border-b border-slate-100"><td className="px-3 py-2">{currency}0.12/kWh</td><td className="px-3 py-2">75 kWh</td><td className="px-3 py-2">83.33 kWh</td><td className="px-3 py-2 font-medium text-slate-800">{currency}10.00</td></tr>
+                <tr className="border-b border-slate-100"><td className="px-3 py-2">{currency}0.18/kWh</td><td className="px-3 py-2">75 kWh</td><td className="px-3 py-2">83.33 kWh</td><td className="px-3 py-2 font-medium text-slate-800">{currency}15.00</td></tr>
+                <tr><td className="px-3 py-2">{currency}0.35/kWh</td><td className="px-3 py-2">75 kWh</td><td className="px-3 py-2">83.33 kWh</td><td className="px-3 py-2 font-medium text-slate-800">{currency}29.17</td></tr>
               </tbody>
             </table>
           </div>

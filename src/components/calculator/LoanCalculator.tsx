@@ -74,7 +74,7 @@ export default function LoanCalculator() {
                 <span>10%</span>
                 <span className="text-emerald-600 font-medium">
                   {Math.round(loanParams.downPaymentRatio * 100)}% (
-                  ¥{Math.round(loanParams.vehiclePrice * loanParams.downPaymentRatio).toLocaleString()})
+                  {t.currency}{Math.round(loanParams.vehiclePrice * loanParams.downPaymentRatio).toLocaleString()})
                 </span>
                 <span>90%</span>
               </div>
@@ -161,32 +161,32 @@ export default function LoanCalculator() {
               <div>
                 <p className="text-xs text-slate-400 mb-0.5">{t.loan.monthlyPayment}</p>
                 <p className="text-lg font-bold text-slate-800">
-                  ¥{loanResult.monthlyPayment.toLocaleString()}
+                  {t.currency}{loanResult.monthlyPayment.toLocaleString()}
                 </p>
               </div>
               <div>
                 <p className="text-xs text-slate-400 mb-0.5">{t.loan.loanAmount}</p>
                 <p className="text-sm font-medium text-slate-600">
-                  ¥{loanResult.loanAmount.toLocaleString()}
+                  {t.currency}{loanResult.loanAmount.toLocaleString()}
                 </p>
               </div>
               <div>
                 <p className="text-xs text-slate-400 mb-0.5">{t.loan.totalInterest}</p>
                 <p className="text-sm font-medium text-orange-600">
-                  ¥{loanResult.totalInterest.toLocaleString()}
+                  {t.currency}{loanResult.totalInterest.toLocaleString()}
                 </p>
               </div>
               <div>
                 <p className="text-xs text-slate-400 mb-0.5">{t.loan.totalPayment}</p>
                 <p className="text-sm font-medium text-slate-600">
-                  ¥{loanResult.totalPayment.toLocaleString()}
+                  {t.currency}{loanResult.totalPayment.toLocaleString()}
                 </p>
               </div>
             </div>
             <div className="mt-3 pt-3 border-t border-slate-100 flex justify-between items-center">
               <span className="text-sm text-slate-500">{t.loan.monthlyCost}</span>
               <span className="text-lg font-bold text-slate-800">
-                ¥{costSummary.loan.monthlyCost.toLocaleString()}
+                {t.currency}{costSummary.loan.monthlyCost.toLocaleString()}
               </span>
             </div>
           </div>

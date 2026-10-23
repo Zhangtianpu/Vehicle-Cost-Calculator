@@ -46,10 +46,10 @@ export default function ReportView({
   const renderCompareBarChart = (data: CompareData[]) => (
     <BarChart width={CHART_WIDTH} height={data.length * 40 + 40} data={data} layout="vertical" margin={{ left: 80, right: 20, top: 10, bottom: 10 }}>
       <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" />
-      <XAxis type="number" tick={{ fontSize: 11, fill: "#64748B" }} tickFormatter={(v) => `¥${v.toLocaleString()}`} />
+      <XAxis type="number" tick={{ fontSize: 11, fill: "#64748B" }} tickFormatter={(v) => `${t.currency}${v.toLocaleString()}`} />
       <YAxis type="category" dataKey="category" tick={{ fontSize: 11, fill: "#334155" }} width={75} />
       <Tooltip
-        formatter={(value: number) => [`¥${value.toLocaleString()}`]}
+        formatter={(value: number) => [`${t.currency}${value.toLocaleString()}`]}
         contentStyle={{ borderRadius: "8px", border: "1px solid #E2E8F0", fontSize: "12px" }}
       />
       <Legend wrapperStyle={{ fontSize: "12px" }} />
@@ -79,10 +79,10 @@ export default function ReportView({
             return (
               <tr key={row.category} className="border-b border-slate-100">
                 <td className="py-2 px-3 text-slate-700">{row.category}</td>
-                <td className="py-2 px-3 text-right text-slate-800">¥{row.fuel.toLocaleString()}</td>
-                <td className="py-2 px-3 text-right text-slate-800">¥{row.electric.toLocaleString()}</td>
+                <td className="py-2 px-3 text-right text-slate-800">{t.currency}{row.fuel.toLocaleString()}</td>
+                <td className="py-2 px-3 text-right text-slate-800">{t.currency}{row.electric.toLocaleString()}</td>
                 <td className={`py-2 px-3 text-right font-medium ${rowDiff > 0 ? "text-emerald-600" : rowDiff < 0 ? "text-orange-600" : "text-slate-400"}`}>
-                  {rowDiff > 0 ? "+" : ""}¥{rowDiff.toLocaleString()}
+                  {rowDiff > 0 ? "+" : ""}{t.currency}{rowDiff.toLocaleString()}
                 </td>
               </tr>
             );
@@ -90,10 +90,10 @@ export default function ReportView({
           {showTotal && (
             <tr className="bg-slate-50 font-semibold">
               <td className="py-2 px-3 text-slate-800">{t.compare.yearlyTotal}</td>
-              <td className="py-2 px-3 text-right text-orange-600">¥{totalFuel.toLocaleString()}</td>
-              <td className="py-2 px-3 text-right text-emerald-600">¥{totalElectric.toLocaleString()}</td>
+              <td className="py-2 px-3 text-right text-orange-600">{t.currency}{totalFuel.toLocaleString()}</td>
+              <td className="py-2 px-3 text-right text-emerald-600">{t.currency}{totalElectric.toLocaleString()}</td>
               <td className={`py-2 px-3 text-right ${diff > 0 ? "text-emerald-600" : "text-orange-600"}`}>
-                {diff > 0 ? "+" : ""}¥{diff.toLocaleString()}
+                {diff > 0 ? "+" : ""}{t.currency}{diff.toLocaleString()}
               </td>
             </tr>
           )}
@@ -120,8 +120,8 @@ export default function ReportView({
         <AreaChart width={CHART_WIDTH} height={280} data={trendChartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" />
           <XAxis dataKey="year" tick={{ fontSize: 11, fill: "#64748B" }} />
-          <YAxis tick={{ fontSize: 11, fill: "#64748B" }} tickFormatter={(v) => `¥${(v / 10000).toFixed(0)}万`} />
-          <Tooltip formatter={(value: number, name: string) => [`¥${value.toLocaleString()}`, name]} />
+          <YAxis tick={{ fontSize: 11, fill: "#64748B" }} tickFormatter={(v) => `${t.currency}${(v / 1000).toFixed(0)}k`} />
+          <Tooltip formatter={(value: number, name: string) => [`${t.currency}${value.toLocaleString()}`, name]} />
           <Legend wrapperStyle={{ fontSize: "12px" }} />
           <Area type="monotone" dataKey="fuelCumulative" name={t.compare.fuelCar} stroke="#F97316" fill="#FDBA74" fillOpacity={0.4} strokeWidth={2} />
           <Area type="monotone" dataKey="electricCumulative" name={t.compare.electricCar} stroke="#10B981" fill="#6EE7B7" fillOpacity={0.4} strokeWidth={2} />
@@ -158,18 +158,18 @@ export default function ReportView({
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", marginBottom: "16px" }}>
           <div style={{ padding: "16px", backgroundColor: "#FFF7ED", borderRadius: "8px" }}>
             <p style={{ fontSize: "13px", color: "#64748B", margin: "0 0 4px 0" }}>{t.compare.fuelCar} {t.compare.totalCost}</p>
-            <p style={{ fontSize: "20px", fontWeight: "bold", color: "#EA580C", margin: 0 }}>¥{finalFuelCumulative.toLocaleString()}</p>
+            <p style={{ fontSize: "20px", fontWeight: "bold", color: "#EA580C", margin: 0 }}>{t.currency}{finalFuelCumulative.toLocaleString()}</p>
           </div>
           <div style={{ padding: "16px", backgroundColor: "#ECFDF5", borderRadius: "8px" }}>
             <p style={{ fontSize: "13px", color: "#64748B", margin: "0 0 4px 0" }}>{t.compare.electricCar} {t.compare.totalCost}</p>
-            <p style={{ fontSize: "20px", fontWeight: "bold", color: "#059669", margin: 0 }}>¥{finalElectricCumulative.toLocaleString()}</p>
+            <p style={{ fontSize: "20px", fontWeight: "bold", color: "#059669", margin: 0 }}>{t.currency}{finalElectricCumulative.toLocaleString()}</p>
           </div>
         </div>
         <div style={{ padding: "12px", borderRadius: "8px", backgroundColor: isElectricCheaper ? "#ECFDF5" : "#FFF7ED", color: isElectricCheaper ? "#059669" : "#EA580C", fontSize: "14px" }}>
           {isElectricCheaper ? (
-            <p style={{ margin: 0 }}>{ownershipYears}{t.compare.yearUnit}{t.compare.saveEV} <strong>¥{Math.abs(totalDiff).toLocaleString()}</strong></p>
+            <p style={{ margin: 0 }}>{ownershipYears}{t.compare.yearUnit}{t.compare.saveEV} <strong>{t.currency}{Math.abs(totalDiff).toLocaleString()}</strong></p>
           ) : (
-            <p style={{ margin: 0 }}>{ownershipYears}{t.compare.yearUnit}{t.compare.saveFuel} <strong>¥{Math.abs(totalDiff).toLocaleString()}</strong></p>
+            <p style={{ margin: 0 }}>{ownershipYears}{t.compare.yearUnit}{t.compare.saveFuel} <strong>{t.currency}{Math.abs(totalDiff).toLocaleString()}</strong></p>
           )}
         </div>
       </div>

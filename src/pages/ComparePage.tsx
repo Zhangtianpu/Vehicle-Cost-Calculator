@@ -389,13 +389,13 @@ export default function ComparePage() {
               <div className="p-4 bg-orange-50 rounded-lg">
                 <p className="text-sm text-slate-500 mb-1">{t.compare.fuelCar} {t.compare.totalCost}</p>
                 <p className="text-xl font-bold text-orange-600">
-                  ¥{finalFuelCumulative.toLocaleString()}
+                  {t.currency}{finalFuelCumulative.toLocaleString()}
                 </p>
               </div>
               <div className="p-4 bg-emerald-50 rounded-lg">
                 <p className="text-sm text-slate-500 mb-1">{t.compare.electricCar} {t.compare.totalCost}</p>
                 <p className="text-xl font-bold text-emerald-600">
-                  ¥{finalElectricCumulative.toLocaleString()}
+                  {t.currency}{finalElectricCumulative.toLocaleString()}
                 </p>
               </div>
             </div>
@@ -410,14 +410,14 @@ export default function ComparePage() {
                 <p>
                   {ownershipYears}{t.compare.yearUnit}{t.compare.saveEV}
                   <span className="font-bold">
-                    ¥{Math.abs(totalDiff).toLocaleString()}
+                    {t.currency}{Math.abs(totalDiff).toLocaleString()}
                   </span>
                 </p>
               ) : (
                 <p>
                   {ownershipYears}{t.compare.yearUnit}{t.compare.saveFuel}
                   <span className="font-bold">
-                    ¥{Math.abs(totalDiff).toLocaleString()}
+                    {t.currency}{Math.abs(totalDiff).toLocaleString()}
                   </span>
                 </p>
               )}

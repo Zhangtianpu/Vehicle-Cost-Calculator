@@ -109,7 +109,7 @@ export default function SeoManager() {
     const schema = article
       ? { "@context": "https://schema.org", "@type": "Article", headline: locale === "zh" ? article.zh : article.en, dateModified: "2026-10-23", author: { "@type": "Organization", name: locale === "zh" ? "用车成本计算器编辑团队" : "Vehicle Cost Calculator Editorial Team" }, publisher: { "@type": "Organization", name: "Vehicle Cost Calculator" }, mainEntityOfPage: canonical }
       : normalizedPath === "/" || normalizedPath.startsWith("/tools/")
-        ? { "@context": "https://schema.org", "@type": "WebApplication", name: seo.title.split("｜")[0].split("|")[0].trim(), url: canonical, applicationCategory: "FinanceApplication", operatingSystem: "Any", offers: { "@type": "Offer", price: "0", priceCurrency: "CNY" } }
+        ? { "@context": "https://schema.org", "@type": "WebApplication", name: seo.title.split("｜")[0].split("|")[0].trim(), url: canonical, applicationCategory: "FinanceApplication", operatingSystem: "Any", offers: { "@type": "Offer", price: "0", priceCurrency: locale === "zh" ? "CNY" : "USD" } }
         : null;
     document.getElementById("route-schema")?.remove();
     if (schema) {

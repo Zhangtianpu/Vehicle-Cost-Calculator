@@ -11,7 +11,8 @@ const TERM_OPTIONS = [12, 24, 36, 48, 60];
 export default function CarLoanPage() {
   const { locale } = useLanguageStore();
   const isZh = locale === "zh";
-  const [vehiclePrice, setVehiclePrice] = useState(150000);
+  const currency = isZh ? "¥" : "$";
+  const [vehiclePrice, setVehiclePrice] = useState(30000);
   const [downPaymentPercent, setDownPaymentPercent] = useState(30);
   const [loanTermMonths, setLoanTermMonths] = useState(36);
   const [annualRate, setAnnualRate] = useState(4.8);
@@ -54,7 +55,7 @@ export default function CarLoanPage() {
         <section className="rounded-xl border border-slate-200 bg-white p-5 sm:p-6">
           <h2 className="mb-5 text-lg font-semibold text-slate-800">{isZh ? "贷款参数" : "Loan inputs"}</h2>
           <div className="grid gap-4 sm:grid-cols-2">
-            <NumberField id="loan-vehicle-price" label={isZh ? "车辆价格" : "Vehicle price"} value={vehiclePrice} onChange={setVehiclePrice} suffix={isZh ? "元" : "CNY"} step={1000} />
+            <NumberField id="loan-vehicle-price" label={isZh ? "车辆价格" : "Vehicle price"} value={vehiclePrice} onChange={setVehiclePrice} suffix={isZh ? "元" : "USD"} step={1000} />
             <NumberField id="loan-down-payment" label={isZh ? "首付比例" : "Down payment"} value={downPaymentPercent} onChange={setDownPaymentPercent} suffix="%" min={0} max={100} step={5} />
             <NumberField id="loan-rate" label={isZh ? "名义年利率" : "Nominal annual rate"} value={annualRate} onChange={setAnnualRate} suffix="%" min={0} max={50} step={0.1} hint={isZh ? "请输入贷款合同中的年利率，不是手续费率。" : "Use the annual interest rate stated in the loan offer, not a separate fee rate."} />
             <div>
@@ -87,18 +88,18 @@ export default function CarLoanPage() {
         <aside className="space-y-4">
           <div className="rounded-xl bg-slate-900 p-6 text-white">
             <p className="text-sm text-slate-300">{isEqualInstallment ? (isZh ? "预计每月还款" : "Estimated monthly payment") : (isZh ? "预计首月还款" : "Estimated first payment")}</p>
-            <p className="mt-1 text-4xl font-bold text-emerald-400">¥{number(result.monthlyPayment, 2)}</p>
+            <p className="mt-1 text-4xl font-bold text-emerald-400">{currency}{number(result.monthlyPayment, 2)}</p>
             <p className="mt-2 text-xs leading-relaxed text-slate-400">{isEqualInstallment ? (isZh ? "等额本息在利率不变时每期金额相同。" : "Equal installments remain level when the rate does not change.") : (isZh ? "等额本金逐月递减，这里显示首月金额。" : "Equal-principal payments decline; this is the first payment.")}</p>
           </div>
           <div className="grid grid-cols-2 gap-3">
-            <div className="rounded-xl border border-slate-200 bg-white p-4"><p className="text-xs text-slate-500">{isZh ? "首付金额" : "Down payment"}</p><p className="mt-1 text-lg font-semibold text-slate-800">¥{number(result.downPayment)}</p></div>
-            <div className="rounded-xl border border-slate-200 bg-white p-4"><p className="text-xs text-slate-500">{isZh ? "贷款金额" : "Loan amount"}</p><p className="mt-1 text-lg font-semibold text-slate-800">¥{number(result.loanAmount)}</p></div>
-            <div className="rounded-xl border border-slate-200 bg-white p-4"><p className="text-xs text-slate-500">{isZh ? "贷款总利息" : "Total interest"}</p><p className="mt-1 text-lg font-semibold text-orange-600">¥{number(result.totalInterest, 2)}</p></div>
-            <div className="rounded-xl border border-slate-200 bg-white p-4"><p className="text-xs text-slate-500">{isZh ? "贷款本息合计" : "Loan repayments"}</p><p className="mt-1 text-lg font-semibold text-slate-800">¥{number(result.totalPayment, 2)}</p></div>
+            <div className="rounded-xl border border-slate-200 bg-white p-4"><p className="text-xs text-slate-500">{isZh ? "首付金额" : "Down payment"}</p><p className="mt-1 text-lg font-semibold text-slate-800">{currency}{number(result.downPayment)}</p></div>
+            <div className="rounded-xl border border-slate-200 bg-white p-4"><p className="text-xs text-slate-500">{isZh ? "贷款金额" : "Loan amount"}</p><p className="mt-1 text-lg font-semibold text-slate-800">{currency}{number(result.loanAmount)}</p></div>
+            <div className="rounded-xl border border-slate-200 bg-white p-4"><p className="text-xs text-slate-500">{isZh ? "贷款总利息" : "Total interest"}</p><p className="mt-1 text-lg font-semibold text-orange-600">{currency}{number(result.totalInterest, 2)}</p></div>
+            <div className="rounded-xl border border-slate-200 bg-white p-4"><p className="text-xs text-slate-500">{isZh ? "贷款本息合计" : "Loan repayments"}</p><p className="mt-1 text-lg font-semibold text-slate-800">{currency}{number(result.totalPayment, 2)}</p></div>
           </div>
           <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4">
             <p className="text-xs text-emerald-700">{isZh ? "首付 + 贷款本息" : "Down payment + loan repayments"}</p>
-            <p className="mt-1 text-xl font-semibold text-emerald-800">¥{number(result.totalCashOutlay, 2)}</p>
+            <p className="mt-1 text-xl font-semibold text-emerald-800">{currency}{number(result.totalCashOutlay, 2)}</p>
           </div>
           <div className="flex gap-2 rounded-lg border border-amber-200 bg-amber-50 p-4 text-xs leading-relaxed text-amber-900">
             <Info className="mt-0.5 h-4 w-4 shrink-0" />
@@ -126,7 +127,7 @@ export default function CarLoanPage() {
               <tbody>
                 <tr className="border-b border-slate-100"><td className="px-3 py-2">{isZh ? "每期金额" : "Payment pattern"}</td><td className="px-3 py-2">{isZh ? "通常相同" : "Usually level"}</td><td className="px-3 py-2">{isZh ? "首期最高，逐期下降" : "Highest first, then declines"}</td></tr>
                 <tr className="border-b border-slate-100"><td className="px-3 py-2">{isZh ? "前期压力" : "Early cash burden"}</td><td className="px-3 py-2">{isZh ? "相对稳定" : "More stable"}</td><td className="px-3 py-2">{isZh ? "相对较高" : "Relatively higher"}</td></tr>
-                <tr><td className="px-3 py-2">{isZh ? "当前参数总利息" : "Interest with current inputs"}</td><td className="px-3 py-2 font-medium text-slate-800">¥{number(isEqualInstallment ? result.totalInterest : comparison.totalInterest, 2)}</td><td className="px-3 py-2 font-medium text-slate-800">¥{number(isEqualInstallment ? comparison.totalInterest : result.totalInterest, 2)}</td></tr>
+                <tr><td className="px-3 py-2">{isZh ? "当前参数总利息" : "Interest with current inputs"}</td><td className="px-3 py-2 font-medium text-slate-800">{currency}{number(isEqualInstallment ? result.totalInterest : comparison.totalInterest, 2)}</td><td className="px-3 py-2 font-medium text-slate-800">{currency}{number(isEqualInstallment ? comparison.totalInterest : result.totalInterest, 2)}</td></tr>
               </tbody>
             </table>
           </div>

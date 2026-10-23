@@ -8,8 +8,9 @@ import { calculateDepreciation } from "@/utils/quickTools";
 export default function DepreciationPage() {
   const { locale } = useLanguageStore();
   const isZh = locale === "zh";
-  const [purchasePrice, setPurchasePrice] = useState(150000);
-  const [currentValue, setCurrentValue] = useState(90000);
+  const currency = isZh ? "¥" : "$";
+  const [purchasePrice, setPurchasePrice] = useState(30000);
+  const [currentValue, setCurrentValue] = useState(21000);
   const [yearsOwned, setYearsOwned] = useState(3);
   const [totalMileage, setTotalMileage] = useState(45000);
   const result = useMemo(
@@ -39,8 +40,8 @@ export default function DepreciationPage() {
         <section className="rounded-xl border border-slate-200 bg-white p-5 sm:p-6">
           <h2 className="mb-5 text-lg font-semibold text-slate-800">{isZh ? "车辆数据" : "Vehicle inputs"}</h2>
           <div className="grid gap-4 sm:grid-cols-2">
-            <NumberField id="depreciation-purchase-price" label={isZh ? "实际购车价" : "Purchase price"} value={purchasePrice} onChange={setPurchasePrice} suffix={isZh ? "元" : "CNY"} step={1000} hint={isZh ? "建议使用车辆落地价，不含贷款利息。" : "Use the vehicle drive-away price, excluding financing interest."} />
-            <NumberField id="depreciation-current-value" label={isZh ? "当前可成交估值" : "Current market value"} value={currentValue} onChange={setCurrentValue} suffix={isZh ? "元" : "CNY"} step={1000} hint={isZh ? "优先使用近期同款、同配置、相近里程的实际报价。" : "Prefer recent quotes for the same model, trim and similar mileage."} />
+            <NumberField id="depreciation-purchase-price" label={isZh ? "实际购车价" : "Purchase price"} value={purchasePrice} onChange={setPurchasePrice} suffix={isZh ? "元" : "USD"} step={1000} hint={isZh ? "建议使用车辆落地价，不含贷款利息。" : "Use the vehicle drive-away price, excluding financing interest."} />
+            <NumberField id="depreciation-current-value" label={isZh ? "当前可成交估值" : "Current market value"} value={currentValue} onChange={setCurrentValue} suffix={isZh ? "元" : "USD"} step={1000} hint={isZh ? "优先使用近期同款、同配置、相近里程的实际报价。" : "Prefer recent quotes for the same model, trim and similar mileage."} />
             <NumberField id="depreciation-years" label={isZh ? "已持有年数" : "Years owned"} value={yearsOwned} onChange={setYearsOwned} suffix={isZh ? "年" : "years"} step={0.5} />
             <NumberField id="depreciation-mileage" label={isZh ? "累计行驶里程" : "Total mileage"} value={totalMileage} onChange={setTotalMileage} suffix={isZh ? "公里" : "km"} step={1000} />
           </div>
@@ -49,7 +50,7 @@ export default function DepreciationPage() {
         <aside className="space-y-4">
           <div className="rounded-xl bg-slate-900 p-6 text-white">
             <p className="text-sm text-slate-300">{isZh ? "累计折旧金额" : "Total depreciation"}</p>
-            <p className="mt-1 text-4xl font-bold text-rose-400">¥{number(result.totalDepreciation)}</p>
+            <p className="mt-1 text-4xl font-bold text-rose-400">{currency}{number(result.totalDepreciation)}</p>
             <div className="mt-6 grid grid-cols-2 gap-4 border-t border-slate-700 pt-5">
               <div>
                 <p className="text-xs text-slate-400">{isZh ? "累计折旧率" : "Depreciation rate"}</p>
@@ -64,11 +65,11 @@ export default function DepreciationPage() {
           <div className="grid grid-cols-2 gap-3">
             <div className="rounded-xl border border-slate-200 bg-white p-4">
               <p className="text-xs text-slate-500">{isZh ? "年均折旧" : "Average per year"}</p>
-              <p className="mt-1 text-lg font-semibold text-slate-800">{result.annualDepreciation === null ? "—" : `¥${number(result.annualDepreciation)}`}</p>
+              <p className="mt-1 text-lg font-semibold text-slate-800">{result.annualDepreciation === null ? "—" : `${currency}${number(result.annualDepreciation)}`}</p>
             </div>
             <div className="rounded-xl border border-slate-200 bg-white p-4">
               <p className="text-xs text-slate-500">{isZh ? "每公里折旧" : "Depreciation/km"}</p>
-              <p className="mt-1 text-lg font-semibold text-slate-800">{result.depreciationPerKm === null ? "—" : `¥${number(result.depreciationPerKm, 2)}`}</p>
+              <p className="mt-1 text-lg font-semibold text-slate-800">{result.depreciationPerKm === null ? "—" : `${currency}${number(result.depreciationPerKm, 2)}`}</p>
             </div>
           </div>
           <div className="flex gap-2 rounded-lg border border-amber-200 bg-amber-50 p-4 text-xs leading-relaxed text-amber-900">

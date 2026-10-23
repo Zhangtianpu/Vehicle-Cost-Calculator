@@ -101,13 +101,13 @@ export default function DepreciationCalculator() {
               <div className="flex justify-between items-center">
                 <span className="text-sm text-slate-500">{t.fuel.monthlyCost}</span>
                 <span className="text-lg font-bold text-slate-800">
-                  ¥{costSummary.depreciation.monthlyCost.toLocaleString()}
+                  {t.currency}{costSummary.depreciation.monthlyCost.toLocaleString()}
                 </span>
               </div>
               <div className="flex justify-between items-center mt-1">
                 <span className="text-sm text-slate-500">{t.fuel.yearlyCost}</span>
                 <span className="text-sm font-medium text-slate-600">
-                  ¥{costSummary.depreciation.yearlyCost.toLocaleString()}
+                  {t.currency}{costSummary.depreciation.yearlyCost.toLocaleString()}
                 </span>
               </div>
             </div>

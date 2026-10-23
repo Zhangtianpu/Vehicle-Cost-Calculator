@@ -4,6 +4,7 @@ import { useVehicleStore } from "@/store/useVehicleStore";
 import { useLanguageStore } from "@/store/useLanguageStore";
 
 function AnimatedNumber({ value }: { value: number }) {
+  const { t } = useLanguageStore();
   const [display, setDisplay] = useState(value);
   const prevValue = useRef(value);
 
@@ -33,7 +34,7 @@ function AnimatedNumber({ value }: { value: number }) {
     prevValue.current = value;
   }, [value]);
 
-  return <span>¥{Math.round(display).toLocaleString()}</span>;
+  return <span>{t.currency}{Math.round(display).toLocaleString()}</span>;
 }
 
 function SummaryRow({ label, monthly, yearly, period }: {

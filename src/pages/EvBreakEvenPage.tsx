@@ -8,13 +8,14 @@ import { calculateEvBreakEven } from "@/utils/quickTools";
 export default function EvBreakEvenPage() {
   const { locale } = useLanguageStore();
   const isZh = locale === "zh";
+  const currency = isZh ? "¥" : "$";
   const [annualMileage, setAnnualMileage] = useState(15000);
   const [fuelConsumption, setFuelConsumption] = useState(8);
-  const [fuelPrice, setFuelPrice] = useState(7.5);
+  const [fuelPrice, setFuelPrice] = useState(1);
   const [evConsumption, setEvConsumption] = useState(15);
-  const [electricityPrice, setElectricityPrice] = useState(0.6);
-  const [pricePremium, setPricePremium] = useState(30000);
-  const [annualFixedDifference, setAnnualFixedDifference] = useState(500);
+  const [electricityPrice, setElectricityPrice] = useState(0.18);
+  const [pricePremium, setPricePremium] = useState(5000);
+  const [annualFixedDifference, setAnnualFixedDifference] = useState(250);
 
   const result = useMemo(() => calculateEvBreakEven({ annualMileage, fuelConsumption, fuelPrice, evConsumption, electricityPrice, pricePremium, annualFixedDifference }), [annualMileage, fuelConsumption, fuelPrice, evConsumption, electricityPrice, pricePremium, annualFixedDifference]);
 
@@ -34,13 +35,13 @@ export default function EvBreakEvenPage() {
           <h2 className="mb-5 text-lg font-semibold text-slate-800">{isZh ? "对比参数" : "Comparison inputs"}</h2>
           <div className="grid gap-4 sm:grid-cols-2">
             <NumberField id="break-even-mileage" label={isZh ? "年行驶里程" : "Annual mileage"} value={annualMileage} onChange={setAnnualMileage} suffix={isZh ? "公里" : "km"} step={500} />
-            <NumberField id="price-premium" label={isZh ? "电车购车差价" : "EV price premium"} value={pricePremium} onChange={setPricePremium} suffix={isZh ? "元" : "CNY"} step={1000} hint={isZh ? "电车落地价减去油车落地价；若电车更便宜请输入 0。" : "EV drive-away price minus fuel-car price; enter 0 if the EV is cheaper."} />
+            <NumberField id="price-premium" label={isZh ? "电车购车差价" : "EV price premium"} value={pricePremium} onChange={setPricePremium} suffix={isZh ? "元" : "USD"} step={1000} hint={isZh ? "电车落地价减去油车落地价；若电车更便宜请输入 0。" : "EV drive-away price minus fuel-car price; enter 0 if the EV is cheaper."} />
             <NumberField id="fuel-consumption" label={isZh ? "油车百公里油耗" : "Fuel consumption"} value={fuelConsumption} onChange={setFuelConsumption} suffix="L/100km" step={0.1} />
-            <NumberField id="fuel-price" label={isZh ? "油价" : "Fuel price"} value={fuelPrice} onChange={setFuelPrice} suffix={isZh ? "元/L" : "CNY/L"} step={0.1} />
+            <NumberField id="fuel-price" label={isZh ? "油价" : "Fuel price"} value={fuelPrice} onChange={setFuelPrice} suffix={isZh ? "元/L" : "USD/L"} step={0.1} />
             <NumberField id="ev-consumption" label={isZh ? "电车百公里电耗" : "EV consumption"} value={evConsumption} onChange={setEvConsumption} suffix="kWh/100km" step={0.1} />
-            <NumberField id="electricity-price" label={isZh ? "综合充电电价" : "Blended charging price"} value={electricityPrice} onChange={setElectricityPrice} suffix={isZh ? "元/kWh" : "CNY/kWh"} step={0.1} hint={isZh ? "按家充、公共快充的实际比例计算加权平均价。" : "Use a weighted average of home and public charging."} />
+            <NumberField id="electricity-price" label={isZh ? "综合充电电价" : "Blended charging price"} value={electricityPrice} onChange={setElectricityPrice} suffix={isZh ? "元/kWh" : "USD/kWh"} step={0.01} hint={isZh ? "按家充、公共快充的实际比例计算加权平均价。" : "Use a weighted average of home and public charging."} />
             <div className="sm:col-span-2">
-              <NumberField id="fixed-difference" label={isZh ? "电车每年额外固定成本" : "EV extra annual fixed cost"} value={annualFixedDifference} onChange={setAnnualFixedDifference} suffix={isZh ? "元/年" : "CNY/year"} step={100} hint={isZh ? "电车保险增加额减去保养节省额；若电车固定成本反而更低，可填 0，并在完整计算器中进一步比较。" : "EV insurance increase minus maintenance savings. Enter 0 when the EV has no extra fixed cost."} />
+              <NumberField id="fixed-difference" label={isZh ? "电车每年额外固定成本" : "EV extra annual fixed cost"} value={annualFixedDifference} onChange={setAnnualFixedDifference} suffix={isZh ? "元/年" : "USD/year"} step={100} hint={isZh ? "电车保险增加额减去保养节省额；若电车固定成本反而更低，可填 0，并在完整计算器中进一步比较。" : "EV insurance increase minus maintenance savings. Enter 0 when the EV has no extra fixed cost."} />
             </div>
           </div>
         </section>
@@ -65,15 +66,15 @@ export default function EvBreakEvenPage() {
           <div className="grid grid-cols-2 gap-3">
             <div className="rounded-xl border border-slate-200 bg-white p-4">
               <p className="text-xs text-slate-500">{isZh ? "油车百公里" : "Fuel /100 km"}</p>
-              <p className="mt-1 text-lg font-semibold text-orange-600">¥{number(result.fuelPer100, 2)}</p>
+              <p className="mt-1 text-lg font-semibold text-orange-600">{currency}{number(result.fuelPer100, 2)}</p>
             </div>
             <div className="rounded-xl border border-slate-200 bg-white p-4">
               <p className="text-xs text-slate-500">{isZh ? "电车百公里" : "EV /100 km"}</p>
-              <p className="mt-1 text-lg font-semibold text-emerald-600">¥{number(result.evPer100, 2)}</p>
+              <p className="mt-1 text-lg font-semibold text-emerald-600">{currency}{number(result.evPer100, 2)}</p>
             </div>
             <div className="col-span-2 rounded-xl border border-slate-200 bg-white p-4">
               <p className="text-xs text-slate-500">{isZh ? "扣除固定差异后的年净节省" : "Net annual saving after fixed-cost difference"}</p>
-              <p className={`mt-1 text-xl font-semibold ${result.netAnnualSaving >= 0 ? "text-emerald-600" : "text-rose-600"}`}>¥{number(result.netAnnualSaving)}</p>
+              <p className={`mt-1 text-xl font-semibold ${result.netAnnualSaving >= 0 ? "text-emerald-600" : "text-rose-600"}`}>{currency}{number(result.netAnnualSaving)}</p>
             </div>
           </div>
         </aside>
@@ -90,7 +91,7 @@ export default function EvBreakEvenPage() {
         </section>
         <section>
           <h2 className="mb-2 text-lg font-semibold text-slate-800">{isZh ? "综合充电电价怎么填？" : "How to estimate blended charging price"}</h2>
-          <p>{isZh ? "如果 70% 电量来自 0.5 元/度的家充，30% 来自 1.6 元/度的公共快充，综合电价为 0.5×70% + 1.6×30% = 0.83 元/度。不要只使用最低谷电价。" : "If 70% of charging is at home for 0.5 CNY/kWh and 30% is public fast charging at 1.6, the blended price is 0.5×70% + 1.6×30% = 0.83 CNY/kWh. Do not use only the cheapest tariff."}</p>
+          <p>{isZh ? "如果 70% 电量来自 0.5 元/度的家充，30% 来自 1.6 元/度的公共快充，综合电价为 0.5×70% + 1.6×30% = 0.83 元/度。不要只使用最低谷电价。" : "If 70% of charging is at home for $0.15/kWh and 30% is public fast charging at $0.35, the blended price is $0.21/kWh. Do not use only the cheapest tariff."}</p>
         </section>
         <section>
           <h2 className="mb-2 text-lg font-semibold text-slate-800">{isZh ? "这个结果不包含什么？" : "What is not included?"}</h2>

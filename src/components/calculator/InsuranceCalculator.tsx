@@ -7,7 +7,7 @@ import { calculateInsuranceCost } from "@/utils/insuranceCalc";
 export default function InsuranceCalculator() {
   const { vehicleType, insuranceParams, setInsuranceParams, costSummary, moduleToggle, setModuleToggle, setVehiclePrice } =
     useVehicleStore();
-  const { t } = useLanguageStore();
+  const { locale, t } = useLanguageStore();
   const isElectric = vehicleType === "electric";
   const calculatedInsurance = calculateInsuranceCost(insuranceParams, vehicleType);
   const hasCustomCost = insuranceParams.customYearlyCost !== null && insuranceParams.customYearlyCost > 0;
@@ -41,7 +41,7 @@ export default function InsuranceCalculator() {
       {moduleToggle.insurance && (
         <>
           <div className="space-y-4">
-            <div>
+            <div className={locale === "zh" ? "" : "hidden"}>
               <label className="block text-sm font-medium text-slate-600 mb-1.5">
                 {t.insurance.vehiclePrice}
               </label>
@@ -60,7 +60,7 @@ export default function InsuranceCalculator() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className={`grid grid-cols-2 gap-3 ${locale === "zh" ? "" : "hidden"}`}>
               <div>
                 <label className="block text-sm font-medium text-slate-600 mb-1.5">
                   {t.insurance.seatCount}
@@ -98,7 +98,7 @@ export default function InsuranceCalculator() {
               </div>
             </div>
 
-            <div>
+            <div className={locale === "zh" ? "" : "hidden"}>
               <label className="block text-sm font-medium text-slate-600 mb-2.5">
                 {t.insurance.insuranceTypes}
               </label>
@@ -209,7 +209,7 @@ export default function InsuranceCalculator() {
               </div>
             </div>
 
-            <div>
+            <div className={locale === "zh" ? "" : "hidden"}>
               <label className="block text-sm font-medium text-slate-600 mb-1.5">
                 {t.insurance.noClaimYears}
               </label>
@@ -239,13 +239,13 @@ export default function InsuranceCalculator() {
             </div>
 
             <div className="pt-3 border-t border-slate-100">
-              <div className="flex items-center justify-between mb-2">
+              <div className={`flex items-center justify-between mb-2 ${locale === "zh" ? "" : "hidden"}`}>
                 <span className="text-sm text-slate-500">{t.insurance.systemEstimate}</span>
                 <span className={`text-sm ${hasCustomCost ? "text-slate-400 line-through" : "text-slate-600 font-medium"}`}>
-                  ¥{calculatedInsurance.yearlyCost.toLocaleString()}{t.insurance.perYear}
+                  {t.currency}{calculatedInsurance.yearlyCost.toLocaleString()}{t.insurance.perYear}
                 </span>
               </div>
-              <div>
+              <div className={locale === "zh" ? "" : "hidden"}>
                 <label className="flex items-center gap-2 cursor-pointer group">
                   <input
                     type="checkbox"
@@ -263,8 +263,13 @@ export default function InsuranceCalculator() {
                   </span>
                 </label>
               </div>
-              {hasCustomCost && (
+              {(locale !== "zh" || hasCustomCost) && (
                 <div className="mt-2">
+                  {locale !== "zh" && (
+                    <label className="mb-1.5 block text-sm font-medium text-slate-600">
+                      Annual insurance quote
+                    </label>
+                  )}
                   <div className="relative">
                     <input
                       type="number"
@@ -277,7 +282,7 @@ export default function InsuranceCalculator() {
                       step={100}
                     />
                     <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400">
-                      {t.insurance.perYear}
+                      {locale === "zh" ? t.insurance.perYear : "USD/year"}
                     </span>
                   </div>
                   <p className="text-xs text-slate-400 mt-1.5">{t.insurance.customCostHint}</p>
@@ -290,16 +295,16 @@ export default function InsuranceCalculator() {
             <div className="flex justify-between items-center">
               <span className="text-sm text-slate-500">{t.fuel.monthlyCost}</span>
               <span className="text-lg font-bold text-slate-800">
-                ¥{costSummary.insurance.monthlyCost.toLocaleString()}
+                {t.currency}{costSummary.insurance.monthlyCost.toLocaleString()}
               </span>
             </div>
             <div className="flex justify-between items-center mt-1">
               <span className="text-sm text-slate-500">{t.fuel.yearlyCost}</span>
               <span className="text-sm font-medium text-slate-600">
-                ¥{costSummary.insurance.yearlyCost.toLocaleString()}
+                {t.currency}{costSummary.insurance.yearlyCost.toLocaleString()}
               </span>
             </div>
-            {isElectric && (
+            {isElectric && locale === "zh" && (
               <p className="text-xs text-amber-600 mt-2">
                 {t.insurance.evSurchargeNote}
               </p>

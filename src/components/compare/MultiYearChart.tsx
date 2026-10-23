@@ -60,11 +60,11 @@ export default function MultiYearChart({ fuelData, electricData }: MultiYearChar
             <YAxis
               tick={{ fontSize: 12, fill: "#64748B" }}
               axisLine={{ stroke: "#CBD5E1" }}
-              tickFormatter={(v) => `¥${(v / 10000).toFixed(0)}万`}
+              tickFormatter={(v) => `${t.currency}${(v / 1000).toFixed(0)}k`}
             />
             <Tooltip
               formatter={(value: number, name: string) => {
-                return [`¥${value.toLocaleString()}`, name];
+                return [`${t.currency}${value.toLocaleString()}`, name];
               }}
               contentStyle={{
                 borderRadius: "8px",

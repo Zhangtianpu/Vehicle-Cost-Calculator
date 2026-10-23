@@ -78,13 +78,13 @@ export default function ViolationTollCalculator() {
               <div className="flex justify-between items-center">
                 <span className="text-sm text-slate-500">{t.fuel.monthlyCost}</span>
                 <span className="text-lg font-bold text-slate-800">
-                  ¥{costSummary.violationToll.monthlyCost.toLocaleString()}
+                  {t.currency}{costSummary.violationToll.monthlyCost.toLocaleString()}
                 </span>
               </div>
               <div className="flex justify-between items-center mt-1">
                 <span className="text-sm text-slate-500">{t.fuel.yearlyCost}</span>
                 <span className="text-sm font-medium text-slate-600">
-                  ¥{costSummary.violationToll.yearlyCost.toLocaleString()}
+                  {t.currency}{costSummary.violationToll.yearlyCost.toLocaleString()}
                 </span>
               </div>
             </div>

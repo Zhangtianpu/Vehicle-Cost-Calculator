@@ -4,19 +4,19 @@ export const DEFAULT_FUEL_PARAMS: Record<VehicleType, FuelParams> = {
   fuel: {
     mileage: 1500,
     mileagePeriod: "monthly",
-    fuelPrice: 7.5,
+    fuelPrice: 1,
     consumptionPer100km: 8,
   },
   electric: {
     mileage: 1500,
     mileagePeriod: "monthly",
-    fuelPrice: 0.6,
+    fuelPrice: 0.18,
     consumptionPer100km: 15,
   },
 };
 
 export const DEFAULT_INSURANCE_PARAMS: InsuranceParams = {
-  vehiclePrice: 150000,
+  vehiclePrice: 30000,
   seatCount: 5,
   vehicleAge: 1,
   compulsory: true,
@@ -27,11 +27,11 @@ export const DEFAULT_INSURANCE_PARAMS: InsuranceParams = {
   passengerSeats: 5,
   noClaimYears: 0,
   additionalEV: false,
-  customYearlyCost: null,
+  customYearlyCost: 1500,
 };
 
 export const DEFAULT_LOAN_PARAMS: LoanParams = {
-  vehiclePrice: 150000,
+  vehiclePrice: 30000,
   downPaymentRatio: 0.3,
   loanTermMonths: 36,
   annualRate: 4.5,
@@ -39,29 +39,29 @@ export const DEFAULT_LOAN_PARAMS: LoanParams = {
 };
 
 export const DEFAULT_MAINTENANCE_PARAMS: Record<VehicleType, MaintenanceParams> = {
-  fuel: { enabled: false, yearlyCost: 3000 },
-  electric: { enabled: false, yearlyCost: 1500 },
+  fuel: { enabled: false, yearlyCost: 800 },
+  electric: { enabled: false, yearlyCost: 400 },
 };
 
 export const DEFAULT_CAR_WASH_PARAMS: CarWashParams = {
   enabled: false,
   timesPerMonth: 2,
-  costPerTime: 35,
+  costPerTime: 20,
 };
 
 export const DEFAULT_DEPRECIATION_PARAMS: Record<VehicleType, DepreciationParams> = {
-  fuel: { enabled: false, vehiclePrice: 150000, yearlyRate: 10 },
-  electric: { enabled: false, vehiclePrice: 150000, yearlyRate: 15 },
+  fuel: { enabled: false, vehiclePrice: 30000, yearlyRate: 15 },
+  electric: { enabled: false, vehiclePrice: 30000, yearlyRate: 18 },
 };
 
 export const DEFAULT_VIOLATION_TOLL_PARAMS: ViolationTollParams = {
   enabled: false,
-  monthlyCost: 200,
+  monthlyCost: 50,
 };
 
 export const DEFAULT_PARKING_PARAMS: ParkingParams = {
   enabled: false,
-  monthlyCost: 300,
+  monthlyCost: 150,
 };
 
 export const EV_ANNUAL_RATE = 3.5;

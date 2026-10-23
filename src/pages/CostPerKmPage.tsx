@@ -8,20 +8,21 @@ import { calculateCostPerKm } from "@/utils/quickTools";
 export default function CostPerKmPage() {
   const { locale } = useLanguageStore();
   const isZh = locale === "zh";
+  const currency = isZh ? "¥" : "$";
   const [annualMileage, setAnnualMileage] = useState(15000);
-  const [energy, setEnergy] = useState(9000);
-  const [insurance, setInsurance] = useState(5000);
-  const [maintenance, setMaintenance] = useState(1800);
-  const [parking, setParking] = useState(3600);
-  const [tolls, setTolls] = useState(1200);
-  const [washing, setWashing] = useState(840);
-  const [other, setOther] = useState(500);
-  const [depreciation, setDepreciation] = useState(18000);
+  const [energy, setEnergy] = useState(1200);
+  const [insurance, setInsurance] = useState(1500);
+  const [maintenance, setMaintenance] = useState(800);
+  const [parking, setParking] = useState(1800);
+  const [tolls, setTolls] = useState(600);
+  const [washing, setWashing] = useState(480);
+  const [other, setOther] = useState(300);
+  const [depreciation, setDepreciation] = useState(4500);
 
   const result = useMemo(() => calculateCostPerKm({ annualMileage, energy, insurance, maintenance, parking, tolls, washing, other, depreciation }), [annualMileage, energy, insurance, maintenance, parking, tolls, washing, other, depreciation]);
 
   const number = (value: number, digits = 0) => new Intl.NumberFormat(isZh ? "zh-CN" : "en-US", { maximumFractionDigits: digits, minimumFractionDigits: digits }).format(value);
-  const moneyUnit = isZh ? "元/年" : "CNY/year";
+  const moneyUnit = isZh ? "元/年" : "USD/year";
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -53,18 +54,18 @@ export default function CostPerKmPage() {
         <aside className="space-y-4">
           <div className="rounded-xl bg-slate-900 p-6 text-white">
             <p className="text-sm text-slate-300">{isZh ? "现金成本（不含折旧）" : "Cash cost (excluding depreciation)"}</p>
-            <p className="mt-1 text-3xl font-bold text-emerald-400">{result.cashPerKm === null ? "—" : `¥${number(result.cashPerKm, 2)}`}<span className="ml-1 text-sm font-normal text-slate-400">/{isZh ? "公里" : "km"}</span></p>
+            <p className="mt-1 text-3xl font-bold text-emerald-400">{result.cashPerKm === null ? "—" : `${currency}${number(result.cashPerKm, 2)}`}<span className="ml-1 text-sm font-normal text-slate-400">/{isZh ? "公里" : "km"}</span></p>
             <p className="mt-5 text-sm text-slate-300">{isZh ? "完整成本（包含折旧）" : "Full cost (including depreciation)"}</p>
-            <p className="mt-1 text-3xl font-bold">{result.fullPerKm === null ? "—" : `¥${number(result.fullPerKm, 2)}`}<span className="ml-1 text-sm font-normal text-slate-400">/{isZh ? "公里" : "km"}</span></p>
+            <p className="mt-1 text-3xl font-bold">{result.fullPerKm === null ? "—" : `${currency}${number(result.fullPerKm, 2)}`}<span className="ml-1 text-sm font-normal text-slate-400">/{isZh ? "公里" : "km"}</span></p>
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div className="rounded-xl border border-slate-200 bg-white p-4">
               <p className="text-xs text-slate-500">{isZh ? "年现金支出" : "Annual cash cost"}</p>
-              <p className="mt-1 text-lg font-semibold text-slate-800">¥{number(result.cashCost)}</p>
+              <p className="mt-1 text-lg font-semibold text-slate-800">{currency}{number(result.cashCost)}</p>
             </div>
             <div className="rounded-xl border border-slate-200 bg-white p-4">
               <p className="text-xs text-slate-500">{isZh ? "月均现金支出" : "Monthly cash cost"}</p>
-              <p className="mt-1 text-lg font-semibold text-slate-800">¥{number(result.monthlyCash)}</p>
+              <p className="mt-1 text-lg font-semibold text-slate-800">{currency}{number(result.monthlyCash)}</p>
             </div>
           </div>
           <div className="flex gap-2 rounded-lg border border-amber-200 bg-amber-50 p-4 text-xs leading-relaxed text-amber-900">

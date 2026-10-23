@@ -43,10 +43,10 @@ export default function CompareTable({ data, showTotalHint = false }: CompareTab
                 >
                   <td className="py-3 px-4 text-slate-700">{row.category}</td>
                   <td className="py-3 px-4 text-right text-slate-800 font-medium">
-                    ¥{row.fuel.toLocaleString()}
+                    {t.currency}{row.fuel.toLocaleString()}
                   </td>
                   <td className="py-3 px-4 text-right text-slate-800 font-medium">
-                    ¥{row.electric.toLocaleString()}
+                    {t.currency}{row.electric.toLocaleString()}
                   </td>
                   <td
                     className={`py-3 px-4 text-right font-medium ${
@@ -58,7 +58,7 @@ export default function CompareTable({ data, showTotalHint = false }: CompareTab
                     }`}
                   >
                     {rowDiff > 0 ? "+" : ""}
-                    ¥{rowDiff.toLocaleString()}
+                    {t.currency}{rowDiff.toLocaleString()}
                   </td>
                 </tr>
               );
@@ -66,10 +66,10 @@ export default function CompareTable({ data, showTotalHint = false }: CompareTab
             <tr className="bg-slate-50 font-semibold">
               <td className="py-3 px-4 text-slate-800">{t.compare.yearlyTotal}</td>
               <td className="py-3 px-4 text-right text-orange-600">
-                ¥{totalFuel.toLocaleString()}
+                {t.currency}{totalFuel.toLocaleString()}
               </td>
               <td className="py-3 px-4 text-right text-emerald-600">
-                ¥{totalElectric.toLocaleString()}
+                {t.currency}{totalElectric.toLocaleString()}
               </td>
               <td
                 className={`py-3 px-4 text-right ${
@@ -77,7 +77,7 @@ export default function CompareTable({ data, showTotalHint = false }: CompareTab
                 }`}
               >
                 {diff > 0 ? "+" : ""}
-                ¥{diff.toLocaleString()}
+                {t.currency}{diff.toLocaleString()}
               </td>
             </tr>
           </tbody>

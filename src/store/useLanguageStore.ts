@@ -9,8 +9,8 @@ interface LanguageState {
 }
 
 export const useLanguageStore = create<LanguageState>((set) => ({
-  locale: "zh",
-  t: translations.zh,
+  locale: "en",
+  t: translations.en,
   setLocale: (locale) =>
     set({
       locale,

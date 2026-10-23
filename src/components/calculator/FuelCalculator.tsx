@@ -92,7 +92,7 @@ export default function FuelCalculator() {
               step={0.1}
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400">
-              {locale === "zh" ? "元" : ""}/{isElectric ? "kWh" : "L"}
+              {locale === "zh" ? "元" : "$"}/{isElectric ? "kWh" : "L"}
             </span>
           </div>
         </div>
@@ -123,13 +123,13 @@ export default function FuelCalculator() {
         <div className="flex justify-between items-center">
           <span className="text-sm text-slate-500">{t.fuel.monthlyCost}</span>
           <span className="text-lg font-bold text-slate-800">
-            ¥{costSummary.fuel.monthlyCost.toLocaleString()}
+            {t.currency}{costSummary.fuel.monthlyCost.toLocaleString()}
           </span>
         </div>
         <div className="flex justify-between items-center mt-1">
           <span className="text-sm text-slate-500">{t.fuel.yearlyCost}</span>
           <span className="text-sm font-medium text-slate-600">
-            ¥{costSummary.fuel.yearlyCost.toLocaleString()}
+            {t.currency}{costSummary.fuel.yearlyCost.toLocaleString()}
           </span>
         </div>
       </div>

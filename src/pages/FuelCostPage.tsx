@@ -8,9 +8,10 @@ import { calculateFuelCost } from "@/utils/quickTools";
 export default function FuelCostPage() {
   const { locale } = useLanguageStore();
   const isZh = locale === "zh";
+  const currency = isZh ? "¥" : "$";
   const [distance, setDistance] = useState(500);
   const [consumptionPer100Km, setConsumptionPer100Km] = useState(8);
-  const [fuelPrice, setFuelPrice] = useState(7.5);
+  const [fuelPrice, setFuelPrice] = useState(1);
   const result = useMemo(
     () => calculateFuelCost({ distance, consumptionPer100Km, fuelPrice }),
     [distance, consumptionPer100Km, fuelPrice],
@@ -40,14 +41,14 @@ export default function FuelCostPage() {
           <div className="space-y-4">
             <NumberField id="fuel-distance" label={isZh ? "预计行驶里程" : "Distance"} value={distance} onChange={setDistance} suffix={isZh ? "公里" : "km"} step={10} />
             <NumberField id="fuel-consumption-tool" label={isZh ? "百公里油耗" : "Consumption"} value={consumptionPer100Km} onChange={setConsumptionPer100Km} suffix="L/100km" step={0.1} hint={isZh ? "建议使用最近几次加油计算出的实际综合油耗。" : "For better accuracy, use consumption calculated from recent refueling records."} />
-            <NumberField id="fuel-price-tool" label={isZh ? "每升油价" : "Fuel price"} value={fuelPrice} onChange={setFuelPrice} suffix={isZh ? "元/L" : "CNY/L"} step={0.01} />
+            <NumberField id="fuel-price-tool" label={isZh ? "每升油价" : "Fuel price"} value={fuelPrice} onChange={setFuelPrice} suffix={isZh ? "元/L" : "USD/L"} step={0.01} />
           </div>
         </section>
 
         <aside className="space-y-4">
           <div className="rounded-xl bg-slate-900 p-6 text-white">
             <p className="text-sm text-slate-300">{isZh ? "预计总油费" : "Estimated fuel cost"}</p>
-            <p className="mt-1 text-4xl font-bold text-orange-400">¥{number(result.totalCost, 2)}</p>
+            <p className="mt-1 text-4xl font-bold text-orange-400">{currency}{number(result.totalCost, 2)}</p>
             <div className="mt-6 grid grid-cols-2 gap-4 border-t border-slate-700 pt-5">
               <div>
                 <p className="text-xs text-slate-400">{isZh ? "预计用油量" : "Fuel required"}</p>
@@ -55,13 +56,13 @@ export default function FuelCostPage() {
               </div>
               <div>
                 <p className="text-xs text-slate-400">{isZh ? "每公里油费" : "Cost per km"}</p>
-                <p className="mt-1 text-xl font-semibold">{result.costPerKm === null ? "—" : `¥${number(result.costPerKm, 2)}`}</p>
+                <p className="mt-1 text-xl font-semibold">{result.costPerKm === null ? "—" : `${currency}${number(result.costPerKm, 2)}`}</p>
               </div>
             </div>
           </div>
           <div className="rounded-xl border border-slate-200 bg-white p-5">
             <p className="text-xs text-slate-500">{isZh ? "百公里油费" : "Fuel cost per 100 km"}</p>
-            <p className="mt-1 text-2xl font-semibold text-slate-800">¥{number(result.costPer100Km, 2)}</p>
+            <p className="mt-1 text-2xl font-semibold text-slate-800">{currency}{number(result.costPer100Km, 2)}</p>
           </div>
           <div className="flex gap-2 rounded-lg border border-amber-200 bg-amber-50 p-4 text-xs leading-relaxed text-amber-900">
             <Info className="mt-0.5 h-4 w-4 shrink-0" />
@@ -91,9 +92,9 @@ export default function FuelCostPage() {
             <table className="w-full min-w-[520px] text-left text-sm">
               <thead><tr className="border-b border-slate-200 text-slate-500"><th className="px-3 py-2 font-medium">{isZh ? "百公里油耗" : "Consumption"}</th><th className="px-3 py-2 font-medium">{isZh ? "油价" : "Price"}</th><th className="px-3 py-2 font-medium">{isZh ? "用油量" : "Liters"}</th><th className="px-3 py-2 font-medium">{isZh ? "总油费" : "Total"}</th></tr></thead>
               <tbody>
-                <tr className="border-b border-slate-100"><td className="px-3 py-2">6 L/100km</td><td className="px-3 py-2">¥7.50/L</td><td className="px-3 py-2">30 L</td><td className="px-3 py-2 font-medium text-slate-800">¥225</td></tr>
-                <tr className="border-b border-slate-100"><td className="px-3 py-2">8 L/100km</td><td className="px-3 py-2">¥7.50/L</td><td className="px-3 py-2">40 L</td><td className="px-3 py-2 font-medium text-slate-800">¥300</td></tr>
-                <tr><td className="px-3 py-2">10 L/100km</td><td className="px-3 py-2">¥7.50/L</td><td className="px-3 py-2">50 L</td><td className="px-3 py-2 font-medium text-slate-800">¥375</td></tr>
+                <tr className="border-b border-slate-100"><td className="px-3 py-2">6 L/100km</td><td className="px-3 py-2">{currency}1.00/L</td><td className="px-3 py-2">30 L</td><td className="px-3 py-2 font-medium text-slate-800">{currency}30</td></tr>
+                <tr className="border-b border-slate-100"><td className="px-3 py-2">8 L/100km</td><td className="px-3 py-2">{currency}1.00/L</td><td className="px-3 py-2">40 L</td><td className="px-3 py-2 font-medium text-slate-800">{currency}40</td></tr>
+                <tr><td className="px-3 py-2">10 L/100km</td><td className="px-3 py-2">{currency}1.00/L</td><td className="px-3 py-2">50 L</td><td className="px-3 py-2 font-medium text-slate-800">{currency}50</td></tr>
               </tbody>
             </table>
           </div>
