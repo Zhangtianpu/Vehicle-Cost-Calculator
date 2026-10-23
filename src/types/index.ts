@@ -1,11 +1,13 @@
 export type VehicleType = "fuel" | "electric";
 export type MileagePeriod = "daily" | "monthly" | "yearly";
+export type UnitSystem = "us" | "metric";
 
 export interface FuelParams {
+  unitSystem: UnitSystem;
   mileage: number;
   mileagePeriod: MileagePeriod;
   fuelPrice: number;
-  consumptionPer100km: number;
+  efficiency: number;
 }
 
 export interface InsuranceParams {

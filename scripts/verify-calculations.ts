@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { calculateLoanCost } from "../src/utils/loanCalc";
+import { calculateFuelCost as calculateOwnershipEnergyCost, convertFuelParamsUnit } from "../src/utils/fuelCalc";
 import { calculateMultiYearCosts, type VehicleCalcParams } from "../src/utils/multiYearCalc";
 import type { ModuleToggle } from "../src/types";
 import {
@@ -39,7 +40,7 @@ assert.equal(interestFree.yearlyCost, 120000);
 assert.equal(interestFree.totalInterest, 0);
 
 const vehicleParams: VehicleCalcParams = {
-  fuelParams: { mileage: 0, mileagePeriod: "yearly", fuelPrice: 0, consumptionPer100km: 0 },
+  fuelParams: { unitSystem: "metric", mileage: 0, mileagePeriod: "yearly", fuelPrice: 0, efficiency: 0 },
   insuranceParams: {
     vehiclePrice: 120000,
     seatCount: 5,
@@ -88,6 +89,32 @@ const multiYear = calculateMultiYearCosts(
 assert.equal(multiYear.fuel[0].loan, 71100);
 assert.equal(multiYear.fuel[1].loan, 63900);
 assert.equal(multiYear.fuel[1].cumulative, 135000);
+
+const usGasOwnership = {
+  unitSystem: "us" as const,
+  mileage: 1000,
+  mileagePeriod: "monthly" as const,
+  fuelPrice: 3.5,
+  efficiency: 25,
+};
+assert.deepEqual(calculateOwnershipEnergyCost(usGasOwnership, "fuel"), { monthlyCost: 140, yearlyCost: 1680 });
+
+const usEvOwnership = {
+  unitSystem: "us" as const,
+  mileage: 1000,
+  mileagePeriod: "monthly" as const,
+  fuelPrice: 0.18,
+  efficiency: 30,
+};
+assert.deepEqual(calculateOwnershipEnergyCost(usEvOwnership, "electric"), { monthlyCost: 54, yearlyCost: 648 });
+
+const metricGasOwnership = convertFuelParamsUnit(usGasOwnership, "fuel", "metric");
+const metricEvOwnership = convertFuelParamsUnit(usEvOwnership, "electric", "metric");
+assert.equal(metricGasOwnership.unitSystem, "metric");
+assert.equal(metricEvOwnership.unitSystem, "metric");
+assert.ok(Math.abs(calculateOwnershipEnergyCost(metricGasOwnership, "fuel").monthlyCost - 140) < 0.1);
+assert.ok(Math.abs(calculateOwnershipEnergyCost(metricEvOwnership, "electric").monthlyCost - 54) < 0.1);
+assert.deepEqual(calculateOwnershipEnergyCost({ ...usGasOwnership, efficiency: 0 }, "fuel"), { monthlyCost: 0, yearlyCost: 0 });
 
 const perKm = calculateCostPerKm({
   annualMileage: 15000,

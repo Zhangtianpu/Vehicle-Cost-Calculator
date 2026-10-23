@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import type {
   VehicleType,
+  UnitSystem,
   FuelParams,
   InsuranceParams,
   LoanParams,
@@ -27,7 +28,7 @@ import {
   EV_ANNUAL_RATE,
   FUEL_ANNUAL_RATE,
 } from "@/utils/constants";
-import { calculateFuelCost } from "@/utils/fuelCalc";
+import { calculateFuelCost, convertFuelParamsUnit } from "@/utils/fuelCalc";
 import { calculateInsuranceCost } from "@/utils/insuranceCalc";
 import { calculateLoanCost } from "@/utils/loanCalc";
 
@@ -45,7 +46,7 @@ function computeSummary(
   parkingParams: ParkingParams,
   moduleToggle: ModuleToggle
 ): { costSummary: CostSummary; loanResult: LoanResult } {
-  const fuel = calculateFuelCost(fuelParams);
+  const fuel = calculateFuelCost(fuelParams, vehicleType);
   const calculatedInsurance = calculateInsuranceCost(insuranceParams, vehicleType);
   const insurance: CalculationResult = moduleToggle.insurance
     ? insuranceParams.customYearlyCost !== null && insuranceParams.customYearlyCost > 0
@@ -92,9 +93,9 @@ function computeSummary(
   };
 }
 
-function createDefaultSnapshot(type: VehicleType): VehicleSnapshot {
+function createDefaultSnapshot(type: VehicleType, unitSystem: UnitSystem): VehicleSnapshot {
   return {
-    fuelParams: { ...DEFAULT_FUEL_PARAMS[type] },
+    fuelParams: { ...DEFAULT_FUEL_PARAMS[unitSystem][type] },
     insuranceParams: { ...DEFAULT_INSURANCE_PARAMS, additionalEV: type === "electric" },
     loanParams: { ...DEFAULT_LOAN_PARAMS, annualRate: type === "electric" ? EV_ANNUAL_RATE : FUEL_ANNUAL_RATE },
     maintenanceParams: { ...DEFAULT_MAINTENANCE_PARAMS[type] },
@@ -103,6 +104,7 @@ function createDefaultSnapshot(type: VehicleType): VehicleSnapshot {
 }
 
 const initialVehicleType: VehicleType = "fuel";
+const initialUnitSystem: UnitSystem = "us";
 const initialModuleToggle: ModuleToggle = {
   insurance: true,
   loan: true,
@@ -112,10 +114,10 @@ const initialModuleToggle: ModuleToggle = {
   violationToll: true,
   parking: true,
 };
-const initialSnapshot = createDefaultSnapshot(initialVehicleType);
+const initialSnapshot = createDefaultSnapshot(initialVehicleType, initialUnitSystem);
 const initialSnapshots: Record<VehicleType, VehicleSnapshot> = {
-  fuel: createDefaultSnapshot("fuel"),
-  electric: createDefaultSnapshot("electric"),
+  fuel: createDefaultSnapshot("fuel", initialUnitSystem),
+  electric: createDefaultSnapshot("electric", initialUnitSystem),
 };
 const initialCarWashParams = { ...DEFAULT_CAR_WASH_PARAMS };
 const initialViolationTollParams = { ...DEFAULT_VIOLATION_TOLL_PARAMS };
@@ -135,6 +137,7 @@ const initialComputed = computeSummary(
 
 interface VehicleState {
   vehicleType: VehicleType;
+  unitSystem: UnitSystem;
   fuelParams: FuelParams;
   insuranceParams: InsuranceParams;
   loanParams: LoanParams;
@@ -149,6 +152,7 @@ interface VehicleState {
   vehicleSnapshots: Record<VehicleType, VehicleSnapshot>;
   ownershipYears: number;
   setVehicleType: (type: VehicleType) => void;
+  setUnitSystem: (unitSystem: UnitSystem) => void;
   setFuelParams: (params: Partial<FuelParams>) => void;
   setInsuranceParams: (params: Partial<InsuranceParams>) => void;
   setLoanParams: (params: Partial<LoanParams>) => void;
@@ -193,6 +197,7 @@ function saveCurrentSnapshot(state: VehicleState): Record<VehicleType, VehicleSn
 
 export const useVehicleStore = create<VehicleState>((set) => ({
   vehicleType: initialVehicleType,
+  unitSystem: initialUnitSystem,
   fuelParams: initialSnapshot.fuelParams,
   insuranceParams: initialSnapshot.insuranceParams,
   loanParams: initialSnapshot.loanParams,
@@ -221,6 +226,30 @@ export const useVehicleStore = create<VehicleState>((set) => ({
         maintenanceParams: targetSnapshot.maintenanceParams,
         depreciationParams: targetSnapshot.depreciationParams,
         vehicleSnapshots: updatedSnapshots,
+      };
+      return { ...newState, ...recompute(newState as VehicleState) };
+    }),
+
+  setUnitSystem: (unitSystem) =>
+    set((state) => {
+      if (state.unitSystem === unitSystem) return state;
+      const savedSnapshots = saveCurrentSnapshot(state);
+      const convertedSnapshots: Record<VehicleType, VehicleSnapshot> = {
+        fuel: {
+          ...savedSnapshots.fuel,
+          fuelParams: convertFuelParamsUnit(savedSnapshots.fuel.fuelParams, "fuel", unitSystem),
+        },
+        electric: {
+          ...savedSnapshots.electric,
+          fuelParams: convertFuelParamsUnit(savedSnapshots.electric.fuelParams, "electric", unitSystem),
+        },
+      };
+      const currentSnapshot = convertedSnapshots[state.vehicleType];
+      const newState = {
+        ...state,
+        unitSystem,
+        fuelParams: currentSnapshot.fuelParams,
+        vehicleSnapshots: convertedSnapshots,
       };
       return { ...newState, ...recompute(newState as VehicleState) };
     }),
@@ -299,8 +328,8 @@ export const useVehicleStore = create<VehicleState>((set) => ({
       const syncedSnapshot: VehicleSnapshot = {
         fuelParams: {
           ...state.fuelParams,
-          fuelPrice: DEFAULT_FUEL_PARAMS[otherType].fuelPrice,
-          consumptionPer100km: DEFAULT_FUEL_PARAMS[otherType].consumptionPer100km,
+          fuelPrice: DEFAULT_FUEL_PARAMS[state.unitSystem][otherType].fuelPrice,
+          efficiency: DEFAULT_FUEL_PARAMS[state.unitSystem][otherType].efficiency,
         },
         insuranceParams: {
           ...state.insuranceParams,

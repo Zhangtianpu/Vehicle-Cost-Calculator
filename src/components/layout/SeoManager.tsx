@@ -8,7 +8,7 @@ type SeoEntry = { title: string; description: string; type?: "article" | "websit
 
 const zhPages: Record<string, SeoEntry> = {
   "/": { title: "用车成本计算器｜油车与电车真实成本对比", description: "免费用车成本计算器，按油费或电费、保险、车贷、保养、停车与折旧，比较油车和电车的年度及多年总成本。" },
-  "/calculator": { title: "用车成本计算器｜计算每月与年度养车费用", description: "输入里程、油价或电价、车价、保险、车贷与停车等参数，快速计算真实用车成本。" },
+  "/calculator": { title: "用车成本计算器｜美制 MPG 与公制单位", description: "支持英里、MPG、每加仑油价与公制单位，结合保险、车贷、保养、停车和折旧计算月度与年度用车成本。" },
   "/compare": { title: "油车与电车成本对比｜1至10年总费用", description: "对比油车和电车的能源、保险、保养、折旧与多年累计成本，辅助购车决策。" },
   "/blog": { title: "用车成本知识｜油车、电车与养车省钱指南", description: "阅读油电成本对比、车险选择、养车隐形支出与实用省钱指南。" },
   "/faq": { title: "常见问题｜用车成本计算方法说明", description: "了解油电成本、保险折扣、车辆折旧、多年预测及计算器使用方法。" },
@@ -29,7 +29,7 @@ const zhPages: Record<string, SeoEntry> = {
 
 const enPages: Record<string, SeoEntry> = {
   "/": { title: "Vehicle Cost Calculator | Fuel Car vs EV Cost", description: "Calculate fuel or charging, insurance, loan, maintenance, parking and depreciation costs, then compare multi-year ownership totals." },
-  "/calculator": { title: "Vehicle Cost Calculator | Monthly & Annual Costs", description: "Estimate real vehicle ownership costs using your mileage, energy price, insurance, financing, parking and maintenance inputs." },
+  "/calculator": { title: "Vehicle Cost Calculator | MPG, EV & Ownership Cost", description: "Use miles, MPG and price per gallon or metric units to estimate fuel or EV energy, insurance, financing, maintenance, parking and depreciation." },
   "/compare": { title: "Fuel Car vs EV Cost Comparison | 1–10 Years", description: "Compare energy, insurance, maintenance, depreciation and total ownership cost for fuel cars and EVs over 1 to 10 years." },
   "/blog": { title: "Vehicle Ownership Cost Guides | Fuel Cars & EVs", description: "Practical guides to fuel and EV costs, insurance choices, hidden ownership expenses and saving strategies." },
   "/faq": { title: "Vehicle Cost Calculator FAQ", description: "Answers about energy cost, insurance, depreciation, multi-year forecasts and how the calculator works." },

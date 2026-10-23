@@ -16,7 +16,7 @@ const template = rawTemplate.replace("  </head>", `${adsenseHead}  </head>`);
 
 const routes = [
   ["/", "Vehicle Cost Calculator | Gas Car vs EV Ownership Cost", "Free vehicle cost calculator for fuel, charging, insurance, loans, maintenance, parking and depreciation. Compare gas cars and EVs over 1–10 years.", "weekly", "1.0"],
-  ["/calculator/", "Vehicle Cost Calculator | Monthly & Annual Ownership Cost", "Estimate your monthly and annual vehicle costs, including energy, insurance, financing, maintenance, parking and depreciation.", "weekly", "0.9"],
+  ["/calculator/", "Vehicle Cost Calculator | MPG, EV and Ownership Cost", "Use miles, MPG and price per gallon or metric units to estimate fuel or EV energy, insurance, financing, maintenance, parking and depreciation.", "weekly", "0.9"],
   ["/compare/", "Gas Car vs EV Cost Comparison | 1–10 Year Total Cost", "Compare gas-car and electric-vehicle energy, insurance, maintenance, depreciation and cumulative ownership costs over 1–10 years.", "weekly", "0.9"],
   ["/blog/", "Vehicle Ownership Cost Guides | Gas Cars and EVs", "Practical guides to vehicle ownership costs, EV savings, insurance, depreciation and ways to spend less on driving.", "weekly", "0.8"],
   ["/blog/1/", "Are EVs Cheaper Than Gas Cars? Build a 5-Year Comparison", "Compare an EV and gas car with the same mileage, local energy prices, insurance quotes, maintenance, financing and resale scenarios.", "monthly", "0.8"],

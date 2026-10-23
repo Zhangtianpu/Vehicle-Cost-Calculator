@@ -134,7 +134,7 @@ function calculateSingleVehicleYearlyCosts(
   let cumulative = 0;
   let remainingValue = params.depreciationParams.vehiclePrice;
 
-  const baseFuelCost = calculateFuelCost(params.fuelParams).yearlyCost;
+  const baseFuelCost = calculateFuelCost(params.fuelParams, vehicleType).yearlyCost;
   const baseMaintenanceCost = params.maintenanceParams.enabled ? params.maintenanceParams.yearlyCost : 0;
   const baseCarWashCost = carWashParams.enabled ? carWashParams.timesPerMonth * carWashParams.costPerTime * 12 : 0;
   const baseViolationTollCost = violationTollParams.enabled ? violationTollParams.monthlyCost * 12 : 0;

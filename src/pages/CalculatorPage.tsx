@@ -22,8 +22,8 @@ export default function CalculatorPage() {
         </h1>
         <p className="mt-2 text-sm text-slate-500 leading-relaxed">
           {locale === "zh"
-            ? "按您的实际里程、能源价格、保险、车贷、保养、停车和折旧参数，估算月度与年度养车成本。"
-            : "Estimate monthly and annual ownership costs using your mileage, energy price, insurance, financing, maintenance, parking and depreciation inputs."}
+            ? "支持美制与公制单位，按您的实际里程、能源价格、保险、车贷、保养、停车和折旧参数估算月度与年度养车成本。"
+            : "Use US miles, MPG and price per gallon—or switch to metric—to estimate monthly and annual ownership costs including insurance, financing, maintenance, parking and depreciation."}
         </p>
         <Link to="/methodology" className="mt-2 inline-flex text-xs font-medium text-emerald-600 hover:text-emerald-700">
           {locale === "zh" ? "查看公式、假设与限制 →" : "Review formulas, assumptions and limitations →"}

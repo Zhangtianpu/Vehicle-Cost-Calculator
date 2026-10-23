@@ -30,9 +30,10 @@ export default function MethodologyPage() {
       <div className="space-y-5 text-sm text-slate-600 leading-relaxed">
         <section className={cardClass}>
           <h2 className={headingClass}>{isZh ? "1. 油费与电费" : "1. Fuel and charging"}</h2>
-          <p>{isZh ? "系统先将日、月或年里程统一换算为月里程，再按百公里能耗计算。" : "Daily, monthly or annual mileage is first normalized to monthly mileage, then multiplied by consumption per 100 km."}</p>
-          <div className={formulaClass}>{isZh ? "月能源费 = 月里程 ÷ 100 × 百公里能耗 × 单价" : "Monthly energy cost = monthly km ÷ 100 × consumption/100 km × unit price"}</div>
-          <p>{isZh ? "年能源费等于月能源费乘以 12。油价、电价和能耗都由用户修改，默认值只用于演示。" : "Annual energy cost is monthly cost × 12. Energy prices and consumption are user-editable; defaults are illustrative."}</p>
+          <p>{isZh ? "系统先将日、月或年里程统一换算为月里程。美制燃油模式使用英里、MPG 与每加仑价格；美制电车模式使用 kWh/100 miles；公制模式使用公里和百公里能耗。" : "Daily, monthly or annual distance is first normalized to a monthly value. US gas mode uses miles, MPG and price per gallon; US EV mode uses kWh/100 miles; metric mode uses kilometers and consumption per 100 km."}</p>
+          <div className={formulaClass}>{isZh ? "美制油费 = 月英里 ÷ MPG × 每加仑价格" : "US gas cost = monthly miles ÷ MPG × price per gallon"}</div>
+          <div className={formulaClass}>{isZh ? "电费/公制油费 = 月里程 ÷ 100 × 百单位能耗 × 单价" : "EV or metric fuel cost = monthly distance ÷ 100 × consumption per 100 × unit price"}</div>
+          <p>{isZh ? "年能源费等于月能源费乘以 12。切换单位制会换算距离、燃油单价和能耗，换算前后成本仅可能因显示精度产生微小差异。所有默认值仅用于演示。" : "Annual energy cost is monthly cost × 12. Changing unit systems converts distance, fuel price and efficiency; only a small display-rounding difference may remain. All defaults are illustrative."}</p>
         </section>
 
         <section className={cardClass}>

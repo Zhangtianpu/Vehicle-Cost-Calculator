@@ -10,31 +10,65 @@ const MILEAGE_PERIODS: { key: MileagePeriod; labelZh: string; labelEn: string }[
 ];
 
 export default function FuelCalculator() {
-  const { vehicleType, fuelParams, setFuelParams, costSummary } = useVehicleStore();
+  const { vehicleType, unitSystem, setUnitSystem, fuelParams, setFuelParams, costSummary } = useVehicleStore();
   const { locale, t } = useLanguageStore();
   const isElectric = vehicleType === "electric";
+  const isUs = unitSystem === "us";
+  const distanceUnit = isUs ? "mi" : "km";
+  const priceUnit = isElectric ? "kWh" : isUs ? "gal" : "L";
+  const efficiencyUnit = isElectric ? `kWh/100${distanceUnit}` : isUs ? "MPG" : "L/100km";
+  const efficiencyLabel = isElectric
+    ? t.fuel.consumptionElectric
+    : isUs
+      ? locale === "zh" ? "燃油经济性" : "Fuel Economy"
+      : t.fuel.consumption;
+  const costPerDistance = fuelParams.efficiency > 0
+    ? isUs && !isElectric
+      ? fuelParams.fuelPrice / fuelParams.efficiency
+      : (fuelParams.efficiency / 100) * fuelParams.fuelPrice
+    : 0;
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 transition-all duration-300">
-      <div className="flex items-center gap-3 mb-5">
-        <div
-          className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-            isElectric ? "bg-emerald-100" : "bg-orange-100"
-          }`}
-        >
-          {isElectric ? (
-            <Zap className="w-5 h-5 text-emerald-600" />
-          ) : (
-            <Fuel className="w-5 h-5 text-orange-600" />
-          )}
+      <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <div
+            className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+              isElectric ? "bg-emerald-100" : "bg-orange-100"
+            }`}
+          >
+            {isElectric ? (
+              <Zap className="w-5 h-5 text-emerald-600" />
+            ) : (
+              <Fuel className="w-5 h-5 text-orange-600" />
+            )}
+          </div>
+          <div>
+            <h2 className="text-base font-semibold text-slate-800">
+              {isElectric ? t.fuel.titleElectric : t.fuel.titleFuel}
+            </h2>
+            <p className="text-xs text-slate-400">
+              {isElectric ? t.fuel.subtitleElectric : t.fuel.subtitleFuel}
+            </p>
+          </div>
         </div>
-        <div>
-          <h2 className="text-base font-semibold text-slate-800">
-            {isElectric ? t.fuel.titleElectric : t.fuel.titleFuel}
-          </h2>
-          <p className="text-xs text-slate-400">
-            {isElectric ? t.fuel.subtitleElectric : t.fuel.subtitleFuel}
-          </p>
+        <div role="group" className="flex rounded-lg bg-slate-100 p-0.5" aria-label={locale === "zh" ? "单位制" : "Unit system"}>
+          <button
+            type="button"
+            onClick={() => setUnitSystem("us")}
+            aria-pressed={isUs}
+            className={`rounded-md px-3 py-1.5 text-xs font-medium transition-all ${isUs ? "bg-white text-slate-800 shadow-sm" : "text-slate-500 hover:text-slate-700"}`}
+          >
+            {locale === "zh" ? "美制" : "US units"}
+          </button>
+          <button
+            type="button"
+            onClick={() => setUnitSystem("metric")}
+            aria-pressed={!isUs}
+            className={`rounded-md px-3 py-1.5 text-xs font-medium transition-all ${!isUs ? "bg-white text-slate-800 shadow-sm" : "text-slate-500 hover:text-slate-700"}`}
+          >
+            {locale === "zh" ? "公制" : "Metric"}
+          </button>
         </div>
       </div>
 
@@ -55,7 +89,7 @@ export default function FuelCalculator() {
                 min={0}
               />
               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400">
-                km
+                {distanceUnit}
               </span>
             </div>
             <div className="flex bg-slate-100 rounded-lg p-0.5 shrink-0">
@@ -92,31 +126,36 @@ export default function FuelCalculator() {
               step={0.1}
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400">
-              {locale === "zh" ? "元" : "$"}/{isElectric ? "kWh" : "L"}
+              {locale === "zh" ? "元" : "$"}/{priceUnit}
             </span>
           </div>
         </div>
 
         <div>
           <label className="block text-sm font-medium text-slate-600 mb-1.5">
-            {isElectric ? t.fuel.consumptionElectric : t.fuel.consumption}
+            {efficiencyLabel}
           </label>
           <div className="relative">
             <input
               type="number"
-              value={fuelParams.consumptionPer100km}
+              value={fuelParams.efficiency}
               onChange={(e) =>
-                setFuelParams({ consumptionPer100km: Number(e.target.value) || 0 })
+                setFuelParams({ efficiency: Number(e.target.value) || 0 })
               }
               className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 outline-none transition-all text-sm"
               min={0}
               step={0.1}
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400">
-              {isElectric ? "kWh" : "L"}/100km
+              {efficiencyUnit}
             </span>
           </div>
         </div>
+        <p className="text-xs leading-relaxed text-slate-400">
+          {locale === "zh"
+            ? "切换单位制时，里程、油价和能耗会自动换算，保持计算成本基本不变。"
+            : "Switching units converts distance, fuel price and efficiency so the underlying cost stays approximately the same."}
+        </p>
       </div>
 
       <div className="mt-5 pt-4 border-t border-slate-100">
@@ -130,6 +169,14 @@ export default function FuelCalculator() {
           <span className="text-sm text-slate-500">{t.fuel.yearlyCost}</span>
           <span className="text-sm font-medium text-slate-600">
             {t.currency}{costSummary.fuel.yearlyCost.toLocaleString()}
+          </span>
+        </div>
+        <div className="flex justify-between items-center mt-1">
+          <span className="text-sm text-slate-500">
+            {locale === "zh" ? `每${distanceUnit}能源成本` : `Energy cost per ${isUs ? "mile" : "km"}`}
+          </span>
+          <span className="text-sm font-medium text-slate-600">
+            {t.currency}{costPerDistance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 })}/{distanceUnit}
           </span>
         </div>
       </div>

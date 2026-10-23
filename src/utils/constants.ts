@@ -1,17 +1,37 @@
-import type { VehicleType, FuelParams, InsuranceParams, LoanParams, MaintenanceParams, CarWashParams, DepreciationParams, ViolationTollParams, ParkingParams } from "@/types";
+import type { VehicleType, UnitSystem, FuelParams, InsuranceParams, LoanParams, MaintenanceParams, CarWashParams, DepreciationParams, ViolationTollParams, ParkingParams } from "@/types";
 
-export const DEFAULT_FUEL_PARAMS: Record<VehicleType, FuelParams> = {
-  fuel: {
-    mileage: 1500,
-    mileagePeriod: "monthly",
-    fuelPrice: 1,
-    consumptionPer100km: 8,
+export const DEFAULT_FUEL_PARAMS: Record<UnitSystem, Record<VehicleType, FuelParams>> = {
+  us: {
+    fuel: {
+      unitSystem: "us",
+      mileage: 1000,
+      mileagePeriod: "monthly",
+      fuelPrice: 3.5,
+      efficiency: 25,
+    },
+    electric: {
+      unitSystem: "us",
+      mileage: 1000,
+      mileagePeriod: "monthly",
+      fuelPrice: 0.18,
+      efficiency: 30,
+    },
   },
-  electric: {
-    mileage: 1500,
-    mileagePeriod: "monthly",
-    fuelPrice: 0.18,
-    consumptionPer100km: 15,
+  metric: {
+    fuel: {
+      unitSystem: "metric",
+      mileage: 1500,
+      mileagePeriod: "monthly",
+      fuelPrice: 1,
+      efficiency: 8,
+    },
+    electric: {
+      unitSystem: "metric",
+      mileage: 1500,
+      mileagePeriod: "monthly",
+      fuelPrice: 0.18,
+      efficiency: 15,
+    },
   },
 };
 
