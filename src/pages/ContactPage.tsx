@@ -34,7 +34,7 @@ export default function ContactPage() {
       </div>
 
       <div className="mt-6 rounded-lg border border-amber-200 bg-amber-50 p-4 text-xs text-amber-900 leading-relaxed">
-        {isZh ? "本站目前没有使用 vehiclecostcalc.com 域名邮箱。任何自称来自该域名的邮件均不代表本站。" : "This site does not currently use email addresses at vehiclecostcalc.com. Messages claiming to represent this site from that domain are not official."}
+        {isZh ? "本站唯一公开网站为 sidehustle.top，目前不提供直接电子邮箱支持。请仅通过上方 GitHub 仓库核实项目公告和提交反馈。" : "The site's only public web address is sidehustle.top, and direct email support is not currently offered. Use the GitHub repository above to verify project notices and submit feedback."}
       </div>
     </div>
   );

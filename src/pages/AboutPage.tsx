@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useLanguageStore } from "@/store/useLanguageStore";
 
 export default function AboutPage() {
@@ -6,11 +7,11 @@ export default function AboutPage() {
   if (locale === "en") {
     return (
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-2xl font-bold text-slate-800 mb-6">About Us</h1>
+        <h1 className="text-2xl font-bold text-slate-800 mb-6">About Vehicle Cost Calculator</h1>
         <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-4">
           <h2 className="text-lg font-semibold text-slate-700">Who Maintains This Site</h2>
           <p>
-            Vehicle Cost Calculator is a free, independently maintained online tool for car buyers and owners. Its source code and change history are public so calculation logic can be inspected and corrected.
+            Vehicle Cost Calculator is a free online tool maintained by independent developer Zhangtianpu for car buyers and owners. Its source code and change history are public so calculation logic can be inspected and corrected.
           </p>
 
           <h2 className="text-lg font-semibold text-slate-700 mt-6">What We Do</h2>
@@ -35,6 +36,9 @@ export default function AboutPage() {
           </p>
           <p>
             Standard arithmetic and loan formulas are documented on the Methodology page. Insurance, energy prices, mileage, maintenance and resale assumptions should be replaced with current local information before making a decision.
+          </p>
+          <p>
+            Our <Link to="/editorial-policy" className="text-emerald-600 underline">Editorial &amp; Content Policy</Link> explains authorship, source selection, AI-assisted work, corrections and commercial independence.
           </p>
 
           <h2 className="text-lg font-semibold text-slate-700 mt-6">Important Disclaimer</h2>
@@ -61,7 +65,7 @@ export default function AboutPage() {
       <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-4">
         <h2 className="text-lg font-semibold text-slate-700">谁在维护本站</h2>
         <p>
-          用车成本计算器是一款由独立开发者维护的免费在线工具，服务于购车者和车主。本站源代码和更新记录公开，方便用户检查计算逻辑、报告错误并参与改进。
+          用车成本计算器是一款由独立开发者 Zhangtianpu 维护的免费在线工具，服务于购车者和车主。本站源代码和更新记录公开，方便用户检查计算逻辑、报告错误并参与改进。
         </p>
 
         <h2 className="text-lg font-semibold text-slate-700 mt-6">我们做什么</h2>
@@ -82,9 +86,12 @@ export default function AboutPage() {
         <p>
           所有计算完全在您的浏览器中执行，不会将任何个人数据发送到我们的服务器。您的输入值方便地存储在浏览器本地，您可以随时清除。
         </p>
-        <p>
-          我们的计算模型基于公开的保险费率结构、标准贷款公式和用户可配置的能源价格，为您提供最贴近实际情况的估算。
-        </p>
+          <p>
+            我们的计算模型基于公开的保险费率结构、标准贷款公式和用户可配置的能源价格，为您提供最贴近实际情况的估算。
+          </p>
+          <p>
+            关于署名、来源选择、AI 辅助、纠错和商业独立性的说明，请参阅<Link to="/editorial-policy" className="text-emerald-600 underline">编辑与内容政策</Link>。
+          </p>
 
         <h2 className="text-lg font-semibold text-slate-700 mt-6">重要声明</h2>
         <p>

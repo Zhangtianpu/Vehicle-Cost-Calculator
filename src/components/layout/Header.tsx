@@ -37,6 +37,7 @@ export default function Header() {
             {isFeatures && (
               <Link
                 to="/calculator"
+                aria-label={t.features.startCalc}
                 className="flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-full text-sm font-medium bg-emerald-500 hover:bg-emerald-600 transition-colors duration-200"
               >
                 <Calculator className="w-4 h-4" />
@@ -47,6 +48,7 @@ export default function Header() {
             {!isFeatures && (
               <Link
                 to="/"
+                aria-label={t.footer.features}
                 className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full text-sm font-medium bg-slate-700 hover:bg-slate-600 transition-colors duration-200"
               >
                 <House className="w-4 h-4" />
@@ -56,6 +58,7 @@ export default function Header() {
 
             <Link
               to="/blog"
+              aria-label={t.nav.blog}
               className={`${isCostWorkspace ? "hidden lg:flex" : "flex"} items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full text-sm font-medium bg-slate-700 hover:bg-slate-600 transition-colors duration-200`}
             >
               <BookOpen className="w-4 h-4" />
@@ -64,6 +67,7 @@ export default function Header() {
 
             <Link
               to="/tools"
+              aria-label={t.nav.tools}
               className={`${isCostWorkspace ? "hidden lg:flex" : "flex"} items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full text-sm font-medium bg-slate-700 hover:bg-slate-600 transition-colors duration-200`}
             >
               <Wrench className="w-4 h-4" />
@@ -72,6 +76,7 @@ export default function Header() {
 
             <Link
               to="/faq"
+              aria-label={t.nav.faq}
               className={`${isCostWorkspace ? "hidden lg:flex" : "flex"} items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full text-sm font-medium bg-slate-700 hover:bg-slate-600 transition-colors duration-200`}
             >
               <HelpCircle className="w-4 h-4" />
@@ -83,6 +88,7 @@ export default function Header() {
                 <div className="flex items-center bg-slate-700 rounded-full p-1">
                   <button
                     onClick={() => setVehicleType("fuel")}
+                    aria-label={t.nav.fuel}
                     className={`flex items-center gap-1.5 px-2.5 sm:px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-300 ${
                       vehicleType === "fuel"
                         ? "bg-orange-500 text-white shadow-md"
@@ -94,6 +100,7 @@ export default function Header() {
                   </button>
                   <button
                     onClick={() => setVehicleType("electric")}
+                    aria-label={t.nav.electric}
                     className={`flex items-center gap-1.5 px-2.5 sm:px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-300 ${
                       vehicleType === "electric"
                         ? "bg-emerald-500 text-white shadow-md"
@@ -106,6 +113,7 @@ export default function Header() {
                 </div>
                 <button
                   onClick={handleSync}
+                  aria-label={vehicleType === "fuel" ? t.nav.syncToEV : t.nav.syncToFuel}
                   className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-300 ${
                     synced
                       ? "bg-emerald-500 text-white shadow-md"
@@ -121,6 +129,7 @@ export default function Header() {
 
             <Link
               to={isCompare ? "/calculator" : "/compare"}
+              aria-label={isCompare ? t.nav.calculator : t.nav.compare}
               className="flex items-center gap-1.5 px-2.5 sm:px-4 py-1.5 rounded-full text-sm font-medium bg-slate-700 hover:bg-slate-600 transition-colors duration-200"
             >
               <BarChart3 className="w-4 h-4" />
@@ -131,6 +140,7 @@ export default function Header() {
 
             <button
               onClick={() => setLocale(locale === "zh" ? "en" : "zh")}
+              aria-label={locale === "zh" ? "Switch to English" : "切换到中文"}
               className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full text-sm font-medium bg-slate-700 hover:bg-slate-600 transition-colors duration-200"
             >
               <Languages className="w-4 h-4" />

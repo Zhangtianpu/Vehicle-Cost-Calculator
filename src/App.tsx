@@ -14,6 +14,7 @@ import AboutPage from "@/pages/AboutPage";
 import DisclaimerPage from "@/pages/DisclaimerPage";
 import ContactPage from "@/pages/ContactPage";
 import MethodologyPage from "@/pages/MethodologyPage";
+import EditorialPolicyPage from "@/pages/EditorialPolicyPage";
 import ToolsHubPage from "@/pages/ToolsHubPage";
 import CostPerKmPage from "@/pages/CostPerKmPage";
 import EvBreakEvenPage from "@/pages/EvBreakEvenPage";
@@ -38,6 +39,7 @@ export default function App() {
             <Route path="/blog/:id" element={<BlogArticlePage />} />
             <Route path="/faq" element={<FAQPage />} />
             <Route path="/methodology" element={<MethodologyPage />} />
+            <Route path="/editorial-policy" element={<EditorialPolicyPage />} />
             <Route path="/tools" element={<ToolsHubPage />} />
             <Route path="/tools/cost-per-km" element={<CostPerKmPage />} />
             <Route path="/tools/ev-break-even" element={<EvBreakEvenPage />} />

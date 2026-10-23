@@ -25,6 +25,7 @@ const routes = [
   ["/blog/4/", "How to Choose Car Insurance Coverage Without Guessing", "Compare liability, collision, comprehensive, deductibles and optional protection using consistent local quotes and a practical checklist.", "monthly", "0.8"],
   ["/faq/", "Vehicle Cost Calculator FAQ | Methods and Assumptions", "Answers about fuel and charging costs, insurance, depreciation, multi-year forecasts and calculator use.", "monthly", "0.7"],
   ["/methodology/", "Vehicle Cost Methodology | Formulas, Assumptions and Limits", "Review the formulas, default assumptions and limitations behind our energy, insurance, loan, depreciation and total-cost estimates.", "monthly", "0.8"],
+  ["/editorial-policy/", "Editorial & Content Policy | Vehicle Cost Calculator", "Learn who maintains this site and how its calculators, articles, sources, corrections, AI assistance and commercial independence are handled.", "yearly", "0.6"],
   ["/tools/", "Free Car Cost Calculators | US and Metric Units", "Calculate gas, EV charging, loans, depreciation, cost per mile or kilometer and EV break-even. Free, private and no sign-up required.", "weekly", "0.9"],
   ["/tools/cost-per-km/", "Vehicle Cost per Mile Calculator | Full Ownership Cost", "Enter annual energy, insurance, maintenance, parking and depreciation to calculate cash and full ownership cost per mile or kilometer.", "monthly", "0.9"],
   ["/tools/ev-break-even/", "EV Break-Even Calculator | Miles, MPG and Payback", "Use miles, MPG, charging consumption, local prices and purchase premium to estimate EV break-even distance and years; metric mode included.", "monthly", "0.9"],
@@ -56,6 +57,7 @@ function renderPage(path, title, description) {
     headline: schemaType === "Article" ? title : undefined,
     url: canonical,
     isAccessibleForFree: true,
+    ...(schemaType === "Article" ? { datePublished: "2024-01-15", dateModified: "2026-10-23", author: { "@type": "Person", name: "Zhangtianpu", url: "https://github.com/Zhangtianpu" }, publisher: { "@type": "Organization", name: "Vehicle Cost Calculator", url: `${siteUrl}/` }, mainEntityOfPage: canonical } : {}),
     ...(schemaType === "WebApplication" ? { applicationCategory: "FinanceApplication", operatingSystem: "Any", offers: { "@type": "Offer", price: "0", priceCurrency: "USD" } } : {}),
   };
   const schemaScript = `<script id="route-schema" type="application/ld+json">${JSON.stringify(schema)}</script>`;

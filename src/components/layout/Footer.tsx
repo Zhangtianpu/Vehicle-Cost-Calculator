@@ -3,7 +3,7 @@ import { Car } from "lucide-react";
 import { useLanguageStore } from "@/store/useLanguageStore";
 
 export default function Footer() {
-  const { t } = useLanguageStore();
+  const { t, locale } = useLanguageStore();
 
   return (
     <footer className="bg-slate-800 text-slate-400 py-8 mt-auto">
@@ -25,6 +25,10 @@ export default function Footer() {
             <span className="text-slate-600">|</span>
             <Link to="/methodology" className="hover:text-slate-200 transition-colors">
               {t.footer.methodology}
+            </Link>
+            <span className="text-slate-600">|</span>
+            <Link to="/editorial-policy" className="hover:text-slate-200 transition-colors">
+              {locale === "zh" ? "编辑政策" : "Editorial Policy"}
             </Link>
             <span className="text-slate-600">|</span>
             <Link to="/tools" className="hover:text-slate-200 transition-colors">
