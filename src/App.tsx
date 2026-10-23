@@ -16,6 +16,9 @@ const AboutPage = lazy(() => import("@/pages/AboutPage"));
 const DisclaimerPage = lazy(() => import("@/pages/DisclaimerPage"));
 const ContactPage = lazy(() => import("@/pages/ContactPage"));
 const MethodologyPage = lazy(() => import("@/pages/MethodologyPage"));
+const ToolsHubPage = lazy(() => import("@/pages/ToolsHubPage"));
+const CostPerKmPage = lazy(() => import("@/pages/CostPerKmPage"));
+const EvBreakEvenPage = lazy(() => import("@/pages/EvBreakEvenPage"));
 
 function PageLoader() {
   return (
@@ -41,6 +44,9 @@ export default function App() {
               <Route path="/blog/:id" element={<BlogArticlePage />} />
               <Route path="/faq" element={<FAQPage />} />
               <Route path="/methodology" element={<MethodologyPage />} />
+              <Route path="/tools" element={<ToolsHubPage />} />
+              <Route path="/tools/cost-per-km" element={<CostPerKmPage />} />
+              <Route path="/tools/ev-break-even" element={<EvBreakEvenPage />} />
               <Route path="/privacy" element={<PrivacyPolicyPage />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/disclaimer" element={<DisclaimerPage />} />

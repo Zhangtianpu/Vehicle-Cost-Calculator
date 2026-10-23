@@ -66,8 +66,8 @@ export default function CookieConsent() {
             </h3>
             <p className="text-xs text-slate-500 leading-relaxed">
               {isZh
-                ? "我们使用 Cookie 来提升您的浏览体验并展示个性化广告。您可以选择接受或拒绝非必要 Cookie。有关详细信息，请参阅我们的"
-                : "We use cookies to enhance your browsing experience and serve personalized ads. You can choose to accept or reject non-essential cookies. For details, see our"}{" "}
+                ? "必要存储用于保存计算器设置；在您同意后，Google Analytics 可使用非必要存储进行访问统计。未来启用广告时，广告存储同样受您的选择控制。详情请参阅"
+                : "Essential storage saves calculator settings. With consent, Google Analytics may use non-essential storage for usage measurement; future advertising storage will follow the same choice. See our"}{" "}
               <Link
                 to="/privacy"
                 className="text-emerald-600 underline hover:text-emerald-700"

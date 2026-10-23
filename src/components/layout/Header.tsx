@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Car, BarChart3, Fuel, Zap, Languages, ArrowLeftRight, Check, Calculator, BookOpen, HelpCircle } from "lucide-react";
+import { Car, BarChart3, Fuel, Zap, Languages, ArrowLeftRight, Check, Calculator, BookOpen, HelpCircle, Wrench, House } from "lucide-react";
 import { useVehicleStore } from "@/store/useVehicleStore";
 import { useLanguageStore } from "@/store/useLanguageStore";
 
@@ -11,6 +11,7 @@ export default function Header() {
   const isCompare = location.pathname === "/compare";
   const isCalculator = location.pathname === "/calculator";
   const isFeatures = location.pathname === "/";
+  const isCostWorkspace = isCalculator || isCompare;
   const [synced, setSynced] = useState(false);
 
   const handleSync = () => {
@@ -28,19 +29,17 @@ export default function Header() {
             <span className="text-lg font-bold tracking-tight hidden sm:inline">
               {t.app.title}
             </span>
-            <span className="text-lg font-bold tracking-tight sm:hidden">
-              {t.app.titleShort}
-            </span>
+            <span className="sr-only sm:hidden">{t.app.titleShort}</span>
           </Link>
 
-          <div className="flex items-center gap-2 sm:gap-4">
+          <div className="flex items-center gap-1 sm:gap-3 lg:gap-4">
             {isFeatures && (
               <Link
                 to="/calculator"
                 className="flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-full text-sm font-medium bg-emerald-500 hover:bg-emerald-600 transition-colors duration-200"
               >
                 <Calculator className="w-4 h-4" />
-                <span>{t.features.startCalc}</span>
+                <span className="hidden sm:inline">{t.features.startCalc}</span>
               </Link>
             )}
 
@@ -49,21 +48,30 @@ export default function Header() {
                 to="/"
                 className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full text-sm font-medium bg-slate-700 hover:bg-slate-600 transition-colors duration-200"
               >
-                {t.footer.features}
+                <House className="w-4 h-4" />
+                <span className="hidden sm:inline">{t.footer.features}</span>
               </Link>
             )}
 
             <Link
               to="/blog"
-              className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full text-sm font-medium bg-slate-700 hover:bg-slate-600 transition-colors duration-200"
+              className={`${isCostWorkspace ? "hidden lg:flex" : "flex"} items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full text-sm font-medium bg-slate-700 hover:bg-slate-600 transition-colors duration-200`}
             >
               <BookOpen className="w-4 h-4" />
               <span className="hidden sm:inline">{t.nav.blog}</span>
             </Link>
 
             <Link
+              to="/tools"
+              className={`${isCostWorkspace ? "hidden lg:flex" : "flex"} items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full text-sm font-medium bg-slate-700 hover:bg-slate-600 transition-colors duration-200`}
+            >
+              <Wrench className="w-4 h-4" />
+              <span className="hidden lg:inline">{t.nav.tools}</span>
+            </Link>
+
+            <Link
               to="/faq"
-              className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full text-sm font-medium bg-slate-700 hover:bg-slate-600 transition-colors duration-200"
+              className={`${isCostWorkspace ? "hidden lg:flex" : "flex"} items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full text-sm font-medium bg-slate-700 hover:bg-slate-600 transition-colors duration-200`}
             >
               <HelpCircle className="w-4 h-4" />
               <span className="hidden sm:inline">{t.nav.faq}</span>

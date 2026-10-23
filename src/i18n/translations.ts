@@ -18,6 +18,7 @@ export const translations = {
       syncToEV: "同步数据到电车",
       syncToFuel: "同步数据到油车",
       blog: "知识",
+      tools: "工具",
       faq: "FAQ",
     },
     fuel: {
@@ -178,6 +179,7 @@ export const translations = {
     footer: {
       features: "功能介绍",
       methodology: "计算方法",
+      tools: "免费工具",
       about: "关于我们",
       privacy: "隐私政策",
       disclaimer: "免责声明",
@@ -291,6 +293,7 @@ export const translations = {
       syncToEV: "Sync data to EV",
       syncToFuel: "Sync data to Fuel",
       blog: "Blog",
+      tools: "Tools",
       faq: "FAQ",
     },
     fuel: {
@@ -451,6 +454,7 @@ export const translations = {
     footer: {
       features: "Features",
       methodology: "Methodology",
+      tools: "Free Tools",
       about: "About Us",
       privacy: "Privacy Policy",
       disclaimer: "Disclaimer",

@@ -13,6 +13,9 @@ const zhPages: Record<string, SeoEntry> = {
   "/blog": { title: "用车成本知识｜油车、电车与养车省钱指南", description: "阅读油电成本对比、车险选择、养车隐形支出与实用省钱指南。" },
   "/faq": { title: "常见问题｜用车成本计算方法说明", description: "了解油电成本、保险折扣、车辆折旧、多年预测及计算器使用方法。" },
   "/methodology": { title: "用车成本怎么算｜公式、假设与数据说明", description: "公开用车成本计算器的能耗、保险、贷款、折旧和多年成本公式、默认假设及适用限制。" },
+  "/tools": { title: "免费用车计算工具｜每公里成本与油电回本", description: "免费使用每公里用车成本和油车电车回本里程计算器；无需注册，数据仅在浏览器本地处理。" },
+  "/tools/cost-per-km": { title: "每公里用车成本计算器｜含折旧真实成本", description: "输入年度油费或电费、保险、保养、停车和折旧，计算每公里现金成本与完整用车成本。" },
+  "/tools/ev-break-even": { title: "油车电车回本里程计算器｜购车差价多久省回来", description: "根据油价、电价、能耗、年里程和购车差价，计算电车能源节省的预计回本年数与里程。" },
   "/about": { title: "关于本站｜用车成本计算器", description: "了解用车成本计算器的目标、计算范围、数据处理方式和内容原则。" },
   "/privacy": { title: "隐私政策｜用车成本计算器", description: "了解本站如何处理本地计算数据、Cookie、Google Analytics 与广告相关信息。" },
   "/disclaimer": { title: "免责声明｜用车成本计算器", description: "用车成本估算的适用范围、限制条件与用户决策责任说明。" },
@@ -26,6 +29,9 @@ const enPages: Record<string, SeoEntry> = {
   "/blog": { title: "Vehicle Ownership Cost Guides | Fuel Cars & EVs", description: "Practical guides to fuel and EV costs, insurance choices, hidden ownership expenses and saving strategies." },
   "/faq": { title: "Vehicle Cost Calculator FAQ", description: "Answers about energy cost, insurance, depreciation, multi-year forecasts and how the calculator works." },
   "/methodology": { title: "Vehicle Cost Methodology | Formulas & Assumptions", description: "Review the formulas, default assumptions and limitations used for energy, insurance, loans, depreciation and multi-year ownership costs." },
+  "/tools": { title: "Free Vehicle Cost Tools | Cost per Km & EV Break-even", description: "Use free cost-per-kilometer and fuel-vs-EV break-even calculators. No registration; inputs stay in your browser." },
+  "/tools/cost-per-km": { title: "Vehicle Cost per Kilometer Calculator | Include Depreciation", description: "Enter annual energy, insurance, maintenance, parking and depreciation to calculate cash and full ownership cost per kilometer." },
+  "/tools/ev-break-even": { title: "Fuel vs EV Break-even Calculator | Distance & Years", description: "Use prices, consumption, annual mileage and purchase premium to estimate when EV energy savings break even." },
   "/about": { title: "About | Vehicle Cost Calculator", description: "Learn about our calculator, methodology, data handling and editorial purpose." },
   "/privacy": { title: "Privacy Policy | Vehicle Cost Calculator", description: "How this site handles local calculator data, cookies, analytics and advertising information." },
   "/disclaimer": { title: "Disclaimer | Vehicle Cost Calculator", description: "Scope and limitations of vehicle cost estimates and user decision responsibilities." },
@@ -85,8 +91,8 @@ export default function SeoManager() {
 
     const schema = article
       ? { "@context": "https://schema.org", "@type": "Article", headline: locale === "zh" ? article.zh : article.en, dateModified: "2026-10-23", author: { "@type": "Organization", name: locale === "zh" ? "用车成本计算器编辑团队" : "Vehicle Cost Calculator Editorial Team" }, publisher: { "@type": "Organization", name: "Vehicle Cost Calculator" }, mainEntityOfPage: canonical }
-      : normalizedPath === "/"
-        ? { "@context": "https://schema.org", "@type": "WebApplication", name: locale === "zh" ? "用车成本计算器" : "Vehicle Cost Calculator", url: canonical, applicationCategory: "FinanceApplication", operatingSystem: "Any", offers: { "@type": "Offer", price: "0", priceCurrency: "CNY" } }
+      : normalizedPath === "/" || normalizedPath.startsWith("/tools/")
+        ? { "@context": "https://schema.org", "@type": "WebApplication", name: seo.title.split("｜")[0].split("|")[0].trim(), url: canonical, applicationCategory: "FinanceApplication", operatingSystem: "Any", offers: { "@type": "Offer", price: "0", priceCurrency: "CNY" } }
         : null;
     document.getElementById("route-schema")?.remove();
     if (schema) {

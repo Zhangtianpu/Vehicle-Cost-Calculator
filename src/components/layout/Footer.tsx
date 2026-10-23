@@ -27,6 +27,10 @@ export default function Footer() {
               {t.footer.methodology}
             </Link>
             <span className="text-slate-600">|</span>
+            <Link to="/tools" className="hover:text-slate-200 transition-colors">
+              {t.footer.tools}
+            </Link>
+            <span className="text-slate-600">|</span>
             <Link to="/about" className="hover:text-slate-200 transition-colors">
               {t.footer.about}
             </Link>
