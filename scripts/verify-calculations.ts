@@ -8,8 +8,10 @@ import {
   calculateChargingCost,
   calculateDepreciation,
   calculateEvBreakEven,
+  calculateUsEvBreakEven,
   calculateFuelCost,
   calculateUsFuelCost,
+  calculateUsChargingCost,
 } from "../src/utils/quickTools";
 
 const equalPrincipal = calculateLoanCost({
@@ -129,6 +131,20 @@ const noBreakEven = calculateEvBreakEven({
 assert.equal(noBreakEven.canBreakEven, false);
 assert.equal(noBreakEven.years, null);
 
+const usBreakEven = calculateUsEvBreakEven({
+  annualMiles: 12000,
+  mpg: 25,
+  fuelPricePerGallon: 3.5,
+  evKwhPer100Miles: 30,
+  electricityPrice: 0.18,
+  pricePremium: 5000,
+  annualFixedDifference: 250,
+});
+assert.equal(usBreakEven.fuelPer100, 14);
+assert.ok(Math.abs(usBreakEven.evPer100 - 5.4) < 0.000001);
+assert.ok(Math.abs(usBreakEven.netAnnualSaving - 782) < 0.000001);
+assert.ok(Math.abs(usBreakEven.years! - 5000 / 782) < 0.000001);
+
 const fuelCost = calculateFuelCost({
   distance: 500,
   consumptionPer100Km: 8,
@@ -176,6 +192,18 @@ assert.ok(Math.abs(chargingCost.gridEnergy - 83.3333333333) < 0.000001);
 assert.ok(Math.abs(chargingCost.totalCost - 66.6666666667) < 0.000001);
 assert.ok(Math.abs(chargingCost.costPerKm! - 0.1333333333) < 0.000001);
 assert.equal(calculateChargingCost({ distance: 0, consumptionPer100Km: 15, electricityPrice: 0.8, chargingLossPercent: 10 }).costPerKm, null);
+
+const usChargingCost = calculateUsChargingCost({
+  distanceMiles: 300,
+  consumptionPer100Miles: 30,
+  electricityPrice: 0.18,
+  chargingLossPercent: 10,
+});
+assert.equal(usChargingCost.vehicleEnergy, 90);
+assert.equal(usChargingCost.gridEnergy, 100);
+assert.equal(usChargingCost.totalCost, 18);
+assert.equal(usChargingCost.costPerMile, 0.06);
+assert.equal(usChargingCost.costPer100Miles, 6);
 
 const carLoan = calculateCarLoan({
   vehiclePrice: 150000,

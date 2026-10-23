@@ -78,6 +78,41 @@ export function calculateEvBreakEven(input: EvBreakEvenInput): EvBreakEvenResult
   };
 }
 
+export interface UsEvBreakEvenInput {
+  annualMiles: number;
+  mpg: number;
+  fuelPricePerGallon: number;
+  evKwhPer100Miles: number;
+  electricityPrice: number;
+  pricePremium: number;
+  annualFixedDifference: number;
+}
+
+export function calculateUsEvBreakEven(input: UsEvBreakEvenInput): EvBreakEvenResult {
+  const annualMiles = Math.max(0, input.annualMiles);
+  const mpg = Math.max(0, input.mpg);
+  const fuelPer100 = mpg > 0 ? 100 / mpg * Math.max(0, input.fuelPricePerGallon) : 0;
+  const evPer100 = Math.max(0, input.evKwhPer100Miles) * Math.max(0, input.electricityPrice);
+  const savingPerMile = (fuelPer100 - evPer100) / 100;
+  const annualEnergySaving = savingPerMile * annualMiles;
+  const netAnnualSaving = annualEnergySaving - Math.max(0, input.annualFixedDifference);
+  const immediate = input.pricePremium <= 0;
+  const canBreakEven = immediate || (mpg > 0 && savingPerMile > 0 && netAnnualSaving > 0 && annualMiles > 0);
+  const years = immediate ? 0 : canBreakEven ? input.pricePremium / netAnnualSaving : null;
+
+  return {
+    fuelPer100,
+    evPer100,
+    savingPerKm: savingPerMile,
+    annualEnergySaving,
+    netAnnualSaving,
+    canBreakEven,
+    immediate,
+    years,
+    distance: years === null ? null : years * annualMiles,
+  };
+}
+
 export interface FuelCostInput {
   distance: number;
   consumptionPer100Km: number;
@@ -196,6 +231,39 @@ export function calculateChargingCost(input: ChargingCostInput): ChargingCostRes
     totalCost,
     costPerKm: distance > 0 ? totalCost / distance : null,
     costPer100Km: distance > 0 ? totalCost / distance * 100 : 0,
+  };
+}
+
+export interface UsChargingCostInput {
+  distanceMiles: number;
+  consumptionPer100Miles: number;
+  electricityPrice: number;
+  chargingLossPercent: number;
+}
+
+export interface UsChargingCostResult {
+  vehicleEnergy: number;
+  gridEnergy: number;
+  totalCost: number;
+  costPerMile: number | null;
+  costPer100Miles: number;
+}
+
+export function calculateUsChargingCost(input: UsChargingCostInput): UsChargingCostResult {
+  const distanceMiles = Math.max(0, input.distanceMiles);
+  const consumptionPer100Miles = Math.max(0, input.consumptionPer100Miles);
+  const electricityPrice = Math.max(0, input.electricityPrice);
+  const chargingLossPercent = Math.min(99, Math.max(0, input.chargingLossPercent));
+  const vehicleEnergy = distanceMiles * consumptionPer100Miles / 100;
+  const gridEnergy = vehicleEnergy / (1 - chargingLossPercent / 100);
+  const totalCost = gridEnergy * electricityPrice;
+
+  return {
+    vehicleEnergy,
+    gridEnergy,
+    totalCost,
+    costPerMile: distanceMiles > 0 ? totalCost / distanceMiles : null,
+    costPer100Miles: distanceMiles > 0 ? totalCost / distanceMiles * 100 : 0,
   };
 }
 

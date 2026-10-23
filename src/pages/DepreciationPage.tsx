@@ -5,17 +5,23 @@ import NumberField from "@/components/tools/NumberField";
 import { useLanguageStore } from "@/store/useLanguageStore";
 import { calculateDepreciation } from "@/utils/quickTools";
 
+type UnitSystem = "us" | "metric";
+
 export default function DepreciationPage() {
   const { locale } = useLanguageStore();
   const isZh = locale === "zh";
   const currency = isZh ? "¥" : "$";
+  const [unitSystem, setUnitSystem] = useState<UnitSystem>(isZh ? "metric" : "us");
   const [purchasePrice, setPurchasePrice] = useState(30000);
   const [currentValue, setCurrentValue] = useState(21000);
   const [yearsOwned, setYearsOwned] = useState(3);
   const [totalMileage, setTotalMileage] = useState(45000);
+  const [totalMiles, setTotalMiles] = useState(30000);
+  const useUsUnits = !isZh && unitSystem === "us";
+  const distance = useUsUnits ? totalMiles : totalMileage;
   const result = useMemo(
-    () => calculateDepreciation({ purchasePrice, currentValue, yearsOwned, totalMileage }),
-    [purchasePrice, currentValue, yearsOwned, totalMileage],
+    () => calculateDepreciation({ purchasePrice, currentValue, yearsOwned, totalMileage: distance }),
+    [purchasePrice, currentValue, yearsOwned, distance],
   );
   const number = (value: number, digits = 0) => new Intl.NumberFormat(isZh ? "zh-CN" : "en-US", {
     maximumFractionDigits: digits,
@@ -32,8 +38,14 @@ export default function DepreciationPage() {
         <p className="max-w-3xl text-sm leading-relaxed text-slate-600">
           {isZh
             ? "用购车价和当前可成交估值计算车辆累计折旧、平均每年折旧、保值率与每公里折旧。结果基于真实估值差额，不套用固定折旧率。"
-            : "Use purchase price and current market value to calculate total depreciation, average annual depreciation, retained value and depreciation per kilometer."}
+            : `Use purchase price and current market value to calculate total depreciation, average annual depreciation, retained value and depreciation per ${useUsUnits ? "mile" : "kilometer"}.`}
         </p>
+        {!isZh && (
+          <div className="mt-4 inline-flex rounded-lg bg-slate-100 p-1" aria-label="Unit system">
+            <button type="button" aria-pressed={unitSystem === "us"} onClick={() => setUnitSystem("us")} className={`rounded-md px-4 py-2 text-sm font-medium transition ${unitSystem === "us" ? "bg-white text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-700"}`}>US: miles</button>
+            <button type="button" aria-pressed={unitSystem === "metric"} onClick={() => setUnitSystem("metric")} className={`rounded-md px-4 py-2 text-sm font-medium transition ${unitSystem === "metric" ? "bg-white text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-700"}`}>Metric</button>
+          </div>
+        )}
       </header>
 
       <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
@@ -43,7 +55,11 @@ export default function DepreciationPage() {
             <NumberField id="depreciation-purchase-price" label={isZh ? "实际购车价" : "Purchase price"} value={purchasePrice} onChange={setPurchasePrice} suffix={isZh ? "元" : "USD"} step={1000} hint={isZh ? "建议使用车辆落地价，不含贷款利息。" : "Use the vehicle drive-away price, excluding financing interest."} />
             <NumberField id="depreciation-current-value" label={isZh ? "当前可成交估值" : "Current market value"} value={currentValue} onChange={setCurrentValue} suffix={isZh ? "元" : "USD"} step={1000} hint={isZh ? "优先使用近期同款、同配置、相近里程的实际报价。" : "Prefer recent quotes for the same model, trim and similar mileage."} />
             <NumberField id="depreciation-years" label={isZh ? "已持有年数" : "Years owned"} value={yearsOwned} onChange={setYearsOwned} suffix={isZh ? "年" : "years"} step={0.5} />
-            <NumberField id="depreciation-mileage" label={isZh ? "累计行驶里程" : "Total mileage"} value={totalMileage} onChange={setTotalMileage} suffix={isZh ? "公里" : "km"} step={1000} />
+            {useUsUnits ? (
+              <NumberField id="depreciation-miles" label="Total mileage" value={totalMiles} onChange={setTotalMiles} suffix="miles" step={1000} />
+            ) : (
+              <NumberField id="depreciation-mileage" label={isZh ? "累计行驶里程" : "Total mileage"} value={totalMileage} onChange={setTotalMileage} suffix={isZh ? "公里" : "km"} step={1000} />
+            )}
           </div>
         </section>
 
@@ -68,7 +84,7 @@ export default function DepreciationPage() {
               <p className="mt-1 text-lg font-semibold text-slate-800">{result.annualDepreciation === null ? "—" : `${currency}${number(result.annualDepreciation)}`}</p>
             </div>
             <div className="rounded-xl border border-slate-200 bg-white p-4">
-              <p className="text-xs text-slate-500">{isZh ? "每公里折旧" : "Depreciation/km"}</p>
+              <p className="text-xs text-slate-500">{isZh ? "每公里折旧" : `Depreciation/${useUsUnits ? "mile" : "km"}`}</p>
               <p className="mt-1 text-lg font-semibold text-slate-800">{result.depreciationPerKm === null ? "—" : `${currency}${number(result.depreciationPerKm, 2)}`}</p>
             </div>
           </div>
@@ -86,7 +102,7 @@ export default function DepreciationPage() {
           <div className="mt-3 space-y-1 overflow-x-auto rounded-lg bg-slate-100 px-4 py-3 font-mono text-xs text-slate-700">
             <p>{isZh ? "累计折旧 = 实际购车价 − 当前可成交估值" : "Total depreciation = purchase price − current market value"}</p>
             <p>{isZh ? "保值率 = 当前估值 ÷ 实际购车价 × 100%" : "Retained value = current value ÷ purchase price × 100%"}</p>
-            <p>{isZh ? "每公里折旧 = 累计折旧 ÷ 累计行驶里程" : "Depreciation/km = total depreciation ÷ total mileage"}</p>
+            <p>{isZh ? "每公里折旧 = 累计折旧 ÷ 累计行驶里程" : `Depreciation/${useUsUnits ? "mile" : "km"} = total depreciation ÷ total mileage`}</p>
           </div>
         </section>
 
@@ -122,7 +138,7 @@ export default function DepreciationPage() {
         </section>
 
         <div className="flex flex-wrap gap-3 border-t border-slate-100 pt-5">
-          <Link to="/tools/cost-per-km" className="rounded-lg bg-emerald-500 px-4 py-2 font-medium text-white hover:bg-emerald-600">{isZh ? "把折旧加入每公里成本" : "Add depreciation to cost per kilometer"}</Link>
+          <Link to="/tools/cost-per-km" className="rounded-lg bg-emerald-500 px-4 py-2 font-medium text-white hover:bg-emerald-600">{isZh ? "把折旧加入每公里成本" : "Add depreciation to full ownership cost"}</Link>
           <Link to="/compare" className="rounded-lg border border-slate-300 px-4 py-2 font-medium text-slate-700 hover:bg-slate-50">{isZh ? "比较油车与电车多年总成本" : "Compare multi-year fuel and EV costs"}</Link>
         </div>
       </article>

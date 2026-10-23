@@ -3,20 +3,30 @@ import { Link } from "react-router-dom";
 import { BatteryCharging, Info } from "lucide-react";
 import NumberField from "@/components/tools/NumberField";
 import { useLanguageStore } from "@/store/useLanguageStore";
-import { calculateChargingCost } from "@/utils/quickTools";
+import { calculateChargingCost, calculateUsChargingCost } from "@/utils/quickTools";
+
+type UnitSystem = "us" | "metric";
 
 export default function ChargingCostPage() {
   const { locale } = useLanguageStore();
   const isZh = locale === "zh";
   const currency = isZh ? "¥" : "$";
+  const [unitSystem, setUnitSystem] = useState<UnitSystem>(isZh ? "metric" : "us");
   const [distance, setDistance] = useState(500);
   const [consumptionPer100Km, setConsumptionPer100Km] = useState(15);
+  const [distanceMiles, setDistanceMiles] = useState(300);
+  const [consumptionPer100Miles, setConsumptionPer100Miles] = useState(30);
   const [electricityPrice, setElectricityPrice] = useState(0.18);
   const [chargingLossPercent, setChargingLossPercent] = useState(10);
-  const result = useMemo(
+  const metricResult = useMemo(
     () => calculateChargingCost({ distance, consumptionPer100Km, electricityPrice, chargingLossPercent }),
     [distance, consumptionPer100Km, electricityPrice, chargingLossPercent],
   );
+  const usResult = useMemo(
+    () => calculateUsChargingCost({ distanceMiles, consumptionPer100Miles, electricityPrice, chargingLossPercent }),
+    [distanceMiles, consumptionPer100Miles, electricityPrice, chargingLossPercent],
+  );
+  const useUsUnits = !isZh && unitSystem === "us";
   const number = (value: number, digits = 0) => new Intl.NumberFormat(isZh ? "zh-CN" : "en-US", {
     maximumFractionDigits: digits,
     minimumFractionDigits: digits,
@@ -32,16 +42,31 @@ export default function ChargingCostPage() {
         <p className="max-w-3xl text-sm leading-relaxed text-slate-600">
           {isZh
             ? "输入行驶里程、百公里电耗、充电电价和充电损耗，计算电网取电量、预计充电费、每公里电费与百公里电费。"
-            : "Enter distance, energy consumption, electricity price and charging loss to calculate grid energy, total charging cost and cost per kilometer."}
+            : "Estimate EV charging cost from miles and kWh/100 miles, or switch to kilometers and kWh/100 km. Charging loss is included."}
         </p>
+        {!isZh && (
+          <div className="mt-4 inline-flex rounded-lg bg-slate-100 p-1" aria-label="Unit system">
+            <button type="button" aria-pressed={unitSystem === "us"} onClick={() => setUnitSystem("us")} className={`rounded-md px-4 py-2 text-sm font-medium transition ${unitSystem === "us" ? "bg-white text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-700"}`}>US: miles</button>
+            <button type="button" aria-pressed={unitSystem === "metric"} onClick={() => setUnitSystem("metric")} className={`rounded-md px-4 py-2 text-sm font-medium transition ${unitSystem === "metric" ? "bg-white text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-700"}`}>Metric</button>
+          </div>
+        )}
       </header>
 
       <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
         <section className="rounded-xl border border-slate-200 bg-white p-5 sm:p-6">
           <h2 className="mb-5 text-lg font-semibold text-slate-800">{isZh ? "充电参数" : "Charging inputs"}</h2>
           <div className="grid gap-4 sm:grid-cols-2">
-            <NumberField id="charging-distance" label={isZh ? "预计行驶里程" : "Distance"} value={distance} onChange={setDistance} suffix={isZh ? "公里" : "km"} step={10} />
-            <NumberField id="charging-consumption" label={isZh ? "百公里电耗" : "Energy consumption"} value={consumptionPer100Km} onChange={setConsumptionPer100Km} suffix="kWh/100km" step={0.1} hint={isZh ? "优先使用车辆长期平均电耗，而不是单次最佳数据。" : "Prefer a long-term average rather than a single best trip."} />
+            {useUsUnits ? (
+              <>
+                <NumberField id="charging-distance-miles" label="Distance" value={distanceMiles} onChange={setDistanceMiles} suffix="miles" step={10} />
+                <NumberField id="charging-consumption-miles" label="Energy consumption" value={consumptionPer100Miles} onChange={setConsumptionPer100Miles} suffix="kWh/100mi" step={0.1} hint="Prefer the vehicle's long-term average for the route and season." />
+              </>
+            ) : (
+              <>
+                <NumberField id="charging-distance" label={isZh ? "预计行驶里程" : "Distance"} value={distance} onChange={setDistance} suffix={isZh ? "公里" : "km"} step={10} />
+                <NumberField id="charging-consumption" label={isZh ? "百公里电耗" : "Energy consumption"} value={consumptionPer100Km} onChange={setConsumptionPer100Km} suffix="kWh/100km" step={0.1} hint={isZh ? "优先使用车辆长期平均电耗，而不是单次最佳数据。" : "Prefer a long-term average rather than a single best trip."} />
+              </>
+            )}
             <NumberField id="charging-price" label={isZh ? "综合充电电价" : "Blended electricity price"} value={electricityPrice} onChange={setElectricityPrice} suffix={isZh ? "元/kWh" : "USD/kWh"} step={0.01} hint={isZh ? "按家充、公共慢充和快充的实际比例加权。" : "Weight home, public AC and fast-charging prices by actual usage."} />
             <NumberField id="charging-loss" label={isZh ? "充电损耗" : "Charging loss"} value={chargingLossPercent} onChange={setChargingLossPercent} suffix="%" min={0} max={50} step={1} hint={isZh ? "包括充电转换、温控等造成的电网取电差额。" : "Accounts for conversion, thermal management and other grid-to-battery losses."} />
           </div>
@@ -50,26 +75,26 @@ export default function ChargingCostPage() {
         <aside className="space-y-4">
           <div className="rounded-xl bg-slate-900 p-6 text-white">
             <p className="text-sm text-slate-300">{isZh ? "预计充电费用" : "Estimated charging cost"}</p>
-            <p className="mt-1 text-4xl font-bold text-emerald-400">{currency}{number(result.totalCost, 2)}</p>
+            <p className="mt-1 text-4xl font-bold text-emerald-400">{currency}{number(useUsUnits ? usResult.totalCost : metricResult.totalCost, 2)}</p>
             <div className="mt-6 grid grid-cols-2 gap-4 border-t border-slate-700 pt-5">
               <div>
                 <p className="text-xs text-slate-400">{isZh ? "电网取电量" : "Grid energy"}</p>
-                <p className="mt-1 text-xl font-semibold">{number(result.gridEnergy, 2)} kWh</p>
+                <p className="mt-1 text-xl font-semibold">{number(useUsUnits ? usResult.gridEnergy : metricResult.gridEnergy, 2)} kWh</p>
               </div>
               <div>
-                <p className="text-xs text-slate-400">{isZh ? "每公里电费" : "Cost per km"}</p>
-                <p className="mt-1 text-xl font-semibold">{result.costPerKm === null ? "—" : `${currency}${number(result.costPerKm, 2)}`}</p>
+                <p className="text-xs text-slate-400">{isZh ? "每公里电费" : `Cost per ${useUsUnits ? "mile" : "km"}`}</p>
+                <p className="mt-1 text-xl font-semibold">{(useUsUnits ? usResult.costPerMile : metricResult.costPerKm) === null ? "—" : `${currency}${number((useUsUnits ? usResult.costPerMile : metricResult.costPerKm)!, 2)}`}</p>
               </div>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div className="rounded-xl border border-slate-200 bg-white p-4">
               <p className="text-xs text-slate-500">{isZh ? "车辆行驶用电" : "Vehicle energy"}</p>
-              <p className="mt-1 text-lg font-semibold text-slate-800">{number(result.vehicleEnergy, 2)} kWh</p>
+              <p className="mt-1 text-lg font-semibold text-slate-800">{number(useUsUnits ? usResult.vehicleEnergy : metricResult.vehicleEnergy, 2)} kWh</p>
             </div>
             <div className="rounded-xl border border-slate-200 bg-white p-4">
-              <p className="text-xs text-slate-500">{isZh ? "百公里电费" : "Cost per 100 km"}</p>
-              <p className="mt-1 text-lg font-semibold text-slate-800">{currency}{number(result.costPer100Km, 2)}</p>
+              <p className="text-xs text-slate-500">{isZh ? "百公里电费" : `Cost per 100 ${useUsUnits ? "miles" : "km"}`}</p>
+              <p className="mt-1 text-lg font-semibold text-slate-800">{currency}{number(useUsUnits ? usResult.costPer100Miles : metricResult.costPer100Km, 2)}</p>
             </div>
           </div>
           <div className="flex gap-2 rounded-lg border border-amber-200 bg-amber-50 p-4 text-xs leading-relaxed text-amber-900">
@@ -82,9 +107,9 @@ export default function ChargingCostPage() {
       <article className="mt-10 space-y-7 rounded-xl border border-slate-200 bg-white p-6 text-sm leading-relaxed text-slate-600">
         <section>
           <h2 className="mb-2 text-lg font-semibold text-slate-800">{isZh ? "充电费用怎么计算？" : "How is EV charging cost calculated?"}</h2>
-          <p>{isZh ? "车辆行驶用电等于里程乘以百公里电耗。实际电网取电量还要考虑充电损耗，因此会高于车辆显示的行驶用电；电网取电量乘以综合电价得到预计充电费。" : "Vehicle energy equals distance multiplied by consumption per 100 km. Grid energy is higher after charging loss, and multiplying it by the blended electricity price gives total cost."}</p>
+          <p>{isZh ? "车辆行驶用电等于里程乘以百公里电耗。实际电网取电量还要考虑充电损耗，因此会高于车辆显示的行驶用电；电网取电量乘以综合电价得到预计充电费。" : `Vehicle energy equals distance multiplied by consumption per 100 ${useUsUnits ? "miles" : "km"}. Grid energy is higher after charging loss, and multiplying it by the blended electricity price gives total cost.`}</p>
           <div className="mt-3 space-y-1 overflow-x-auto rounded-lg bg-slate-100 px-4 py-3 font-mono text-xs text-slate-700">
-            <p>{isZh ? "车辆用电 = 行驶里程 × 百公里电耗 ÷ 100" : "Vehicle energy = distance × consumption/100 km ÷ 100"}</p>
+            <p>{isZh ? "车辆用电 = 行驶里程 × 百公里电耗 ÷ 100" : `Vehicle energy = distance × consumption/100 ${useUsUnits ? "miles" : "km"} ÷ 100`}</p>
             <p>{isZh ? "电网取电 = 车辆用电 ÷（1 − 充电损耗率）" : "Grid energy = vehicle energy ÷ (1 − charging-loss rate)"}</p>
             <p>{isZh ? "充电费用 = 电网取电 × 综合充电电价" : "Charging cost = grid energy × blended electricity price"}</p>
           </div>
@@ -96,16 +121,24 @@ export default function ChargingCostPage() {
         </section>
 
         <section>
-          <h2 className="mb-3 text-lg font-semibold text-slate-800">{isZh ? "示例：行驶 500 公里的充电费" : "Example: charging cost for 500 km"}</h2>
-          <p className="mb-3">{isZh ? "以下示例统一使用 15 kWh/100km 电耗和 10% 充电损耗，只改变综合电价。" : "These examples use 15 kWh/100 km and 10% charging loss, changing only the blended price."}</p>
+          <h2 className="mb-3 text-lg font-semibold text-slate-800">{isZh ? "示例：行驶 500 公里的充电费" : useUsUnits ? "Example: charging cost for 300 miles" : "Example: charging cost for 500 km"}</h2>
+          <p className="mb-3">{isZh ? "以下示例统一使用 15 kWh/100km 电耗和 10% 充电损耗，只改变综合电价。" : useUsUnits ? "These examples use 30 kWh/100 miles and 10% charging loss, changing only the blended price." : "These examples use 15 kWh/100 km and 10% charging loss, changing only the blended price."}</p>
           <div className="overflow-x-auto">
             <table className="w-full min-w-[520px] text-left text-sm">
               <thead><tr className="border-b border-slate-200 text-slate-500"><th className="px-3 py-2 font-medium">{isZh ? "综合电价" : "Price"}</th><th className="px-3 py-2 font-medium">{isZh ? "车辆用电" : "Vehicle energy"}</th><th className="px-3 py-2 font-medium">{isZh ? "电网取电" : "Grid energy"}</th><th className="px-3 py-2 font-medium">{isZh ? "充电费" : "Cost"}</th></tr></thead>
-              <tbody>
-                <tr className="border-b border-slate-100"><td className="px-3 py-2">{currency}0.12/kWh</td><td className="px-3 py-2">75 kWh</td><td className="px-3 py-2">83.33 kWh</td><td className="px-3 py-2 font-medium text-slate-800">{currency}10.00</td></tr>
-                <tr className="border-b border-slate-100"><td className="px-3 py-2">{currency}0.18/kWh</td><td className="px-3 py-2">75 kWh</td><td className="px-3 py-2">83.33 kWh</td><td className="px-3 py-2 font-medium text-slate-800">{currency}15.00</td></tr>
-                <tr><td className="px-3 py-2">{currency}0.35/kWh</td><td className="px-3 py-2">75 kWh</td><td className="px-3 py-2">83.33 kWh</td><td className="px-3 py-2 font-medium text-slate-800">{currency}29.17</td></tr>
-              </tbody>
+              {useUsUnits ? (
+                <tbody>
+                  <tr className="border-b border-slate-100"><td className="px-3 py-2">$0.12/kWh</td><td className="px-3 py-2">90 kWh</td><td className="px-3 py-2">100 kWh</td><td className="px-3 py-2 font-medium text-slate-800">$12.00</td></tr>
+                  <tr className="border-b border-slate-100"><td className="px-3 py-2">$0.18/kWh</td><td className="px-3 py-2">90 kWh</td><td className="px-3 py-2">100 kWh</td><td className="px-3 py-2 font-medium text-slate-800">$18.00</td></tr>
+                  <tr><td className="px-3 py-2">$0.35/kWh</td><td className="px-3 py-2">90 kWh</td><td className="px-3 py-2">100 kWh</td><td className="px-3 py-2 font-medium text-slate-800">$35.00</td></tr>
+                </tbody>
+              ) : (
+                <tbody>
+                  <tr className="border-b border-slate-100"><td className="px-3 py-2">{currency}0.12/kWh</td><td className="px-3 py-2">75 kWh</td><td className="px-3 py-2">83.33 kWh</td><td className="px-3 py-2 font-medium text-slate-800">{currency}10.00</td></tr>
+                  <tr className="border-b border-slate-100"><td className="px-3 py-2">{currency}0.18/kWh</td><td className="px-3 py-2">75 kWh</td><td className="px-3 py-2">83.33 kWh</td><td className="px-3 py-2 font-medium text-slate-800">{currency}15.00</td></tr>
+                  <tr><td className="px-3 py-2">{currency}0.35/kWh</td><td className="px-3 py-2">75 kWh</td><td className="px-3 py-2">83.33 kWh</td><td className="px-3 py-2 font-medium text-slate-800">{currency}29.17</td></tr>
+                </tbody>
+              )}
             </table>
           </div>
           <p className="mt-2 text-xs text-slate-400">{isZh ? "示例单价仅用于解释公式，不代表任何充电网络的实时价格。" : "Example prices explain the formula and are not live charging-network prices."}</p>
@@ -123,7 +156,7 @@ export default function ChargingCostPage() {
         <div className="flex flex-wrap gap-3 border-t border-slate-100 pt-5">
           <Link to="/tools/ev-break-even" className="rounded-lg bg-emerald-500 px-4 py-2 font-medium text-white hover:bg-emerald-600">{isZh ? "计算油车电车回本里程" : "Calculate fuel-vs-EV break-even"}</Link>
           <Link to="/tools/fuel-cost" className="rounded-lg border border-slate-300 px-4 py-2 font-medium text-slate-700 hover:bg-slate-50">{isZh ? "对比单次行程油费" : "Compare trip fuel cost"}</Link>
-          <Link to="/tools/cost-per-km" className="rounded-lg border border-slate-300 px-4 py-2 font-medium text-slate-700 hover:bg-slate-50">{isZh ? "计算完整每公里成本" : "Calculate full cost per kilometer"}</Link>
+          <Link to="/tools/cost-per-km" className="rounded-lg border border-slate-300 px-4 py-2 font-medium text-slate-700 hover:bg-slate-50">{isZh ? "计算完整每公里成本" : "Calculate full ownership cost"}</Link>
         </div>
       </article>
     </div>

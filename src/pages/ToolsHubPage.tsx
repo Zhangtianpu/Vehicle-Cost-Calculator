@@ -9,10 +9,10 @@ export default function ToolsHubPage() {
     {
       to: "/tools/cost-per-km",
       icon: Gauge,
-      title: isZh ? "每公里用车成本计算器" : "Cost per Kilometer Calculator",
+      title: isZh ? "每公里用车成本计算器" : "Cost per Mile or Kilometer Calculator",
       description: isZh
         ? "把能源、保险、保养、停车和折旧统一换算成每公里现金成本与完整成本。"
-        : "Convert energy, insurance, maintenance, parking and depreciation into cash and full cost per kilometer.",
+        : "Convert energy, insurance, maintenance, parking and depreciation into cash and full cost per mile or kilometer.",
     },
     {
       to: "/tools/ev-break-even",
@@ -20,15 +20,15 @@ export default function ToolsHubPage() {
       title: isZh ? "油车电车回本里程计算器" : "Fuel vs EV Break-even Calculator",
       description: isZh
         ? "根据油电单价、能耗、购车差价和年度固定费用，估算电车何时抵消购车差价。"
-        : "Estimate when EV energy savings recover the purchase-price premium using your prices, consumption and annual costs.",
+        : "Estimate EV payback using miles and MPG or metric inputs, plus your energy prices and annual costs.",
     },
     {
       to: "/tools/fuel-cost",
       icon: Fuel,
-      title: isZh ? "油费计算器" : "Fuel Cost Calculator",
+      title: isZh ? "油费计算器" : "Gas Cost Calculator",
       description: isZh
         ? "按里程、百公里油耗和油价计算用油量、总油费以及每公里和百公里油费。"
-        : "Calculate liters required, total fuel cost and cost per kilometer from distance, consumption and fuel price.",
+        : "Calculate trip gas cost with miles, MPG and price per gallon, or use metric inputs.",
     },
     {
       to: "/tools/depreciation",
@@ -36,7 +36,7 @@ export default function ToolsHubPage() {
       title: isZh ? "汽车折旧计算器" : "Car Depreciation Calculator",
       description: isZh
         ? "用购车价和当前估值计算累计折旧、年均折旧、保值率与每公里折旧。"
-        : "Use purchase price and current value to calculate total depreciation, retained value and depreciation per kilometer.",
+        : "Calculate total depreciation, retained value and depreciation per mile or kilometer.",
     },
     {
       to: "/tools/charging-cost",
@@ -44,7 +44,7 @@ export default function ToolsHubPage() {
       title: isZh ? "新能源汽车充电费用计算器" : "EV Charging Cost Calculator",
       description: isZh
         ? "按里程、电耗、综合电价和充电损耗计算电网取电量、充电费及每公里电费。"
-        : "Calculate grid energy, charging cost and cost per kilometer from consumption, price and charging loss.",
+        : "Calculate EV charging cost per mile or kilometer from consumption, electricity price and charging loss.",
     },
     {
       to: "/tools/car-loan",
@@ -87,7 +87,7 @@ export default function ToolsHubPage() {
       <section className="mt-8 rounded-xl border border-slate-200 bg-slate-100 p-6">
         <h2 className="mb-2 text-lg font-semibold text-slate-800">{isZh ? "需要完整的多年对比？" : "Need a complete multi-year comparison?"}</h2>
         <p className="mb-4 text-sm leading-relaxed text-slate-600">
-          {isZh ? "完整计算器还支持车贷、保险险种、折旧曲线、模块开关和 1–10 年油电累计成本对比。" : "The full calculator also supports financing, insurance coverage, depreciation curves, module toggles and 1–10 year fuel-vs-EV totals."}
+          {isZh ? "完整计算器还支持车贷、保险险种、折旧曲线、模块开关和 1–10 年油电累计成本对比。" : "The full calculator also supports financing, annual insurance quotes, depreciation scenarios, module toggles and 1–10 year gas-vs-EV totals."}
         </p>
         <Link to="/calculator" className="inline-flex rounded-lg bg-slate-800 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700">
           {isZh ? "进入完整计算器" : "Open the full calculator"}
