@@ -36,7 +36,7 @@ const enPages: Record<string, SeoEntry> = {
   "/tools": { title: "Free Vehicle Cost Tools | Energy, Loans & Depreciation", description: "Calculate fuel and charging cost, car-loan payments, depreciation, cost per kilometer and EV break-even. Inputs stay in your browser." },
   "/tools/cost-per-km": { title: "Vehicle Cost per Kilometer Calculator | Include Depreciation", description: "Enter annual energy, insurance, maintenance, parking and depreciation to calculate cash and full ownership cost per kilometer." },
   "/tools/ev-break-even": { title: "Fuel vs EV Break-even Calculator | Distance & Years", description: "Use prices, consumption, annual mileage and purchase premium to estimate when EV energy savings break even." },
-  "/tools/fuel-cost": { title: "Fuel Cost Calculator | Liters, Trip Cost & Cost per Km", description: "Enter distance, fuel consumption and price per liter to calculate liters required, trip fuel cost and cost per kilometer." },
+  "/tools/fuel-cost": { title: "Gas Cost Calculator | Miles, MPG & Trip Cost", description: "Calculate trip gas cost from miles, MPG and price per gallon, or use kilometers, L/100 km and price per liter." },
   "/tools/depreciation": { title: "Car Depreciation Calculator | Retained Value & Cost per Km", description: "Use purchase price, current value, ownership years and mileage to calculate car depreciation and retained value." },
   "/tools/charging-cost": { title: "EV Charging Cost Calculator | Cost per Km & 100 Km", description: "Use distance, energy consumption, electricity price and charging loss to calculate EV charging cost and grid energy." },
   "/tools/car-loan": { title: "Car Loan Payment Calculator | Down Payment & Interest", description: "Use vehicle price, down payment, term, annual rate and repayment method to estimate car-loan payments and total interest." },
@@ -47,10 +47,10 @@ const enPages: Record<string, SeoEntry> = {
 };
 
 const articleSeo = [
-  { zh: "电车真的比油车省钱吗？5年成本对比", en: "Do EVs Really Save Money? 5-Year Cost Comparison" },
-  { zh: "用车成本全解析：油费电费之外的隐形支出", en: "Complete Vehicle Cost Breakdown: Hidden Expenses" },
-  { zh: "如何降低用车成本？10个实用省钱技巧", en: "How to Reduce Car Costs: 10 Practical Tips" },
-  { zh: "车险怎么买更合适？险种选择与费用指南", en: "Vehicle Insurance Coverage and Cost Guide" },
+  { zh: "电车真的比油车省钱吗？5年成本对比", en: "Are EVs Cheaper Than Gas Cars? 5-Year Comparison" },
+  { zh: "用车成本全解析：油费电费之外的隐形支出", en: "True Cost of Car Ownership: Complete Checklist" },
+  { zh: "如何降低用车成本？10个实用省钱技巧", en: "10 Practical Ways to Lower Car Ownership Costs" },
+  { zh: "车险怎么买更合适？险种选择与费用指南", en: "How to Choose Car Insurance Coverage" },
 ];
 
 function upsertMeta(selector: string, attributes: Record<string, string>) {

@@ -18,15 +18,15 @@ export default function AboutPage() {
             Our calculator provides comprehensive vehicle operating cost analysis, including:
           </p>
           <ul className="list-disc pl-5 space-y-1">
-            <li><strong>Fuel/Energy Cost Calculator:</strong> Compare fuel costs for gasoline vehicles versus charging costs for electric vehicles, with support for daily, monthly, and yearly mileage input.</li>
-            <li><strong>Insurance Cost Estimator:</strong> Estimate annual insurance premiums based on vehicle price, coverage options, and no-claim discount history.</li>
+            <li><strong>Fuel and Charging Calculators:</strong> Estimate gas cost with miles and MPG or metric inputs, and model EV charging from consumption, prices and charging losses.</li>
+            <li><strong>Insurance Budget Input:</strong> Add an annual quote for the exact vehicle and coverage available in your location.</li>
             <li><strong>Auto Loan Calculator:</strong> Calculate monthly payments, total interest, and repayment schedules with both equal installment and equal principal methods.</li>
             <li><strong>Fuel vs. EV Comparison:</strong> Side-by-side annual cost comparison with visual charts and detailed breakdowns.</li>
           </ul>
 
           <h2 className="text-lg font-semibold text-slate-700 mt-6">Our Mission</h2>
           <p>
-            We aim to reduce information asymmetry in vehicle purchasing decisions. By providing clear, accurate cost calculations, we help consumers understand the true financial implications of choosing between fuel vehicles and electric vehicles.
+            We aim to make vehicle-cost assumptions visible and testable. The tools help consumers compare scenarios, identify the inputs that matter and replace illustrative defaults with their own quotes.
           </p>
 
           <h2 className="text-lg font-semibold text-slate-700 mt-6">How Our Tool Works</h2>
@@ -34,7 +34,7 @@ export default function AboutPage() {
             All calculations are performed entirely in your browser. No personal data is sent to our servers. Your input values are stored locally in your browser for convenience, and you can clear them at any time.
           </p>
           <p>
-            Our calculation models are based on publicly available insurance rate structures, standard loan formulas, and user-configurable energy prices to provide the most relevant estimates for your situation.
+            Standard arithmetic and loan formulas are documented on the Methodology page. Insurance, energy prices, mileage, maintenance and resale assumptions should be replaced with current local information before making a decision.
           </p>
 
           <h2 className="text-lg font-semibold text-slate-700 mt-6">Important Disclaimer</h2>

@@ -106,6 +106,35 @@ export function calculateFuelCost(input: FuelCostInput): FuelCostResult {
   };
 }
 
+export interface UsFuelCostInput {
+  distanceMiles: number;
+  mpg: number;
+  fuelPricePerGallon: number;
+}
+
+export interface UsFuelCostResult {
+  gallons: number;
+  totalCost: number;
+  costPerMile: number | null;
+  costPer100Miles: number | null;
+}
+
+export function calculateUsFuelCost(input: UsFuelCostInput): UsFuelCostResult {
+  const distanceMiles = Math.max(0, input.distanceMiles);
+  const mpg = Math.max(0, input.mpg);
+  const fuelPricePerGallon = Math.max(0, input.fuelPricePerGallon);
+  const gallons = mpg > 0 ? distanceMiles / mpg : 0;
+  const totalCost = gallons * fuelPricePerGallon;
+  const hasValidDistanceAndEconomy = distanceMiles > 0 && mpg > 0;
+
+  return {
+    gallons,
+    totalCost,
+    costPerMile: hasValidDistanceAndEconomy ? totalCost / distanceMiles : null,
+    costPer100Miles: hasValidDistanceAndEconomy ? totalCost / distanceMiles * 100 : null,
+  };
+}
+
 export interface DepreciationInput {
   purchasePrice: number;
   currentValue: number;

@@ -9,6 +9,7 @@ import {
   calculateDepreciation,
   calculateEvBreakEven,
   calculateFuelCost,
+  calculateUsFuelCost,
 } from "../src/utils/quickTools";
 
 const equalPrincipal = calculateLoanCost({
@@ -138,6 +139,17 @@ assert.equal(fuelCost.totalCost, 300);
 assert.equal(fuelCost.costPerKm, 0.6);
 assert.equal(fuelCost.costPer100Km, 60);
 assert.equal(calculateFuelCost({ distance: 0, consumptionPer100Km: 8, fuelPrice: 7.5 }).costPerKm, null);
+
+const usFuelCost = calculateUsFuelCost({
+  distanceMiles: 300,
+  mpg: 25,
+  fuelPricePerGallon: 3.5,
+});
+assert.equal(usFuelCost.gallons, 12);
+assert.equal(usFuelCost.totalCost, 42);
+assert.equal(usFuelCost.costPerMile, 0.14);
+assert.ok(Math.abs(usFuelCost.costPer100Miles! - 14) < 0.000001);
+assert.equal(calculateUsFuelCost({ distanceMiles: 300, mpg: 0, fuelPricePerGallon: 3.5 }).costPerMile, null);
 
 const depreciation = calculateDepreciation({
   purchasePrice: 150000,

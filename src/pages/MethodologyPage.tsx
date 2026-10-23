@@ -37,9 +37,9 @@ export default function MethodologyPage() {
 
         <section className={cardClass}>
           <h2 className={headingClass}>{isZh ? "2. 保险估算" : "2. Insurance estimate"}</h2>
-          <p>{isZh ? "估算由交强险、车损险、第三者责任险、车上人员责任险和可选新能源附加项组成，再应用车型调整和无出险系数。" : "The estimate combines compulsory, vehicle damage, third-party and passenger coverage plus an optional EV item, then applies vehicle and no-claim factors."}</p>
-          <div className={formulaClass}>{isZh ? "年保费 ≈ 各险种估算合计 × 车型系数 × 无出险系数" : "Annual premium ≈ coverage estimate × vehicle factor × no-claim factor"}</div>
-          <p>{isZh ? "保险价格高度依赖地区、车型、驾驶记录和保险公司。建议启用“自定义年度费用”并填写真实报价；系统默认值不应替代保险公司报价。" : "Insurance varies substantially by location, vehicle, driving history and provider. For decisions, enter a real quote using the custom annual cost option."}</p>
+          <p>{isZh ? "估算由交强险、车损险、第三者责任险、车上人员责任险和可选新能源附加项组成，再应用车型调整和无出险系数。" : "The English calculator uses the annual total from a quote for the exact vehicle, drivers, location, limits and deductibles. Required coverage and rating rules vary by jurisdiction."}</p>
+          <div className={formulaClass}>{isZh ? "年保费 ≈ 各险种估算合计 × 车型系数 × 无出险系数" : "Monthly insurance budget = annual quote ÷ 12"}</div>
+          <p>{isZh ? "保险价格高度依赖地区、车型、驾驶记录和保险公司。建议启用“自定义年度费用”并填写真实报价；系统默认值不应替代保险公司报价。" : "Multi-year comparisons keep that quote flat so the tool does not invent future discounts or renewal prices. Run separate scenarios to test possible changes."}</p>
         </section>
 
         <section className={cardClass}>

@@ -12,8 +12,8 @@ export default function BlogArticlePage() {
       title: t.blog.article1Title,
       summary: t.blog.article1Summary,
       content: t.blog.article1Content,
-      date: "2024-01-15",
-      readTime: "5 min",
+      date: "2026-10-23",
+      readTime: "8 min",
       category: t.blog.categoryEV,
     },
     {
@@ -21,8 +21,8 @@ export default function BlogArticlePage() {
       title: t.blog.article2Title,
       summary: t.blog.article2Summary,
       content: t.blog.article2Content,
-      date: "2024-01-10",
-      readTime: "8 min",
+      date: "2026-10-23",
+      readTime: "9 min",
       category: t.blog.categoryCost,
     },
     {
@@ -30,8 +30,8 @@ export default function BlogArticlePage() {
       title: t.blog.article3Title,
       summary: t.blog.article3Summary,
       content: t.blog.article3Content,
-      date: "2024-01-05",
-      readTime: "6 min",
+      date: "2026-10-23",
+      readTime: "8 min",
       category: t.blog.categoryTips,
     },
     {
@@ -39,8 +39,8 @@ export default function BlogArticlePage() {
       title: t.blog.article4Title,
       summary: t.blog.article4Summary,
       content: t.blog.article4Content,
-      date: "2024-01-01",
-      readTime: "7 min",
+      date: "2026-10-23",
+      readTime: "9 min",
       category: t.blog.categoryInsurance,
     },
   ];
