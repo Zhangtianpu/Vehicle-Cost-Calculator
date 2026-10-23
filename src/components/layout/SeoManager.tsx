@@ -63,14 +63,18 @@ export default function SeoManager() {
     const articleMatch = normalizedPath.match(/^\/blog\/(\d+)$/);
     const article = articleMatch ? articleSeo[Number(articleMatch[1]) - 1] : undefined;
     const pages = locale === "zh" ? zhPages : enPages;
-    const fallback = pages["/"];
+    const pageSeo = pages[normalizedPath];
+    const isKnownPage = Boolean(article || pageSeo);
     const seo = article
       ? {
           title: `${locale === "zh" ? article.zh : article.en} | ${locale === "zh" ? "用车成本计算器" : "Vehicle Cost Calculator"}`,
           description: locale === "zh" ? "基于可调整示例，拆解能源、保险、保养、折旧等成本；结果仅供预算参考，请以当地实际报价为准。" : "A transparent example covering energy, insurance, maintenance and depreciation. Adjust inputs for your local prices and quotes.",
           type: "article" as const,
         }
-      : pages[normalizedPath] || fallback;
+      : pageSeo || {
+          title: locale === "zh" ? "页面未找到｜用车成本计算器" : "Page Not Found | Vehicle Cost Calculator",
+          description: locale === "zh" ? "请求的页面不存在，请返回首页或浏览免费用车计算工具。" : "The requested page does not exist. Return home or browse the free vehicle cost tools.",
+        };
     const canonical = `${SITE_URL}${normalizedPath === "/" ? "/" : `${normalizedPath}/`}`;
 
     document.documentElement.lang = locale === "zh" ? "zh-CN" : "en";
@@ -80,14 +84,19 @@ export default function SeoManager() {
     upsertMeta('meta[property="og:description"]', { property: "og:description", content: seo.description });
     upsertMeta('meta[property="og:type"]', { property: "og:type", content: seo.type || "website" });
     upsertMeta('meta[property="og:url"]', { property: "og:url", content: canonical });
+    upsertMeta('meta[name="robots"]', { name: "robots", content: isKnownPage ? "index, follow, max-image-preview:large" : "noindex, nofollow" });
 
     let canonicalLink = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
-    if (!canonicalLink) {
-      canonicalLink = document.createElement("link");
-      canonicalLink.rel = "canonical";
-      document.head.appendChild(canonicalLink);
+    if (isKnownPage) {
+      if (!canonicalLink) {
+        canonicalLink = document.createElement("link");
+        canonicalLink.rel = "canonical";
+        document.head.appendChild(canonicalLink);
+      }
+      canonicalLink.href = canonical;
+    } else {
+      canonicalLink?.remove();
     }
-    canonicalLink.href = canonical;
 
     const schema = article
       ? { "@context": "https://schema.org", "@type": "Article", headline: locale === "zh" ? article.zh : article.en, dateModified: "2026-10-23", author: { "@type": "Organization", name: locale === "zh" ? "用车成本计算器编辑团队" : "Vehicle Cost Calculator Editorial Team" }, publisher: { "@type": "Organization", name: "Vehicle Cost Calculator" }, mainEntityOfPage: canonical }

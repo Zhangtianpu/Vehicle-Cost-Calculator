@@ -8,6 +8,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import { useEffect, useState } from "react";
 import { useLanguageStore } from "@/store/useLanguageStore";
 import type { YearlyCostBreakdown } from "@/utils/multiYearCalc";
 
@@ -18,6 +19,11 @@ interface MultiYearChartProps {
 
 export default function MultiYearChart({ fuelData, electricData }: MultiYearChartProps) {
   const { t } = useLanguageStore();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const chartData = fuelData.map((fuelItem, index) => ({
     year: `${t.compare.year} ${fuelItem.year}`,
@@ -36,7 +42,14 @@ export default function MultiYearChart({ fuelData, electricData }: MultiYearChar
         {t.compare.multiYearChartTitle}
       </h2>
       <div className="h-[360px]">
-        <ResponsiveContainer width="100%" height="100%">
+        {isClient ? (
+          <ResponsiveContainer
+            width="100%"
+            height="100%"
+            minWidth={0}
+            minHeight={0}
+            initialDimension={{ width: 800, height: 360 }}
+          >
           <AreaChart data={chartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" />
             <XAxis
@@ -81,7 +94,10 @@ export default function MultiYearChart({ fuelData, electricData }: MultiYearChar
               strokeWidth={2}
             />
           </AreaChart>
-        </ResponsiveContainer>
+          </ResponsiveContainer>
+        ) : (
+          <div className="h-full animate-pulse rounded-lg bg-slate-100" aria-hidden="true" />
+        )}
       </div>
     </div>
   );

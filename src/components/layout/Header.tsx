@@ -8,9 +8,10 @@ export default function Header() {
   const location = useLocation();
   const { vehicleType, setVehicleType, syncToOther } = useVehicleStore();
   const { locale, setLocale, t } = useLanguageStore();
-  const isCompare = location.pathname === "/compare";
-  const isCalculator = location.pathname === "/calculator";
-  const isFeatures = location.pathname === "/";
+  const pathname = location.pathname === "/" ? "/" : location.pathname.replace(/\/$/, "");
+  const isCompare = pathname === "/compare";
+  const isCalculator = pathname === "/calculator";
+  const isFeatures = pathname === "/";
   const isCostWorkspace = isCalculator || isCompare;
   const [synced, setSynced] = useState(false);
 

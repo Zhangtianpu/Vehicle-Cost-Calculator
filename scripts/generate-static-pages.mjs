@@ -1,8 +1,10 @@
-import { cp, mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 
 const siteUrl = "https://sidehustle.top";
 const distDir = new URL("../dist/", import.meta.url);
+const prerenderDir = new URL("../.prerender/", import.meta.url);
+const { render } = await import(new URL("entry-server.js", prerenderDir).href);
 const rawTemplate = await readFile(new URL("index.html", distDir), "utf8");
 const adsenseClient = process.env.VITE_ADSENSE_CLIENT || "";
 const publisherId = adsenseClient.replace(/^ca-/, "");
@@ -11,10 +13,6 @@ const adsenseHead = hasAdsense
   ? `    <meta name="google-adsense-account" content="${adsenseClient}" />\n    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClient}" crossorigin="anonymous"></script>\n`
   : "";
 const template = rawTemplate.replace("  </head>", `${adsenseHead}  </head>`);
-
-if (hasAdsense) {
-  await writeFile(new URL("index.html", distDir), template, "utf8");
-}
 
 const routes = [
   ["/", "用车成本计算器｜油车与电车真实成本对比", "免费用车成本计算器，按油费或电费、保险、车贷、保养、停车与折旧，比较油车和电车的年度及多年总成本。", "weekly", "1.0"],
@@ -38,17 +36,36 @@ const routes = [
 
 function renderPage(path, title, description) {
   const canonical = `${siteUrl}${path}`;
+  const pathname = path === "/" ? path : path.replace(/\/$/, "");
+  const appHtml = render(pathname);
+  const schemaType = /^\/blog\/\d+\/$/.test(path)
+    ? "Article"
+    : path === "/tools/"
+      ? "CollectionPage"
+      : path === "/" || path.startsWith("/tools/")
+        ? "WebApplication"
+        : "WebPage";
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": schemaType,
+    name: title,
+    headline: schemaType === "Article" ? title : undefined,
+    url: canonical,
+    isAccessibleForFree: true,
+  };
+  const schemaScript = `<script id="route-schema" type="application/ld+json">${JSON.stringify(schema)}</script>`;
   return template
     .replace(/<title>.*?<\/title>/, `<title>${title}</title>`)
     .replace(/<meta name="description" content=".*?"\s*\/>/, `<meta name="description" content="${description}" />`)
     .replace(/<link rel="canonical" href=".*?"\s*\/>/, `<link rel="canonical" href="${canonical}" />`)
     .replace(/<meta property="og:title" content=".*?"\s*\/>/, `<meta property="og:title" content="${title}" />`)
     .replace(/<meta property="og:description" content=".*?"\s*\/>/, `<meta property="og:description" content="${description}" />`)
-    .replace(/<meta property="og:url" content=".*?"\s*\/>/, `<meta property="og:url" content="${canonical}" />`);
+    .replace(/<meta property="og:url" content=".*?"\s*\/>/, `<meta property="og:url" content="${canonical}" />`)
+    .replace("  </head>", `    ${schemaScript}\n  </head>`)
+    .replace('<div id="root"></div>', `<div id="root">${appHtml}</div>`);
 }
 
 for (const [path, title, description] of routes) {
-  if (path === "/") continue;
   const destination = join(new URL(distDir).pathname, path, "index.html");
   await mkdir(dirname(destination), { recursive: true });
   await writeFile(destination, renderPage(path, title, description), "utf8");
@@ -70,6 +87,10 @@ await writeFile(
   "utf8",
 );
 
-// Keep GitHub Pages from applying Jekyll processing and provide a safe SPA fallback.
+// Keep GitHub Pages from applying Jekyll processing and provide a real noindex 404 fallback.
 await writeFile(new URL(".nojekyll", distDir), "", "utf8");
-await cp(new URL("index.html", distDir), new URL("404.html", distDir));
+const notFound = renderPage("/404.html", "页面未找到｜用车成本计算器", "请求的页面不存在，请返回首页或浏览免费用车计算工具。")
+  .replace('content="index, follow, max-image-preview:large"', 'content="noindex, nofollow"')
+  .replace(/\s*<link rel="canonical" href="[^"]*"\s*\/>/, "");
+await writeFile(new URL("404.html", distDir), notFound, "utf8");
+await rm(prerenderDir, { recursive: true, force: true });

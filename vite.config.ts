@@ -2,26 +2,26 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tsconfigPaths from "vite-tsconfig-paths";
 
-export default defineConfig({
+export default defineConfig(({ isSsrBuild, mode }) => ({
   base: '/',
   build: {
     sourcemap: 'hidden',
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          recharts: ['recharts'],
+    rollupOptions: isSsrBuild
+      ? {}
+      : {
+          output: {
+            manualChunks: {
+              recharts: ['recharts'],
+            },
+          },
         },
-      },
-    },
   },
   plugins: [
     react({
       babel: {
-        plugins: [
-          'react-dev-locator',
-        ],
+        plugins: mode === 'development' ? ['react-dev-locator'] : [],
       },
     }),
     tsconfigPaths()
   ],
-})
+}))

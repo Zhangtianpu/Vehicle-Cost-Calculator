@@ -8,6 +8,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import { useEffect, useState } from "react";
 import { useLanguageStore } from "@/store/useLanguageStore";
 import type { CompareData } from "@/types";
 
@@ -17,6 +18,11 @@ interface CompareChartProps {
 
 export default function CompareChart({ data }: CompareChartProps) {
   const { t } = useLanguageStore();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
@@ -24,7 +30,14 @@ export default function CompareChart({ data }: CompareChartProps) {
         {t.compare.chartTitle}
       </h2>
       <div className="h-[320px]">
-        <ResponsiveContainer width="100%" height="100%">
+        {isClient ? (
+          <ResponsiveContainer
+            width="100%"
+            height="100%"
+            minWidth={0}
+            minHeight={0}
+            initialDimension={{ width: 800, height: 320 }}
+          >
           <BarChart data={data} barGap={8}>
             <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" />
             <XAxis
@@ -63,7 +76,10 @@ export default function CompareChart({ data }: CompareChartProps) {
               maxBarSize={40}
             />
           </BarChart>
-        </ResponsiveContainer>
+          </ResponsiveContainer>
+        ) : (
+          <div className="h-full animate-pulse rounded-lg bg-slate-100" aria-hidden="true" />
+        )}
       </div>
     </div>
   );
