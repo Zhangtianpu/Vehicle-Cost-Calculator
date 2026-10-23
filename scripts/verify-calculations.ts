@@ -4,6 +4,8 @@ import { calculateMultiYearCosts, type VehicleCalcParams } from "../src/utils/mu
 import type { ModuleToggle } from "../src/types";
 import {
   calculateCostPerKm,
+  calculateCarLoan,
+  calculateChargingCost,
   calculateDepreciation,
   calculateEvBreakEven,
   calculateFuelCost,
@@ -150,5 +152,41 @@ assert.equal(depreciation.annualDepreciation, 20000);
 assert.ok(Math.abs(depreciation.depreciationPerKm! - 4 / 3) < 0.000001);
 assert.equal(calculateDepreciation({ purchasePrice: 0, currentValue: 0, yearsOwned: 0, totalMileage: 0 }).depreciationRate, null);
 assert.equal(calculateDepreciation({ purchasePrice: 100000, currentValue: 110000, yearsOwned: 1, totalMileage: 10000 }).totalDepreciation, 0);
+
+const chargingCost = calculateChargingCost({
+  distance: 500,
+  consumptionPer100Km: 15,
+  electricityPrice: 0.8,
+  chargingLossPercent: 10,
+});
+assert.equal(chargingCost.vehicleEnergy, 75);
+assert.ok(Math.abs(chargingCost.gridEnergy - 83.3333333333) < 0.000001);
+assert.ok(Math.abs(chargingCost.totalCost - 66.6666666667) < 0.000001);
+assert.ok(Math.abs(chargingCost.costPerKm! - 0.1333333333) < 0.000001);
+assert.equal(calculateChargingCost({ distance: 0, consumptionPer100Km: 15, electricityPrice: 0.8, chargingLossPercent: 10 }).costPerKm, null);
+
+const carLoan = calculateCarLoan({
+  vehiclePrice: 150000,
+  downPaymentPercent: 30,
+  loanTermMonths: 36,
+  annualRate: 4.8,
+  repaymentMethod: "equal_installment",
+});
+assert.equal(carLoan.downPayment, 45000);
+assert.equal(carLoan.loanAmount, 105000);
+assert.equal(carLoan.totalCashOutlay, carLoan.downPayment + carLoan.totalPayment);
+assert.ok(carLoan.monthlyPayment > 0);
+assert.ok(carLoan.totalInterest > 0);
+
+const cashPurchase = calculateCarLoan({
+  vehiclePrice: 150000,
+  downPaymentPercent: 100,
+  loanTermMonths: 36,
+  annualRate: 4.8,
+  repaymentMethod: "equal_installment",
+});
+assert.equal(cashPurchase.loanAmount, 0);
+assert.equal(cashPurchase.totalPayment, 0);
+assert.equal(cashPurchase.totalCashOutlay, 150000);
 
 console.log("Calculation verification passed.");

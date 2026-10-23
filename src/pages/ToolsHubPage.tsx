@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Fuel, Gauge, Route, TrendingDown, Wrench } from "lucide-react";
+import { ArrowRight, Banknote, BatteryCharging, Fuel, Gauge, Route, TrendingDown, Wrench } from "lucide-react";
 import { useLanguageStore } from "@/store/useLanguageStore";
 
 export default function ToolsHubPage() {
@@ -37,6 +37,22 @@ export default function ToolsHubPage() {
       description: isZh
         ? "用购车价和当前估值计算累计折旧、年均折旧、保值率与每公里折旧。"
         : "Use purchase price and current value to calculate total depreciation, retained value and depreciation per kilometer.",
+    },
+    {
+      to: "/tools/charging-cost",
+      icon: BatteryCharging,
+      title: isZh ? "新能源汽车充电费用计算器" : "EV Charging Cost Calculator",
+      description: isZh
+        ? "按里程、电耗、综合电价和充电损耗计算电网取电量、充电费及每公里电费。"
+        : "Calculate grid energy, charging cost and cost per kilometer from consumption, price and charging loss.",
+    },
+    {
+      to: "/tools/car-loan",
+      icon: Banknote,
+      title: isZh ? "车贷月供计算器" : "Car Loan Payment Calculator",
+      description: isZh
+        ? "按车价、首付、期限、利率和还款方式计算月供、总利息与购车现金支出。"
+        : "Estimate payments, total interest and cash outlay using vehicle price, down payment, term and rate.",
     },
   ];
 

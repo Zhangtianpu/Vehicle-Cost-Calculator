@@ -100,6 +100,7 @@ export default function EvBreakEvenPage() {
           <Link to="/compare" className="inline-flex items-center gap-2 rounded-lg bg-emerald-500 px-4 py-2 font-medium text-white hover:bg-emerald-600">{isZh ? "进行 1–10 年完整对比" : "Run a full 1–10 year comparison"}<ArrowRight className="h-4 w-4" /></Link>
           <Link to="/tools/cost-per-km" className="inline-flex items-center gap-2 rounded-lg border border-slate-300 px-4 py-2 font-medium text-slate-700 hover:bg-slate-50"><Route className="h-4 w-4" />{isZh ? "计算每公里完整成本" : "Calculate full cost per km"}</Link>
           <Link to="/tools/fuel-cost" className="inline-flex items-center gap-2 rounded-lg border border-slate-300 px-4 py-2 font-medium text-slate-700 hover:bg-slate-50">{isZh ? "计算单次行程油费" : "Calculate trip fuel cost"}</Link>
+          <Link to="/tools/charging-cost" className="inline-flex items-center gap-2 rounded-lg border border-slate-300 px-4 py-2 font-medium text-slate-700 hover:bg-slate-50">{isZh ? "计算实际充电费用" : "Calculate EV charging cost"}</Link>
         </div>
       </article>
     </div>

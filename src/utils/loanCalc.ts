@@ -12,7 +12,7 @@ export function calculateLoanCost(params: LoanParams): LoanResult {
       yearlyCost: 0,
       monthlyPayment: 0,
       totalInterest: 0,
-      totalPayment: downPayment,
+      totalPayment: 0,
       downPayment,
       loanAmount: 0,
     };

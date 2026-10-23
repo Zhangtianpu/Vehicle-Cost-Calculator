@@ -112,6 +112,7 @@ export default function FuelCostPage() {
         <div className="flex flex-wrap gap-3 border-t border-slate-100 pt-5">
           <Link to="/tools/cost-per-km" className="inline-flex items-center gap-2 rounded-lg bg-emerald-500 px-4 py-2 font-medium text-white hover:bg-emerald-600"><Calculator className="h-4 w-4" />{isZh ? "计算包含折旧的每公里成本" : "Calculate full cost per kilometer"}</Link>
           <Link to="/calculator" className="rounded-lg border border-slate-300 px-4 py-2 font-medium text-slate-700 hover:bg-slate-50">{isZh ? "进入完整用车成本计算器" : "Open full ownership calculator"}</Link>
+          <Link to="/tools/charging-cost" className="rounded-lg border border-slate-300 px-4 py-2 font-medium text-slate-700 hover:bg-slate-50">{isZh ? "对比新能源汽车充电费" : "Compare EV charging cost"}</Link>
         </div>
       </article>
     </div>
