@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Gauge, Route, Wrench } from "lucide-react";
+import { ArrowRight, Fuel, Gauge, Route, TrendingDown, Wrench } from "lucide-react";
 import { useLanguageStore } from "@/store/useLanguageStore";
 
 export default function ToolsHubPage() {
@@ -21,6 +21,22 @@ export default function ToolsHubPage() {
       description: isZh
         ? "根据油电单价、能耗、购车差价和年度固定费用，估算电车何时抵消购车差价。"
         : "Estimate when EV energy savings recover the purchase-price premium using your prices, consumption and annual costs.",
+    },
+    {
+      to: "/tools/fuel-cost",
+      icon: Fuel,
+      title: isZh ? "油费计算器" : "Fuel Cost Calculator",
+      description: isZh
+        ? "按里程、百公里油耗和油价计算用油量、总油费以及每公里和百公里油费。"
+        : "Calculate liters required, total fuel cost and cost per kilometer from distance, consumption and fuel price.",
+    },
+    {
+      to: "/tools/depreciation",
+      icon: TrendingDown,
+      title: isZh ? "汽车折旧计算器" : "Car Depreciation Calculator",
+      description: isZh
+        ? "用购车价和当前估值计算累计折旧、年均折旧、保值率与每公里折旧。"
+        : "Use purchase price and current value to calculate total depreciation, retained value and depreciation per kilometer.",
     },
   ];
 

@@ -215,6 +215,12 @@ export default function FeaturesPage() {
         >
           {t.footer.methodology}
         </Link>
+        <Link
+          to="/tools"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-white text-slate-700 border border-slate-300 rounded-lg font-medium hover:bg-slate-50 transition-colors"
+        >
+          {t.footer.tools}
+        </Link>
       </div>
     </div>
   );

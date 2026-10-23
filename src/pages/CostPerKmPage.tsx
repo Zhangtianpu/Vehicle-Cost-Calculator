@@ -94,6 +94,8 @@ export default function CostPerKmPage() {
         </section>
         <div className="flex flex-wrap gap-3 border-t border-slate-100 pt-5">
           <Link to="/calculator" className="inline-flex items-center gap-2 rounded-lg bg-emerald-500 px-4 py-2 font-medium text-white hover:bg-emerald-600"><Calculator className="h-4 w-4" />{isZh ? "计算完整年度成本" : "Calculate full annual cost"}</Link>
+          <Link to="/tools/depreciation" className="rounded-lg border border-slate-300 px-4 py-2 font-medium text-slate-700 hover:bg-slate-50">{isZh ? "先计算车辆折旧" : "Calculate vehicle depreciation"}</Link>
+          <Link to="/tools/fuel-cost" className="rounded-lg border border-slate-300 px-4 py-2 font-medium text-slate-700 hover:bg-slate-50">{isZh ? "单独计算油费" : "Calculate fuel cost"}</Link>
           <Link to="/methodology" className="rounded-lg border border-slate-300 px-4 py-2 font-medium text-slate-700 hover:bg-slate-50">{isZh ? "查看完整计算方法" : "Review methodology"}</Link>
         </div>
       </article>

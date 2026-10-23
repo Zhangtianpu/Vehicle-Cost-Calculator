@@ -74,3 +74,62 @@ export function calculateEvBreakEven(input: EvBreakEvenInput): EvBreakEvenResult
     distance: years === null ? null : years * input.annualMileage,
   };
 }
+
+export interface FuelCostInput {
+  distance: number;
+  consumptionPer100Km: number;
+  fuelPrice: number;
+}
+
+export interface FuelCostResult {
+  liters: number;
+  totalCost: number;
+  costPerKm: number | null;
+  costPer100Km: number;
+}
+
+export function calculateFuelCost(input: FuelCostInput): FuelCostResult {
+  const distance = Math.max(0, input.distance);
+  const consumptionPer100Km = Math.max(0, input.consumptionPer100Km);
+  const fuelPrice = Math.max(0, input.fuelPrice);
+  const liters = distance * consumptionPer100Km / 100;
+  const totalCost = liters * fuelPrice;
+
+  return {
+    liters,
+    totalCost,
+    costPerKm: distance > 0 ? totalCost / distance : null,
+    costPer100Km: consumptionPer100Km * fuelPrice,
+  };
+}
+
+export interface DepreciationInput {
+  purchasePrice: number;
+  currentValue: number;
+  yearsOwned: number;
+  totalMileage: number;
+}
+
+export interface DepreciationResult {
+  totalDepreciation: number;
+  depreciationRate: number | null;
+  retainedValueRate: number | null;
+  annualDepreciation: number | null;
+  depreciationPerKm: number | null;
+}
+
+export function calculateDepreciation(input: DepreciationInput): DepreciationResult {
+  const purchasePrice = Math.max(0, input.purchasePrice);
+  const currentValue = Math.max(0, input.currentValue);
+  const yearsOwned = Math.max(0, input.yearsOwned);
+  const totalMileage = Math.max(0, input.totalMileage);
+  const totalDepreciation = Math.max(0, purchasePrice - currentValue);
+
+  return {
+    totalDepreciation,
+    depreciationRate: purchasePrice > 0 ? totalDepreciation / purchasePrice * 100 : null,
+    retainedValueRate: purchasePrice > 0 ? currentValue / purchasePrice * 100 : null,
+    annualDepreciation: yearsOwned > 0 ? totalDepreciation / yearsOwned : null,
+    depreciationPerKm: totalMileage > 0 ? totalDepreciation / totalMileage : null,
+  };
+}

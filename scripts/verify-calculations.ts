@@ -2,7 +2,12 @@ import assert from "node:assert/strict";
 import { calculateLoanCost } from "../src/utils/loanCalc";
 import { calculateMultiYearCosts, type VehicleCalcParams } from "../src/utils/multiYearCalc";
 import type { ModuleToggle } from "../src/types";
-import { calculateCostPerKm, calculateEvBreakEven } from "../src/utils/quickTools";
+import {
+  calculateCostPerKm,
+  calculateDepreciation,
+  calculateEvBreakEven,
+  calculateFuelCost,
+} from "../src/utils/quickTools";
 
 const equalPrincipal = calculateLoanCost({
   vehiclePrice: 120000,
@@ -120,5 +125,30 @@ const noBreakEven = calculateEvBreakEven({
 });
 assert.equal(noBreakEven.canBreakEven, false);
 assert.equal(noBreakEven.years, null);
+
+const fuelCost = calculateFuelCost({
+  distance: 500,
+  consumptionPer100Km: 8,
+  fuelPrice: 7.5,
+});
+assert.equal(fuelCost.liters, 40);
+assert.equal(fuelCost.totalCost, 300);
+assert.equal(fuelCost.costPerKm, 0.6);
+assert.equal(fuelCost.costPer100Km, 60);
+assert.equal(calculateFuelCost({ distance: 0, consumptionPer100Km: 8, fuelPrice: 7.5 }).costPerKm, null);
+
+const depreciation = calculateDepreciation({
+  purchasePrice: 150000,
+  currentValue: 90000,
+  yearsOwned: 3,
+  totalMileage: 45000,
+});
+assert.equal(depreciation.totalDepreciation, 60000);
+assert.equal(depreciation.depreciationRate, 40);
+assert.equal(depreciation.retainedValueRate, 60);
+assert.equal(depreciation.annualDepreciation, 20000);
+assert.ok(Math.abs(depreciation.depreciationPerKm! - 4 / 3) < 0.000001);
+assert.equal(calculateDepreciation({ purchasePrice: 0, currentValue: 0, yearsOwned: 0, totalMileage: 0 }).depreciationRate, null);
+assert.equal(calculateDepreciation({ purchasePrice: 100000, currentValue: 110000, yearsOwned: 1, totalMileage: 10000 }).totalDepreciation, 0);
 
 console.log("Calculation verification passed.");

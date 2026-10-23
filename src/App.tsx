@@ -17,6 +17,8 @@ import MethodologyPage from "@/pages/MethodologyPage";
 import ToolsHubPage from "@/pages/ToolsHubPage";
 import CostPerKmPage from "@/pages/CostPerKmPage";
 import EvBreakEvenPage from "@/pages/EvBreakEvenPage";
+import FuelCostPage from "@/pages/FuelCostPage";
+import DepreciationPage from "@/pages/DepreciationPage";
 import NotFoundPage from "@/pages/NotFoundPage";
 
 export default function App() {
@@ -37,6 +39,8 @@ export default function App() {
             <Route path="/tools" element={<ToolsHubPage />} />
             <Route path="/tools/cost-per-km" element={<CostPerKmPage />} />
             <Route path="/tools/ev-break-even" element={<EvBreakEvenPage />} />
+            <Route path="/tools/fuel-cost" element={<FuelCostPage />} />
+            <Route path="/tools/depreciation" element={<DepreciationPage />} />
             <Route path="/privacy" element={<PrivacyPolicyPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/disclaimer" element={<DisclaimerPage />} />
