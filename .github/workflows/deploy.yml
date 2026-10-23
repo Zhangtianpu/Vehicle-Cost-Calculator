@@ -6,6 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
+  actions: read
   contents: read
   pages: write
   id-token: write
@@ -48,6 +49,28 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
+      - name: Wait for legacy branch Pages deployment
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          status="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs?head_sha=${GITHUB_SHA}&per_page=20" --jq '[.workflow_runs[] | select(.path == "dynamic/pages/pages-build-deployment")] | first | .status // "missing"')"
+          if [ "$status" = "missing" ]; then
+            echo "No legacy branch deployment found; continuing."
+            exit 0
+          fi
+
+          for attempt in {1..36}; do
+            if [ "$status" = "completed" ]; then
+              echo "Legacy branch deployment completed; publishing the Vite artifact last."
+              exit 0
+            fi
+            sleep 5
+            status="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs?head_sha=${GITHUB_SHA}&per_page=20" --jq '[.workflow_runs[] | select(.path == "dynamic/pages/pages-build-deployment")] | first | .status // "missing"')"
+          done
+
+          echo "Timed out waiting for the legacy Pages deployment."
+          exit 1
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
