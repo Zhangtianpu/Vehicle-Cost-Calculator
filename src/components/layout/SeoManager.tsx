@@ -112,7 +112,11 @@ export default function SeoManager() {
       ? { "@context": "https://schema.org", "@type": "Article", headline: locale === "zh" ? article.zh : article.en, dateModified: "2026-10-23", author: { "@type": "Person", name: "Zhangtianpu", url: "https://github.com/Zhangtianpu" }, publisher: { "@type": "Organization", name: "Vehicle Cost Calculator" }, mainEntityOfPage: canonical }
       : normalizedPath === "/" || normalizedPath.startsWith("/tools/")
         ? { "@context": "https://schema.org", "@type": "WebApplication", name: seo.title.split("｜")[0].split("|")[0].trim(), url: canonical, applicationCategory: "FinanceApplication", operatingSystem: "Any", offers: { "@type": "Offer", price: "0", priceCurrency: locale === "zh" ? "CNY" : "USD" } }
-        : null;
+        : normalizedPath === "/tools"
+          ? { "@context": "https://schema.org", "@type": "CollectionPage", name: seo.title, description: seo.description, url: canonical, isPartOf: { "@type": "WebSite", name: "Vehicle Cost Calculator", url: `${SITE_URL}/` } }
+        : isKnownPage
+          ? { "@context": "https://schema.org", "@type": normalizedPath === "/about" ? "AboutPage" : normalizedPath === "/contact" ? "ContactPage" : "WebPage", name: seo.title, description: seo.description, url: canonical, isPartOf: { "@type": "WebSite", name: "Vehicle Cost Calculator", url: `${SITE_URL}/` } }
+          : null;
     document.getElementById("route-schema")?.remove();
     if (schema) {
       const script = document.createElement("script");
