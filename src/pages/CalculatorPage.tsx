@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import FuelCalculator from "@/components/calculator/FuelCalculator";
 import InsuranceCalculator from "@/components/calculator/InsuranceCalculator";
 import LoanCalculator from "@/components/calculator/LoanCalculator";
@@ -24,6 +25,9 @@ export default function CalculatorPage() {
             ? "按您的实际里程、能源价格、保险、车贷、保养、停车和折旧参数，估算月度与年度养车成本。"
             : "Estimate monthly and annual ownership costs using your mileage, energy price, insurance, financing, maintenance, parking and depreciation inputs."}
         </p>
+        <Link to="/methodology" className="mt-2 inline-flex text-xs font-medium text-emerald-600 hover:text-emerald-700">
+          {locale === "zh" ? "查看公式、假设与限制 →" : "Review formulas, assumptions and limitations →"}
+        </Link>
       </div>
       <div className="space-y-6">
         <FuelCalculator />

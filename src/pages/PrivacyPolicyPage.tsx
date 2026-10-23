@@ -8,7 +8,7 @@ export default function PrivacyPolicyPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <h1 className="text-2xl font-bold text-slate-800 mb-6">Privacy Policy</h1>
         <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-4">
-          <p><strong>Last updated:</strong> May 26, 2026</p>
+          <p><strong>Last updated:</strong> October 23, 2026</p>
 
           <h2 className="text-lg font-semibold text-slate-700 mt-6">1. Introduction</h2>
           <p>
@@ -20,20 +20,20 @@ export default function PrivacyPolicyPage() {
           <ul className="list-disc pl-5 space-y-1">
             <li><strong>Usage Data:</strong> Information about how you use our calculator tools, including input values and calculated results. This data is processed entirely in your browser and is not transmitted to our servers.</li>
             <li><strong>Device Information:</strong> Browser type, operating system, device type, and screen resolution.</li>
-            <li><strong>Cookies and Tracking Technologies:</strong> We use cookies and similar technologies to enhance your experience and deliver personalized advertisements.</li>
+            <li><strong>Cookies and Tracking Technologies:</strong> With your consent, Google Analytics may use cookies or similar storage to measure site usage. Advertising storage remains disabled unless advertising is approved, configured and consented to.</li>
           </ul>
 
           <h2 className="text-lg font-semibold text-slate-700 mt-6">3. How We Use Your Information</h2>
           <ul className="list-disc pl-5 space-y-1">
             <li>To provide and maintain our vehicle cost calculation tools</li>
             <li>To improve and personalize your experience</li>
-            <li>To display relevant advertisements through Google AdSense</li>
+            <li>To display advertisements only if Google AdSense is approved and configured</li>
             <li>To analyze website usage and trends</li>
           </ul>
 
           <h2 className="text-lg font-semibold text-slate-700 mt-6">4. Google AdSense and Advertising</h2>
           <p>
-            We use Google AdSense to display advertisements on our website. Google AdSense may use cookies and web beacons to serve ads based on your prior visits to our website or other websites. Google's use of advertising cookies enables it and its partners to serve ads based on your visit to our site and/or other sites on the Internet.
+            This site is preparing for Google AdSense but does not load AdSense advertising code until a valid publisher account and ad slots are configured. If advertising is enabled later, Google may use cookies or web beacons subject to your consent choices and applicable law.
           </p>
           <p>
             You may opt out of personalized advertising by visiting{" "}
@@ -52,8 +52,8 @@ export default function PrivacyPolicyPage() {
           <p>Our website uses the following types of cookies:</p>
           <ul className="list-disc pl-5 space-y-1">
             <li><strong>Essential Cookies:</strong> Required for the website to function properly (e.g., saving your calculator preferences).</li>
-            <li><strong>Advertising Cookies:</strong> Used by Google AdSense to deliver personalized advertisements.</li>
-            <li><strong>Analytics Cookies:</strong> Used to understand how visitors interact with our website.</li>
+            <li><strong>Advertising Cookies:</strong> Disabled while AdSense is not configured; if enabled later, these will be controlled by consent settings.</li>
+            <li><strong>Analytics Cookies:</strong> Used by Google Analytics after consent to understand aggregate site usage.</li>
           </ul>
           <p>
             You can manage your cookie preferences through our cookie consent banner or your browser settings.
@@ -62,11 +62,12 @@ export default function PrivacyPolicyPage() {
           <h2 className="text-lg font-semibold text-slate-700 mt-6">6. Third-Party Services</h2>
           <p>We may use the following third-party services:</p>
           <ul className="list-disc pl-5 space-y-1">
-            <li><strong>Google AdSense:</strong> For displaying advertisements.{" "}
+            <li><strong>Google Analytics:</strong> For aggregate usage measurement, subject to consent.{" "}
               <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="text-emerald-600 underline">
                 Google Privacy Policy
               </a>
             </li>
+            <li><strong>Google AdSense:</strong> Planned for advertising after account approval and configuration; currently not loaded without a valid publisher ID.</li>
           </ul>
 
           <h2 className="text-lg font-semibold text-slate-700 mt-6">7. Data Retention</h2>
@@ -101,10 +102,11 @@ export default function PrivacyPolicyPage() {
 
           <h2 className="text-lg font-semibold text-slate-700 mt-6">11. Contact Us</h2>
           <p>
-            If you have any questions about this privacy policy, please contact us at:{" "}
-            <a href="mailto:privacy@vehiclecostcalc.com" className="text-emerald-600 underline">
-              privacy@vehiclecostcalc.com
+            If you have questions about this policy, use the public{" "}
+            <a href="https://github.com/Zhangtianpu/Vehicle-Cost-Calculator/issues" target="_blank" rel="noopener noreferrer" className="text-emerald-600 underline">
+              issue tracker
             </a>
+            . Do not include sensitive personal information.
           </p>
         </div>
       </div>
@@ -115,7 +117,7 @@ export default function PrivacyPolicyPage() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <h1 className="text-2xl font-bold text-slate-800 mb-6">隐私政策</h1>
       <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-4">
-        <p><strong>最后更新：</strong>2026年5月26日</p>
+        <p><strong>最后更新：</strong>2026年10月23日</p>
 
         <h2 className="text-lg font-semibold text-slate-700 mt-6">1. 引言</h2>
         <p>
@@ -127,20 +129,20 @@ export default function PrivacyPolicyPage() {
         <ul className="list-disc pl-5 space-y-1">
           <li><strong>使用数据：</strong>关于您如何使用我们计算器工具的信息，包括输入值和计算结果。这些数据完全在您的浏览器中处理，不会传输到我们的服务器。</li>
           <li><strong>设备信息：</strong>浏览器类型、操作系统、设备类型和屏幕分辨率。</li>
-          <li><strong>Cookie 和跟踪技术：</strong>我们使用 Cookie 和类似技术来增强您的体验并提供个性化广告。</li>
+          <li><strong>Cookie 和跟踪技术：</strong>在您同意后，Google Analytics 可能使用 Cookie 或类似存储来统计网站使用情况。广告存储在广告通过审核、完成配置并获得同意前保持禁用。</li>
         </ul>
 
         <h2 className="text-lg font-semibold text-slate-700 mt-6">3. 我们如何使用您的信息</h2>
         <ul className="list-disc pl-5 space-y-1">
           <li>提供和维护我们的用车成本计算工具</li>
           <li>改善和个性化您的使用体验</li>
-          <li>通过 Google AdSense 展示相关广告</li>
+          <li>仅在 Google AdSense 通过审核并完成配置后展示广告</li>
           <li>分析网站使用情况和趋势</li>
         </ul>
 
         <h2 className="text-lg font-semibold text-slate-700 mt-6">4. Google AdSense 与广告</h2>
         <p>
-          我们使用 Google AdSense 在本网站上展示广告。Google AdSense 可能使用 Cookie 和网络信标，根据您之前访问本网站或其他网站的记录来投放广告。Google 使用广告 Cookie 使其及其合作伙伴能够根据您访问本网站和/或互联网上其他网站的情况投放广告。
+          本站正在为 Google AdSense 做准备，但在配置有效的发布商账号和广告位之前不会加载 AdSense 广告代码。未来启用广告后，Google 可能在遵守您的同意选择和适用法律的前提下使用 Cookie 或网络信标。
         </p>
         <p>
           您可以通过访问{" "}
@@ -160,8 +162,8 @@ export default function PrivacyPolicyPage() {
         <p>本网站使用以下类型的 Cookie：</p>
         <ul className="list-disc pl-5 space-y-1">
           <li><strong>必要 Cookie：</strong>网站正常运行所必需（如保存您的计算器偏好设置）。</li>
-          <li><strong>广告 Cookie：</strong>由 Google AdSense 使用，用于投放个性化广告。</li>
-          <li><strong>分析 Cookie：</strong>用于了解访客如何与我们的网站互动。</li>
+          <li><strong>广告 Cookie：</strong>AdSense 未配置期间保持禁用；未来启用时将受同意设置控制。</li>
+          <li><strong>分析 Cookie：</strong>在获得同意后由 Google Analytics 用于汇总分析网站使用情况。</li>
         </ul>
         <p>
           您可以通过我们的 Cookie 同意横幅或浏览器设置管理您的 Cookie 偏好。
@@ -170,11 +172,12 @@ export default function PrivacyPolicyPage() {
         <h2 className="text-lg font-semibold text-slate-700 mt-6">6. 第三方服务</h2>
         <p>我们可能使用以下第三方服务：</p>
         <ul className="list-disc pl-5 space-y-1">
-          <li><strong>Google AdSense：</strong>用于展示广告。{" "}
+          <li><strong>Google Analytics：</strong>在获得同意后用于汇总访问统计。{" "}
             <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="text-emerald-600 underline">
               Google 隐私政策
             </a>
           </li>
+          <li><strong>Google AdSense：</strong>计划在账号通过审核并完成配置后用于广告；没有有效发布商 ID 时不会加载。</li>
         </ul>
 
         <h2 className="text-lg font-semibold text-slate-700 mt-6">7. 数据保留</h2>
@@ -209,10 +212,11 @@ export default function PrivacyPolicyPage() {
 
         <h2 className="text-lg font-semibold text-slate-700 mt-6">11. 联系我们</h2>
         <p>
-          如您对本隐私政策有任何疑问，请通过以下方式联系我们：{" "}
-          <a href="mailto:privacy@vehiclecostcalc.com" className="text-emerald-600 underline">
-            privacy@vehiclecostcalc.com
+          如对本隐私政策有疑问，请通过公开的{" "}
+          <a href="https://github.com/Zhangtianpu/Vehicle-Cost-Calculator/issues" target="_blank" rel="noopener noreferrer" className="text-emerald-600 underline">
+            GitHub Issues
           </a>
+          提交。请勿包含个人敏感信息。
         </p>
       </div>
     </div>

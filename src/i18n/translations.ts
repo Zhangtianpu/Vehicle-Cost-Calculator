@@ -177,6 +177,7 @@ export const translations = {
     },
     footer: {
       features: "功能介绍",
+      methodology: "计算方法",
       about: "关于我们",
       privacy: "隐私政策",
       disclaimer: "免责声明",
@@ -449,6 +450,7 @@ export const translations = {
     },
     footer: {
       features: "Features",
+      methodology: "Methodology",
       about: "About Us",
       privacy: "Privacy Policy",
       disclaimer: "Disclaimer",

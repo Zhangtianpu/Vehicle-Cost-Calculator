@@ -1,18 +1,29 @@
+import { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import CookieConsent from "@/components/layout/CookieConsent";
 import SeoManager from "@/components/layout/SeoManager";
-import CalculatorPage from "@/pages/CalculatorPage";
-import ComparePage from "@/pages/ComparePage";
-import FeaturesPage from "@/pages/FeaturesPage";
-import BlogPage from "@/pages/BlogPage";
-import BlogArticlePage from "@/pages/BlogArticlePage";
-import FAQPage from "@/pages/FAQPage";
-import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
-import AboutPage from "@/pages/AboutPage";
-import DisclaimerPage from "@/pages/DisclaimerPage";
-import ContactPage from "@/pages/ContactPage";
+
+const CalculatorPage = lazy(() => import("@/pages/CalculatorPage"));
+const ComparePage = lazy(() => import("@/pages/ComparePage"));
+const FeaturesPage = lazy(() => import("@/pages/FeaturesPage"));
+const BlogPage = lazy(() => import("@/pages/BlogPage"));
+const BlogArticlePage = lazy(() => import("@/pages/BlogArticlePage"));
+const FAQPage = lazy(() => import("@/pages/FAQPage"));
+const PrivacyPolicyPage = lazy(() => import("@/pages/PrivacyPolicyPage"));
+const AboutPage = lazy(() => import("@/pages/AboutPage"));
+const DisclaimerPage = lazy(() => import("@/pages/DisclaimerPage"));
+const ContactPage = lazy(() => import("@/pages/ContactPage"));
+const MethodologyPage = lazy(() => import("@/pages/MethodologyPage"));
+
+function PageLoader() {
+  return (
+    <div className="min-h-[40vh] flex items-center justify-center" role="status" aria-label="Loading">
+      <div className="h-8 w-8 animate-spin rounded-full border-4 border-slate-200 border-t-emerald-500" />
+    </div>
+  );
+}
 
 export default function App() {
   return (
@@ -21,18 +32,21 @@ export default function App() {
         <SeoManager />
         <Header />
         <main className="flex-1">
-          <Routes>
-            <Route path="/" element={<FeaturesPage />} />
-            <Route path="/calculator" element={<CalculatorPage />} />
-            <Route path="/compare" element={<ComparePage />} />
-            <Route path="/blog" element={<BlogPage />} />
-            <Route path="/blog/:id" element={<BlogArticlePage />} />
-            <Route path="/faq" element={<FAQPage />} />
-            <Route path="/privacy" element={<PrivacyPolicyPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/disclaimer" element={<DisclaimerPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-          </Routes>
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+              <Route path="/" element={<FeaturesPage />} />
+              <Route path="/calculator" element={<CalculatorPage />} />
+              <Route path="/compare" element={<ComparePage />} />
+              <Route path="/blog" element={<BlogPage />} />
+              <Route path="/blog/:id" element={<BlogArticlePage />} />
+              <Route path="/faq" element={<FAQPage />} />
+              <Route path="/methodology" element={<MethodologyPage />} />
+              <Route path="/privacy" element={<PrivacyPolicyPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/disclaimer" element={<DisclaimerPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+            </Routes>
+          </Suspense>
         </main>
         <Footer />
         <CookieConsent />

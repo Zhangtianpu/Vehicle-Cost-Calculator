@@ -9,7 +9,8 @@
     "postbuild": "node scripts/generate-static-pages.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
-    "check": "tsc -b --noEmit"
+    "check": "tsc -b --noEmit",
+    "verify:calculations": "sucrase-node scripts/verify-calculations.ts"
   },
   "dependencies": {
     "clsx": "^2.1.1",

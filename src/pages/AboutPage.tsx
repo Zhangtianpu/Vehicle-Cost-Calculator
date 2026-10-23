@@ -8,9 +8,9 @@ export default function AboutPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <h1 className="text-2xl font-bold text-slate-800 mb-6">About Us</h1>
         <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-4">
-          <h2 className="text-lg font-semibold text-slate-700">Who We Are</h2>
+          <h2 className="text-lg font-semibold text-slate-700">Who Maintains This Site</h2>
           <p>
-            Vehicle Cost Calculator is a free online tool designed to help car buyers and owners make informed financial decisions. We believe that understanding the true cost of vehicle ownership should be simple, transparent, and accessible to everyone.
+            Vehicle Cost Calculator is a free, independently maintained online tool for car buyers and owners. Its source code and change history are public so calculation logic can be inspected and corrected.
           </p>
 
           <h2 className="text-lg font-semibold text-slate-700 mt-6">What We Do</h2>
@@ -42,12 +42,13 @@ export default function AboutPage() {
             The calculations provided by this tool are for reference purposes only. Actual costs may vary based on your location, insurance provider, lender terms, driving habits, and other factors. Always consult with qualified professionals for financial decisions.
           </p>
 
-          <h2 className="text-lg font-semibold text-slate-700 mt-6">Contact Us</h2>
+          <h2 className="text-lg font-semibold text-slate-700 mt-6">Feedback and Corrections</h2>
           <p>
-            If you have questions, suggestions, or feedback, please reach out to us at:{" "}
-            <a href="mailto:contact@vehiclecostcalc.com" className="text-emerald-600 underline">
-              contact@vehiclecostcalc.com
+            Questions, corrections and suggestions can be submitted through the public{" "}
+            <a href="https://github.com/Zhangtianpu/Vehicle-Cost-Calculator/issues" target="_blank" rel="noopener noreferrer" className="text-emerald-600 underline">
+              GitHub issue tracker
             </a>
+            . Please do not include sensitive personal information.
           </p>
         </div>
       </div>
@@ -58,9 +59,9 @@ export default function AboutPage() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <h1 className="text-2xl font-bold text-slate-800 mb-6">关于我们</h1>
       <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-4">
-        <h2 className="text-lg font-semibold text-slate-700">我们是谁</h2>
+        <h2 className="text-lg font-semibold text-slate-700">谁在维护本站</h2>
         <p>
-          用车成本计算器是一款免费的在线工具，旨在帮助购车者和车主做出明智的财务决策。我们相信，了解车辆拥有的真实成本应该是简单、透明且人人可及的。
+          用车成本计算器是一款由独立开发者维护的免费在线工具，服务于购车者和车主。本站源代码和更新记录公开，方便用户检查计算逻辑、报告错误并参与改进。
         </p>
 
         <h2 className="text-lg font-semibold text-slate-700 mt-6">我们做什么</h2>
@@ -90,12 +91,13 @@ export default function AboutPage() {
           本工具提供的计算结果仅供参考。实际费用可能因您所在地区、保险提供商、贷款条款、驾驶习惯等因素而有所不同。做出财务决策时，请务必咨询合格的专业人士。
         </p>
 
-        <h2 className="text-lg font-semibold text-slate-700 mt-6">联系我们</h2>
+        <h2 className="text-lg font-semibold text-slate-700 mt-6">反馈与纠错</h2>
         <p>
-          如您有问题、建议或反馈，请通过以下方式联系我们：{" "}
-          <a href="mailto:contact@vehiclecostcalc.com" className="text-emerald-600 underline">
-            contact@vehiclecostcalc.com
+          如有问题、内容纠错或功能建议，请通过公开的{" "}
+          <a href="https://github.com/Zhangtianpu/Vehicle-Cost-Calculator/issues" target="_blank" rel="noopener noreferrer" className="text-emerald-600 underline">
+            GitHub Issues
           </a>
+          提交。请勿包含个人敏感信息。
         </p>
       </div>
     </div>

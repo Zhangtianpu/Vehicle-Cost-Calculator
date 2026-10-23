@@ -8,7 +8,7 @@ export default function DisclaimerPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <h1 className="text-2xl font-bold text-slate-800 mb-6">Disclaimer & Terms of Use</h1>
         <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-4">
-          <p><strong>Last updated:</strong> May 26, 2026</p>
+          <p><strong>Last updated:</strong> October 23, 2026</p>
 
           <h2 className="text-lg font-semibold text-slate-700 mt-6">1. General Disclaimer</h2>
           <p>
@@ -45,7 +45,7 @@ export default function DisclaimerPage() {
 
           <h2 className="text-lg font-semibold text-slate-700 mt-6">6. Third-Party Content</h2>
           <p>
-            This website may display advertisements provided by third-party advertising networks, including Google AdSense. We do not endorse or guarantee the products or services advertised on our website. The presence of advertisements does not imply our endorsement.
+            This website may display third-party advertisements after an advertising account is approved and configured. We do not endorse or guarantee advertised products or services. Advertising does not influence calculator outputs or editorial content.
           </p>
 
           <h2 className="text-lg font-semibold text-slate-700 mt-6">7. External Links</h2>
@@ -65,9 +65,9 @@ export default function DisclaimerPage() {
 
           <h2 className="text-lg font-semibold text-slate-700 mt-6">10. Contact</h2>
           <p>
-            For questions about this disclaimer, contact us at:{" "}
-            <a href="mailto:legal@vehiclecostcalc.com" className="text-emerald-600 underline">
-              legal@vehiclecostcalc.com
+            For questions about this disclaimer, use the public{" "}
+            <a href="https://github.com/Zhangtianpu/Vehicle-Cost-Calculator/issues" target="_blank" rel="noopener noreferrer" className="text-emerald-600 underline">
+              issue tracker
             </a>
           </p>
         </div>
@@ -79,7 +79,7 @@ export default function DisclaimerPage() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <h1 className="text-2xl font-bold text-slate-800 mb-6">免责声明与使用条款</h1>
       <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-4">
-        <p><strong>最后更新：</strong>2026年5月26日</p>
+        <p><strong>最后更新：</strong>2026年10月23日</p>
 
         <h2 className="text-lg font-semibold text-slate-700 mt-6">1. 一般免责声明</h2>
         <p>
@@ -116,7 +116,7 @@ export default function DisclaimerPage() {
 
         <h2 className="text-lg font-semibold text-slate-700 mt-6">6. 第三方内容</h2>
         <p>
-          本网站可能展示由第三方广告网络（包括 Google AdSense）提供的广告。我们不认可或保证本网站上广告的产品或服务。广告的存在不意味着我们的认可。
+          本网站可能在广告账号通过审核并完成配置后展示第三方广告。本站不认可或保证广告中的产品或服务；广告不会影响计算结果或编辑内容。
         </p>
 
         <h2 className="text-lg font-semibold text-slate-700 mt-6">7. 外部链接</h2>
@@ -136,9 +136,9 @@ export default function DisclaimerPage() {
 
         <h2 className="text-lg font-semibold text-slate-700 mt-6">10. 联系方式</h2>
         <p>
-          如对本免责声明有疑问，请联系：{" "}
-          <a href="mailto:legal@vehiclecostcalc.com" className="text-emerald-600 underline">
-            legal@vehiclecostcalc.com
+          如对本免责声明有疑问，请通过公开的{" "}
+          <a href="https://github.com/Zhangtianpu/Vehicle-Cost-Calculator/issues" target="_blank" rel="noopener noreferrer" className="text-emerald-600 underline">
+            GitHub Issues
           </a>
         </p>
       </div>

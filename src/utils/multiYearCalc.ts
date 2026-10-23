@@ -100,8 +100,25 @@ function calculateYearlyLoan(
   params: LoanParams,
   year: number
 ): number {
-  if (year > Math.ceil(params.loanTermMonths / 12)) return 0;
-  return calculateLoanCost(params).monthlyPayment * 12;
+  const startMonth = (year - 1) * 12;
+  const endMonth = Math.min(year * 12, params.loanTermMonths);
+  if (startMonth >= params.loanTermMonths || endMonth <= startMonth) return 0;
+
+  const loanAmount = params.vehiclePrice * (1 - params.downPaymentRatio);
+  if (loanAmount <= 0) return 0;
+  const monthlyRate = params.annualRate / 100 / 12;
+
+  if (params.repaymentMethod === "equal_installment") {
+    return calculateLoanCost(params).monthlyPayment * (endMonth - startMonth);
+  }
+
+  const monthlyPrincipal = loanAmount / params.loanTermMonths;
+  let yearlyPayment = 0;
+  for (let month = startMonth; month < endMonth; month++) {
+    const remainingPrincipal = loanAmount - monthlyPrincipal * month;
+    yearlyPayment += monthlyPrincipal + remainingPrincipal * monthlyRate;
+  }
+  return Math.round(yearlyPayment * 100) / 100;
 }
 
 function calculateSingleVehicleYearlyCosts(

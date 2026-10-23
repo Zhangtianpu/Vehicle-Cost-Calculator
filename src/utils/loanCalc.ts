@@ -43,7 +43,7 @@ function calculateEqualInstallment(
 
   const totalPayment = monthlyPayment * months;
   const totalInterest = totalPayment - loanAmount;
-  const yearlyCost = monthlyPayment * 12;
+  const yearlyCost = monthlyPayment * Math.min(12, months);
 
   return {
     monthlyCost: Math.round(yearlyCost / 12 * 100) / 100,
@@ -72,7 +72,11 @@ function calculateEqualPrincipal(
 
   const totalPayment = loanAmount + totalInterest;
   const firstMonthPayment = monthlyPrincipal + loanAmount * monthlyRate;
-  const yearlyCost = firstMonthPayment * 12;
+  let yearlyCost = 0;
+  for (let i = 0; i < Math.min(12, months); i++) {
+    const remaining = loanAmount - monthlyPrincipal * i;
+    yearlyCost += monthlyPrincipal + remaining * monthlyRate;
+  }
 
   return {
     monthlyCost: Math.round(yearlyCost / 12 * 100) / 100,
