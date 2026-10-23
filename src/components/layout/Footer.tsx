@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Car } from "lucide-react";
 import { useLanguageStore } from "@/store/useLanguageStore";
 
@@ -18,25 +19,25 @@ export default function Footer() {
             </p>
           </div>
           <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs border-t border-slate-700 pt-4">
-            <a href="#/" className="hover:text-slate-200 transition-colors">
+            <Link to="/" className="hover:text-slate-200 transition-colors">
               {t.footer.features}
-            </a>
+            </Link>
             <span className="text-slate-600">|</span>
-            <a href="#/about" className="hover:text-slate-200 transition-colors">
+            <Link to="/about" className="hover:text-slate-200 transition-colors">
               {t.footer.about}
-            </a>
+            </Link>
             <span className="text-slate-600">|</span>
-            <a href="#/privacy" className="hover:text-slate-200 transition-colors">
+            <Link to="/privacy" className="hover:text-slate-200 transition-colors">
               {t.footer.privacy}
-            </a>
+            </Link>
             <span className="text-slate-600">|</span>
-            <a href="#/disclaimer" className="hover:text-slate-200 transition-colors">
+            <Link to="/disclaimer" className="hover:text-slate-200 transition-colors">
               {t.footer.disclaimer}
-            </a>
+            </Link>
             <span className="text-slate-600">|</span>
-            <a href="#/contact" className="hover:text-slate-200 transition-colors">
+            <Link to="/contact" className="hover:text-slate-200 transition-colors">
               {t.footer.contact}
-            </a>
+            </Link>
           </div>
           <p className="text-[10px] text-center text-slate-500">
             © {new Date().getFullYear()} Vehicle Cost Calculator. All rights reserved.

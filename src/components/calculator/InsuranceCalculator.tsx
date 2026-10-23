@@ -7,7 +7,7 @@ import { calculateInsuranceCost } from "@/utils/insuranceCalc";
 export default function InsuranceCalculator() {
   const { vehicleType, insuranceParams, setInsuranceParams, costSummary, moduleToggle, setModuleToggle, setVehiclePrice } =
     useVehicleStore();
-  const { locale, t } = useLanguageStore();
+  const { t } = useLanguageStore();
   const isElectric = vehicleType === "electric";
   const calculatedInsurance = calculateInsuranceCost(insuranceParams, vehicleType);
   const hasCustomCost = insuranceParams.customYearlyCost !== null && insuranceParams.customYearlyCost > 0;

@@ -7,15 +7,17 @@ interface AdSidebarProps {
 }
 
 export default function AdSidebar({
-  slot = "XXXXXXXXXX",
+  slot = import.meta.env.VITE_ADSENSE_SIDEBAR_SLOT,
   className = "",
 }: AdSidebarProps) {
   const adRef = useRef<HTMLDivElement>(null);
   const initialized = useRef(false);
   const { t } = useLanguageStore();
+  const client = import.meta.env.VITE_ADSENSE_CLIENT;
+  const isConfigured = /^ca-pub-\d+$/.test(client || "") && /^\d+$/.test(slot || "");
 
   useEffect(() => {
-    if (initialized.current) return;
+    if (!isConfigured || initialized.current) return;
     initialized.current = true;
     try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -23,7 +25,9 @@ export default function AdSidebar({
     } catch {
       // ignore
     }
-  }, []);
+  }, [isConfigured]);
+
+  if (!isConfigured) return null;
 
   return (
     <div className={`hidden lg:block ${className}`}>
@@ -37,12 +41,9 @@ export default function AdSidebar({
           <ins
             className="adsbygoogle"
             style={{ display: "block", width: "300px", height: "250px" }}
-            data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+            data-ad-client={client}
             data-ad-slot={slot}
           />
-          <div className="bg-slate-50 border border-dashed border-slate-300 rounded-lg flex items-center justify-center h-[250px] text-slate-400 text-xs">
-            300×250
-          </div>
         </div>
       </div>
     </div>

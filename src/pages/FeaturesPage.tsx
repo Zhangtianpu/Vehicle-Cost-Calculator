@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import {
   Fuel,
-  Zap,
   Shield,
   Banknote,
   Wrench,

@@ -8,16 +8,18 @@ interface AdBannerProps {
 }
 
 export default function AdBanner({
-  slot = "XXXXXXXXXX",
+  slot = import.meta.env.VITE_ADSENSE_BANNER_SLOT,
   format = "horizontal",
   className = "",
 }: AdBannerProps) {
   const adRef = useRef<HTMLDivElement>(null);
   const initialized = useRef(false);
   const { t } = useLanguageStore();
+  const client = import.meta.env.VITE_ADSENSE_CLIENT;
+  const isConfigured = /^ca-pub-\d+$/.test(client || "") && /^\d+$/.test(slot || "");
 
   useEffect(() => {
-    if (initialized.current) return;
+    if (!isConfigured || initialized.current) return;
     initialized.current = true;
     try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -25,7 +27,9 @@ export default function AdBanner({
     } catch {
       // ignore
     }
-  }, []);
+  }, [isConfigured]);
+
+  if (!isConfigured) return null;
 
   return (
     <div className={`flex justify-center ${className}`}>
@@ -39,14 +43,11 @@ export default function AdBanner({
           <ins
             className="adsbygoogle"
             style={{ display: "block" }}
-            data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+            data-ad-client={client}
             data-ad-slot={slot}
             data-ad-format={format}
             data-full-width-responsive="true"
           />
-          <div className="bg-slate-50 border border-dashed border-slate-300 rounded-lg flex items-center justify-center h-[90px] text-slate-400 text-xs">
-            {format === "horizontal" ? "728×90" : "自适应"}
-          </div>
         </div>
       </div>
     </div>

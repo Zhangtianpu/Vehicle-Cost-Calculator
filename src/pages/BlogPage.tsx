@@ -3,7 +3,7 @@ import { Calendar, Clock, ArrowRight } from "lucide-react";
 import { useLanguageStore } from "@/store/useLanguageStore";
 
 export default function BlogPage() {
-  const { t, locale } = useLanguageStore();
+  const { t } = useLanguageStore();
 
   const articles = [
     {

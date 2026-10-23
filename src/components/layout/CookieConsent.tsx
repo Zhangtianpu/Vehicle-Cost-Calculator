@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Cookie, X } from "lucide-react";
 import { useLanguageStore } from "@/store/useLanguageStore";
 
@@ -23,14 +24,13 @@ export default function CookieConsent() {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const gtag = (window as any).gtag;
       if (typeof gtag === "function") {
-        if (state === "accepted") {
-          gtag("consent", "update", {
-            ad_storage: "granted",
-            ad_user_data: "granted",
-            ad_personalization: "granted",
-            analytics_storage: "granted",
-          });
-        }
+        const granted = state === "accepted";
+        gtag("consent", "update", {
+          ad_storage: granted ? "granted" : "denied",
+          ad_user_data: granted ? "granted" : "denied",
+          ad_personalization: granted ? "granted" : "denied",
+          analytics_storage: granted ? "granted" : "denied",
+        });
       }
     } catch {
       // ignore
@@ -68,13 +68,13 @@ export default function CookieConsent() {
               {isZh
                 ? "我们使用 Cookie 来提升您的浏览体验并展示个性化广告。您可以选择接受或拒绝非必要 Cookie。有关详细信息，请参阅我们的"
                 : "We use cookies to enhance your browsing experience and serve personalized ads. You can choose to accept or reject non-essential cookies. For details, see our"}{" "}
-              <a
-                href="#/privacy"
+              <Link
+                to="/privacy"
                 className="text-emerald-600 underline hover:text-emerald-700"
               >
                 {isZh ? "隐私政策" : "Privacy Policy"}
-              </a>
-             。
+              </Link>
+              {isZh ? "。" : "."}
             </p>
             <div className="flex flex-wrap gap-2 mt-3">
               <button

@@ -1,7 +1,8 @@
-import { HashRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import CookieConsent from "@/components/layout/CookieConsent";
+import SeoManager from "@/components/layout/SeoManager";
 import CalculatorPage from "@/pages/CalculatorPage";
 import ComparePage from "@/pages/ComparePage";
 import FeaturesPage from "@/pages/FeaturesPage";
@@ -17,6 +18,7 @@ export default function App() {
   return (
     <Router>
       <div className="min-h-screen flex flex-col bg-slate-50">
+        <SeoManager />
         <Header />
         <main className="flex-1">
           <Routes>

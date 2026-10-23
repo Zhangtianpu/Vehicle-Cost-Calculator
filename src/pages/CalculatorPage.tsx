@@ -8,10 +8,23 @@ import ViolationTollCalculator from "@/components/calculator/ViolationTollCalcul
 import ParkingCalculator from "@/components/calculator/ParkingCalculator";
 import CostSummary from "@/components/calculator/CostSummary";
 import AdBanner from "@/components/layout/AdBanner";
+import { useLanguageStore } from "@/store/useLanguageStore";
 
 export default function CalculatorPage() {
+  const { locale } = useLanguageStore();
+
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold text-slate-800">
+          {locale === "zh" ? "用车成本计算器" : "Vehicle Cost Calculator"}
+        </h1>
+        <p className="mt-2 text-sm text-slate-500 leading-relaxed">
+          {locale === "zh"
+            ? "按您的实际里程、能源价格、保险、车贷、保养、停车和折旧参数，估算月度与年度养车成本。"
+            : "Estimate monthly and annual ownership costs using your mileage, energy price, insurance, financing, maintenance, parking and depreciation inputs."}
+        </p>
+      </div>
       <div className="space-y-6">
         <FuelCalculator />
         <InsuranceCalculator />
