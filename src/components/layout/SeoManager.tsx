@@ -34,10 +34,10 @@ const zhPages: Record<string, SeoEntry> = {
 const enPages: Record<string, SeoEntry> = Object.fromEntries(enSeoRoutes.map(({ path, title, description }) => [path === "/" ? path : path.replace(/\/$/, ""), { title, description }]));
 
 const articleSeo = [
-  { zh: "电车真的比油车省钱吗？5年成本对比", en: "Are EVs Cheaper Than Gas Cars? 5-Year Comparison" },
-  { zh: "用车成本全解析：油费电费之外的隐形支出", en: "True Cost of Car Ownership: Complete Checklist" },
-  { zh: "如何降低用车成本？10个实用省钱技巧", en: "10 Practical Ways to Lower Car Ownership Costs" },
-  { zh: "车险怎么买更合适？险种选择与费用指南", en: "How to Choose Car Insurance Coverage" },
+  { zh: "电车真的比油车省钱吗？5年成本对比" },
+  { zh: "用车成本全解析：油费电费之外的隐形支出" },
+  { zh: "如何降低用车成本？10个实用省钱技巧" },
+  { zh: "车险怎么买更合适？险种选择与费用指南" },
 ];
 
 function upsertMeta(selector: string, attributes: Record<string, string>) {
@@ -61,11 +61,13 @@ export default function SeoManager() {
     const pageSeo = pages[normalizedPath];
     const isKnownPage = Boolean(article || pageSeo);
     const seo = article
-      ? {
-          title: `${locale === "zh" ? article.zh : article.en} | ${locale === "zh" ? "用车成本计算器" : "Vehicle Cost Calculator"}`,
-          description: locale === "zh" ? "基于可调整示例，拆解能源、保险、保养、折旧等成本；结果仅供预算参考，请以当地实际报价为准。" : "A transparent example covering energy, insurance, maintenance and depreciation. Adjust inputs for your local prices and quotes.",
-          type: "article" as const,
-        }
+      ? locale === "zh"
+        ? {
+            title: `${article.zh} | 用车成本计算器`,
+            description: "基于可调整示例，拆解能源、保险、保养、折旧等成本；结果仅供预算参考，请以当地实际报价为准。",
+            type: "article" as const,
+          }
+        : { ...pageSeo!, type: "article" as const }
       : pageSeo || {
           title: locale === "zh" ? "页面未找到｜用车成本计算器" : "Page Not Found | Vehicle Cost Calculator",
           description: locale === "zh" ? "请求的页面不存在，请返回首页或浏览免费用车计算工具。" : "The requested page does not exist. Return home or browse the free vehicle cost tools.",
@@ -98,7 +100,7 @@ export default function SeoManager() {
     }
 
     const schema = article
-      ? { "@context": "https://schema.org", "@type": "Article", name: locale === "zh" ? article.zh : article.en, headline: locale === "zh" ? article.zh : article.en, description: seo.description, image: `${SITE_URL}/vehicle-cost-social-card.png`, url: canonical, isAccessibleForFree: true, datePublished: "2026-06-23T15:29:03+08:00", dateModified: "2026-10-28T18:02:36+08:00", author: { "@type": "Person", name: "Zhangtianpu", url: "https://github.com/Zhangtianpu" }, publisher: { "@type": "Organization", name: "Vehicle Cost Calculator", url: `${SITE_URL}/` }, mainEntityOfPage: canonical }
+      ? { "@context": "https://schema.org", "@type": "Article", name: locale === "zh" ? article.zh : seo.title, headline: locale === "zh" ? article.zh : seo.title, description: seo.description, image: `${SITE_URL}/vehicle-cost-social-card.png`, url: canonical, isAccessibleForFree: true, datePublished: "2026-06-23T15:29:03+08:00", dateModified: "2026-10-28T18:02:36+08:00", author: { "@type": "Person", name: "Zhangtianpu", url: "https://github.com/Zhangtianpu" }, publisher: { "@type": "Organization", name: "Vehicle Cost Calculator", url: `${SITE_URL}/` }, mainEntityOfPage: canonical }
       : normalizedPath === "/" || normalizedPath === "/calculator" || normalizedPath === "/compare" || normalizedPath.startsWith("/tools/")
         ? { "@context": "https://schema.org", "@type": "WebApplication", name: seo.title.split("｜")[0].split("|")[0].trim(), description: seo.description, url: canonical, isAccessibleForFree: true, applicationCategory: "FinanceApplication", operatingSystem: "Any", offers: { "@type": "Offer", price: 0 } }
         : normalizedPath === "/tools"
