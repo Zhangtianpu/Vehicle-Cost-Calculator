@@ -46,6 +46,7 @@ const routes = [
 // Google only uses lastmod when it is consistently accurate and verifiable.
 const initialContentLastModified = "2026-10-23";
 const routeLastModifiedOverrides = new Map([
+  ["/", "2026-10-28"],
   ["/blog/", "2026-10-28"],
   ["/blog/1/", "2026-10-28"],
   ["/blog/2/", "2026-10-28"],

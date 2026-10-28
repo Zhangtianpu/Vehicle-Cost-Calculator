@@ -6,6 +6,7 @@ import CookieConsent from "@/components/layout/CookieConsent";
 import SeoManager from "@/components/layout/SeoManager";
 import RouteLoading from "@/components/layout/RouteLoading";
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
+import SiteIdentitySchema from "@/components/layout/SiteIdentitySchema";
 
 const CalculatorPage = lazy(() => import("@/pages/CalculatorPage"));
 const ComparePage = lazy(() => import("@/pages/ComparePage"));
@@ -36,6 +37,7 @@ export default function App() {
     <Router>
       <div className="min-h-screen flex flex-col bg-slate-50">
         <SeoManager />
+        <SiteIdentitySchema />
         <Header />
         <main className="flex-1">
           <Breadcrumbs />
