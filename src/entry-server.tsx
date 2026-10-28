@@ -1,7 +1,9 @@
+import { Suspense } from "react";
 import { renderToString } from "react-dom/server";
 import { Route, Routes, StaticRouter } from "react-router";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import RouteLoading from "@/components/layout/RouteLoading";
 import CalculatorPage from "@/pages/CalculatorPage";
 import ComparePage from "@/pages/ComparePage";
 import FeaturesPage from "@/pages/FeaturesPage";
@@ -32,31 +34,33 @@ export function render(pathname: string) {
       <div className="min-h-screen flex flex-col bg-slate-50">
         <Header />
         <main className="flex-1">
-          <Routes>
-            <Route path="/" element={<FeaturesPage />} />
-            <Route path="/calculator" element={<CalculatorPage />} />
-            <Route path="/compare" element={<ComparePage />} />
-            <Route path="/blog" element={<BlogPage />} />
-            <Route path="/blog/:id" element={<BlogArticlePage />} />
-            <Route path="/faq" element={<FAQPage />} />
-            <Route path="/methodology" element={<MethodologyPage />} />
-            <Route path="/editorial-policy" element={<EditorialPolicyPage />} />
-            <Route path="/tools" element={<ToolsHubPage />} />
-            <Route path="/tools/cost-per-km" element={<CostPerKmPage />} />
-            <Route path="/tools/ev-break-even" element={<EvBreakEvenPage />} />
-            <Route path="/tools/fuel-cost" element={<FuelCostPage />} />
-            <Route path="/tools/depreciation" element={<DepreciationPage />} />
-            <Route path="/tools/charging-cost" element={<ChargingCostPage />} />
-            <Route path="/tools/car-loan" element={<CarLoanPage />} />
-            <Route path="/tools/monthly-car-cost" element={<MonthlyCarCostPage />} />
-            <Route path="/tools/car-affordability" element={<CarAffordabilityPage />} />
-            <Route path="/tools/lease-vs-buy" element={<LeaseVsBuyPage />} />
-            <Route path="/privacy" element={<PrivacyPolicyPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/disclaimer" element={<DisclaimerPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
+          <Suspense fallback={<RouteLoading />}>
+            <Routes>
+              <Route path="/" element={<FeaturesPage />} />
+              <Route path="/calculator" element={<CalculatorPage />} />
+              <Route path="/compare" element={<ComparePage />} />
+              <Route path="/blog" element={<BlogPage />} />
+              <Route path="/blog/:id" element={<BlogArticlePage />} />
+              <Route path="/faq" element={<FAQPage />} />
+              <Route path="/methodology" element={<MethodologyPage />} />
+              <Route path="/editorial-policy" element={<EditorialPolicyPage />} />
+              <Route path="/tools" element={<ToolsHubPage />} />
+              <Route path="/tools/cost-per-km" element={<CostPerKmPage />} />
+              <Route path="/tools/ev-break-even" element={<EvBreakEvenPage />} />
+              <Route path="/tools/fuel-cost" element={<FuelCostPage />} />
+              <Route path="/tools/depreciation" element={<DepreciationPage />} />
+              <Route path="/tools/charging-cost" element={<ChargingCostPage />} />
+              <Route path="/tools/car-loan" element={<CarLoanPage />} />
+              <Route path="/tools/monthly-car-cost" element={<MonthlyCarCostPage />} />
+              <Route path="/tools/car-affordability" element={<CarAffordabilityPage />} />
+              <Route path="/tools/lease-vs-buy" element={<LeaseVsBuyPage />} />
+              <Route path="/privacy" element={<PrivacyPolicyPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/disclaimer" element={<DisclaimerPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </Suspense>
         </main>
         <Footer />
       </div>
