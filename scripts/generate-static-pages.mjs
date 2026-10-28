@@ -42,6 +42,18 @@ const routes = [
   ["/contact/", "Contact | Vehicle Cost Calculator", "Contact us about calculation methods, corrections, privacy questions or partnerships.", "yearly", "0.4"],
 ];
 
+// Keep sitemap dates tied to meaningful content changes rather than deployment time.
+// Google only uses lastmod when it is consistently accurate and verifiable.
+const initialContentLastModified = "2026-10-23";
+const routeLastModifiedOverrides = new Map([
+  ["/blog/2/", "2026-10-28"],
+  ["/tools/", "2026-10-28"],
+  ["/tools/car-loan/", "2026-10-28"],
+  ["/tools/monthly-car-cost/", "2026-10-28"],
+  ["/tools/car-affordability/", "2026-10-28"],
+  ["/tools/lease-vs-buy/", "2026-10-28"],
+]);
+
 function renderPage(path, title, description) {
   const canonical = `${siteUrl}${path}`;
   const pathname = path === "/" ? path : path.replace(/\/$/, "");
@@ -81,10 +93,12 @@ for (const [path, title, description] of routes) {
   await writeFile(destination, renderPage(path, title, description), "utf8");
 }
 
-const lastmod = new Date().toISOString().slice(0, 10);
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${routes.map(([path, , , changefreq, priority]) => `  <url><loc>${siteUrl}${path}</loc><lastmod>${lastmod}</lastmod><changefreq>${changefreq}</changefreq><priority>${priority}</priority></url>`).join("\n")}
+${routes.map(([path, , , changefreq, priority]) => {
+  const lastmod = routeLastModifiedOverrides.get(path) || initialContentLastModified;
+  return `  <url><loc>${siteUrl}${path}</loc><lastmod>${lastmod}</lastmod><changefreq>${changefreq}</changefreq><priority>${priority}</priority></url>`;
+}).join("\n")}
 </urlset>
 `;
 await writeFile(new URL("sitemap.xml", distDir), sitemap, "utf8");
