@@ -132,6 +132,7 @@ export default function BlogArticlePage() {
               {locale === "zh" ? "Zhangtianpu（本站维护者）" : "Zhangtianpu, site maintainer"}
             </Link>
           </span>
+          <span>{locale === "zh" ? "发布于 2026年6月23日" : "Published June 23, 2026"}</span>
           <span>{locale === "zh" ? "更新于 2026年10月28日" : "Updated October 28, 2026"}</span>
         </div>
 
