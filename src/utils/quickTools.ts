@@ -4,6 +4,79 @@ import { calculateLoanCost } from "./loanCalc";
 export type MonthlyCarEnergyType = "gas" | "electric";
 export type MonthlyCarUnitSystem = "us" | "metric";
 
+export interface CarAffordabilityInput {
+  monthlyTakeHomeIncome: number;
+  transportationBudgetPercent: number;
+  monthlyInsurance: number;
+  monthlyEnergy: number;
+  monthlyMaintenance: number;
+  monthlyParking: number;
+  monthlyRegistration: number;
+  downPayment: number;
+  tradeInValue: number;
+  tradeInPayoff: number;
+  annualRate: number;
+  loanTermMonths: number;
+  salesTaxPercent: number;
+  upfrontFees: number;
+}
+
+export interface CarAffordabilityResult {
+  transportationBudgetMonthly: number;
+  nonLoanCostsMonthly: number;
+  maxLoanPayment: number;
+  maxLoanAmount: number;
+  maxVehiclePrice: number;
+  netTradeIn: number;
+  totalLoanPayments: number;
+  totalInterest: number;
+  paymentToIncomePercent: number | null;
+  totalCostToIncomePercent: number | null;
+  operatingCostOverBudget: number;
+}
+
+export function calculateCarAffordability(input: CarAffordabilityInput): CarAffordabilityResult {
+  const income = Math.max(0, input.monthlyTakeHomeIncome);
+  const budgetRate = Math.max(0, input.transportationBudgetPercent) / 100;
+  const transportationBudgetMonthly = income * budgetRate;
+  const nonLoanCostsMonthly = [
+    input.monthlyInsurance,
+    input.monthlyEnergy,
+    input.monthlyMaintenance,
+    input.monthlyParking,
+    input.monthlyRegistration,
+  ].reduce((total, value) => total + Math.max(0, value), 0);
+  const budgetRoom = transportationBudgetMonthly - nonLoanCostsMonthly;
+  const maxLoanPayment = Math.max(0, budgetRoom);
+  const term = Math.max(0, Math.round(input.loanTermMonths));
+  const monthlyRate = Math.max(0, input.annualRate) / 100 / 12;
+  const maxLoanAmount = term === 0
+    ? 0
+    : monthlyRate === 0
+      ? maxLoanPayment * term
+      : maxLoanPayment * (1 - (1 + monthlyRate) ** -term) / monthlyRate;
+  const netTradeIn = Math.max(0, input.tradeInValue) - Math.max(0, input.tradeInPayoff);
+  const availableForTaxedPrice = maxLoanAmount + Math.max(0, input.downPayment) + netTradeIn - Math.max(0, input.upfrontFees);
+  const taxMultiplier = 1 + Math.max(0, input.salesTaxPercent) / 100;
+  const maxVehiclePrice = budgetRoom < 0 ? 0 : Math.max(0, availableForTaxedPrice / taxMultiplier);
+  const totalLoanPayments = maxLoanPayment * term;
+  const totalInterest = Math.max(0, totalLoanPayments - maxLoanAmount);
+
+  return {
+    transportationBudgetMonthly,
+    nonLoanCostsMonthly,
+    maxLoanPayment,
+    maxLoanAmount,
+    maxVehiclePrice,
+    netTradeIn,
+    totalLoanPayments,
+    totalInterest,
+    paymentToIncomePercent: income > 0 ? maxLoanPayment / income * 100 : null,
+    totalCostToIncomePercent: income > 0 ? (maxLoanPayment + nonLoanCostsMonthly) / income * 100 : null,
+    operatingCostOverBudget: Math.max(0, -budgetRoom),
+  };
+}
+
 export interface MonthlyCarCostInput {
   unitSystem: MonthlyCarUnitSystem;
   energyType: MonthlyCarEnergyType;

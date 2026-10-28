@@ -1,11 +1,19 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Banknote, BatteryCharging, Fuel, Gauge, Route, TrendingDown, WalletCards, Wrench } from "lucide-react";
+import { ArrowRight, BadgeDollarSign, Banknote, BatteryCharging, Fuel, Gauge, Route, TrendingDown, WalletCards, Wrench } from "lucide-react";
 import { useLanguageStore } from "@/store/useLanguageStore";
 
 export default function ToolsHubPage() {
   const { locale } = useLanguageStore();
   const isZh = locale === "zh";
   const tools = [
+    {
+      to: "/tools/car-affordability",
+      icon: BadgeDollarSign,
+      title: isZh ? "汽车购买力计算器" : "Car Affordability Calculator",
+      description: isZh
+        ? "按税后收入和完整养车预算反推最高车价、月供和贷款额，并计入税费与置换净值。"
+        : "Estimate a maximum car price, payment and loan from take-home income, complete vehicle costs, tax and net trade-in.",
+    },
     {
       to: "/tools/monthly-car-cost",
       icon: WalletCards,

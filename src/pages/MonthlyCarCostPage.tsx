@@ -215,6 +215,7 @@ export default function MonthlyCarCostPage() {
       </section>
 
       <div className="mt-8 flex flex-wrap gap-3">
+        <Link to="/tools/car-affordability" className="rounded-lg border border-emerald-300 bg-emerald-50 px-5 py-2.5 text-sm font-medium text-emerald-800 hover:bg-emerald-100">{isZh ? "按收入计算购车预算" : "Calculate car budget from income"}</Link>
         <Link to="/calculator" className="inline-flex items-center gap-2 rounded-lg bg-emerald-500 px-5 py-2.5 text-sm font-medium text-white hover:bg-emerald-600"><Car className="h-4 w-4" />{isZh ? "完整多年成本计算器" : "Full multi-year calculator"}</Link>
         <Link to="/tools/cost-per-km" className="rounded-lg border border-slate-300 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50">{isZh ? "每英里/公里成本" : "Cost per mile or km"}</Link>
       </div>

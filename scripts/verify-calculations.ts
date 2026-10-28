@@ -14,7 +14,53 @@ import {
   calculateUsFuelCost,
   calculateUsChargingCost,
   calculateMonthlyCarCost,
+  calculateCarAffordability,
 } from "../src/utils/quickTools";
+
+const affordability = calculateCarAffordability({
+  monthlyTakeHomeIncome: 6000,
+  transportationBudgetPercent: 15,
+  monthlyInsurance: 150,
+  monthlyEnergy: 150,
+  monthlyMaintenance: 75,
+  monthlyParking: 50,
+  monthlyRegistration: 25,
+  downPayment: 5000,
+  tradeInValue: 3000,
+  tradeInPayoff: 1000,
+  annualRate: 6,
+  loanTermMonths: 60,
+  salesTaxPercent: 8,
+  upfrontFees: 1000,
+});
+assert.equal(affordability.transportationBudgetMonthly, 900);
+assert.equal(affordability.nonLoanCostsMonthly, 450);
+assert.equal(affordability.maxLoanPayment, 450);
+assert.ok(Math.abs(affordability.maxLoanAmount - 23276.5024) < 0.01);
+assert.ok(Math.abs(affordability.maxVehiclePrice - 27107.8725) < 0.01);
+assert.ok(Math.abs(affordability.totalInterest - 3723.4976) < 0.01);
+assert.equal(affordability.paymentToIncomePercent, 7.5);
+assert.equal(affordability.totalCostToIncomePercent, 15);
+
+const noRoomAffordability = calculateCarAffordability({
+  ...affordability,
+  monthlyTakeHomeIncome: 1000,
+  transportationBudgetPercent: 10,
+  monthlyInsurance: 150,
+  monthlyEnergy: 100,
+  monthlyMaintenance: 0,
+  monthlyParking: 0,
+  monthlyRegistration: 0,
+  downPayment: 10000,
+  tradeInValue: 0,
+  tradeInPayoff: 0,
+  annualRate: 0,
+  loanTermMonths: 0,
+  salesTaxPercent: 0,
+  upfrontFees: 0,
+});
+assert.equal(noRoomAffordability.maxVehiclePrice, 0);
+assert.equal(noRoomAffordability.operatingCostOverBudget, 150);
 
 const monthlyGasCost = calculateMonthlyCarCost({
   unitSystem: "us",
