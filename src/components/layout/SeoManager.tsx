@@ -100,6 +100,8 @@ export default function SeoManager() {
     upsertMeta('meta[property="og:description"]', { property: "og:description", content: seo.description });
     upsertMeta('meta[property="og:type"]', { property: "og:type", content: seo.type || "website" });
     upsertMeta('meta[property="og:url"]', { property: "og:url", content: canonical });
+    upsertMeta('meta[name="twitter:title"]', { name: "twitter:title", content: seo.title });
+    upsertMeta('meta[name="twitter:description"]', { name: "twitter:description", content: seo.description });
     upsertMeta('meta[name="robots"]', { name: "robots", content: isKnownPage ? "index, follow, max-image-preview:large" : "noindex, nofollow" });
 
     let canonicalLink = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
@@ -115,7 +117,7 @@ export default function SeoManager() {
     }
 
     const schema = article
-      ? { "@context": "https://schema.org", "@type": "Article", name: locale === "zh" ? article.zh : article.en, headline: locale === "zh" ? article.zh : article.en, description: seo.description, url: canonical, isAccessibleForFree: true, datePublished: "2026-06-23T15:29:03+08:00", dateModified: "2026-10-28T18:02:36+08:00", author: { "@type": "Person", name: "Zhangtianpu", url: "https://github.com/Zhangtianpu" }, publisher: { "@type": "Organization", name: "Vehicle Cost Calculator", url: `${SITE_URL}/` }, mainEntityOfPage: canonical }
+      ? { "@context": "https://schema.org", "@type": "Article", name: locale === "zh" ? article.zh : article.en, headline: locale === "zh" ? article.zh : article.en, description: seo.description, image: `${SITE_URL}/vehicle-cost-social-card.png`, url: canonical, isAccessibleForFree: true, datePublished: "2026-06-23T15:29:03+08:00", dateModified: "2026-10-28T18:02:36+08:00", author: { "@type": "Person", name: "Zhangtianpu", url: "https://github.com/Zhangtianpu" }, publisher: { "@type": "Organization", name: "Vehicle Cost Calculator", url: `${SITE_URL}/` }, mainEntityOfPage: canonical }
       : normalizedPath === "/" || normalizedPath.startsWith("/tools/")
         ? { "@context": "https://schema.org", "@type": "WebApplication", name: seo.title.split("｜")[0].split("|")[0].trim(), url: canonical, applicationCategory: "FinanceApplication", operatingSystem: "Any", offers: { "@type": "Offer", price: "0", priceCurrency: locale === "zh" ? "CNY" : "USD" } }
         : normalizedPath === "/tools"
