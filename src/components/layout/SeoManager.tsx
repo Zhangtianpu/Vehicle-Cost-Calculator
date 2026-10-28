@@ -2,8 +2,7 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useLanguageStore } from "@/store/useLanguageStore";
 import { enSeoRoutes } from "@/data/seoRoutes.js";
-
-const SITE_URL = "https://sidehustle.top";
+import { createRouteSchema, SITE_URL } from "@/data/routeSchema.js";
 
 type SeoEntry = { title: string; description: string; type?: "article" | "website" };
 
@@ -99,17 +98,15 @@ export default function SeoManager() {
       canonicalLink?.remove();
     }
 
-    const schema = article
-      ? { "@context": "https://schema.org", "@type": "Article", name: locale === "zh" ? article.zh : seo.title, headline: locale === "zh" ? article.zh : seo.title, description: seo.description, image: `${SITE_URL}/vehicle-cost-social-card.png`, url: canonical, isAccessibleForFree: true, datePublished: "2026-06-23T15:29:03+08:00", dateModified: "2026-10-28T18:02:36+08:00", author: { "@type": "Person", name: "Zhangtianpu", url: "https://github.com/Zhangtianpu" }, publisher: { "@type": "Organization", name: "Vehicle Cost Calculator", url: `${SITE_URL}/` }, mainEntityOfPage: canonical }
-      : normalizedPath === "/" || normalizedPath === "/calculator" || normalizedPath === "/compare" || normalizedPath.startsWith("/tools/")
-        ? { "@context": "https://schema.org", "@type": "WebApplication", name: seo.title.split("｜")[0].split("|")[0].trim(), description: seo.description, url: canonical, isAccessibleForFree: true, applicationCategory: "FinanceApplication", operatingSystem: "Any", offers: { "@type": "Offer", price: 0 } }
-        : normalizedPath === "/tools"
-          ? { "@context": "https://schema.org", "@type": "CollectionPage", name: seo.title, description: seo.description, url: canonical, isPartOf: { "@type": "WebSite", name: "Vehicle Cost Calculator", url: `${SITE_URL}/` }, mainEntity: { "@type": "ItemList", numberOfItems: toolPaths.length, itemListElement: toolPaths.map((path, index) => ({ "@type": "ListItem", position: index + 1, url: `${SITE_URL}${path}/` })) } }
-          : normalizedPath === "/blog"
-            ? { "@context": "https://schema.org", "@type": "CollectionPage", name: seo.title, description: seo.description, url: canonical, isPartOf: { "@type": "WebSite", name: "Vehicle Cost Calculator", url: `${SITE_URL}/` }, mainEntity: { "@type": "ItemList", numberOfItems: articlePaths.length, itemListElement: articlePaths.map((path, index) => ({ "@type": "ListItem", position: index + 1, url: `${SITE_URL}${path}/` })) } }
-            : isKnownPage
-              ? { "@context": "https://schema.org", "@type": normalizedPath === "/about" ? "AboutPage" : normalizedPath === "/contact" ? "ContactPage" : "WebPage", name: seo.title, description: seo.description, url: canonical, isPartOf: { "@type": "WebSite", name: "Vehicle Cost Calculator", url: `${SITE_URL}/` } }
-              : null;
+    const schema = isKnownPage
+      ? createRouteSchema({
+          path: normalizedPath,
+          title: seo.title,
+          description: seo.description,
+          articleName: article && locale === "zh" ? article.zh : seo.title,
+          collectionPaths: normalizedPath === "/tools" ? toolPaths : normalizedPath === "/blog" ? articlePaths : [],
+        })
+      : null;
     document.getElementById("route-schema")?.remove();
     if (schema) {
       const script = document.createElement("script");

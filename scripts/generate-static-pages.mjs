@@ -1,8 +1,9 @@
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { enSeoRoutes } from "../src/data/seoRoutes.js";
+import { createRouteSchema, getRouteSchemaType, SITE_URL } from "../src/data/routeSchema.js";
 
-const siteUrl = "https://sidehustle.top";
+const siteUrl = SITE_URL;
 const distDir = new URL("../dist/", import.meta.url);
 const prerenderDir = new URL("../.prerender/", import.meta.url);
 const { render } = await import(new URL("entry-server.js", prerenderDir).href);
@@ -41,52 +42,19 @@ const routeLastModifiedOverrides = new Map([
   ["/tools/lease-vs-buy/", "2026-10-29"],
 ]);
 
-const toolListItems = routes
+const toolPaths = routes
   .filter(([path]) => path.startsWith("/tools/") && path !== "/tools/")
-  .map(([path], index) => ({
-    "@type": "ListItem",
-    position: index + 1,
-    url: `${siteUrl}${path}`,
-  }));
-const articleListItems = routes
+  .map(([path]) => path);
+const articlePaths = routes
   .filter(([path]) => /^\/blog\/\d+\/$/.test(path))
-  .map(([path], index) => ({
-    "@type": "ListItem",
-    position: index + 1,
-    url: `${siteUrl}${path}`,
-  }));
+  .map(([path]) => path);
 
 function renderPage(path, title, description) {
   const canonical = `${siteUrl}${path}`;
   const pathname = path === "/" ? path : path.replace(/\/$/, "");
   const appHtml = render(pathname);
-  const collectionItems = path === "/tools/" ? toolListItems : articleListItems;
-  const isWebApplication = path === "/" || path === "/calculator/" || path === "/compare/" || (path.startsWith("/tools/") && path !== "/tools/");
-  const schemaType = /^\/blog\/\d+\/$/.test(path)
-    ? "Article"
-    : path === "/tools/" || path === "/blog/"
-      ? "CollectionPage"
-      : path === "/about/"
-        ? "AboutPage"
-        : path === "/contact/"
-          ? "ContactPage"
-          : isWebApplication
-            ? "WebApplication"
-            : "WebPage";
-  const isSitePage = schemaType === "WebPage" || schemaType === "AboutPage" || schemaType === "ContactPage";
-  const schema = {
-    "@context": "https://schema.org",
-    "@type": schemaType,
-    name: title,
-    description,
-    headline: schemaType === "Article" ? title : undefined,
-    url: canonical,
-    isAccessibleForFree: true,
-    ...(schemaType === "Article" ? { image: `${siteUrl}/vehicle-cost-social-card.png`, datePublished: "2026-06-23T15:29:03+08:00", dateModified: "2026-10-28T18:02:36+08:00", author: { "@type": "Person", name: "Zhangtianpu", url: "https://github.com/Zhangtianpu" }, publisher: { "@type": "Organization", name: "Vehicle Cost Calculator", url: `${siteUrl}/` }, mainEntityOfPage: canonical } : {}),
-    ...(schemaType === "WebApplication" ? { applicationCategory: "FinanceApplication", operatingSystem: "Any", offers: { "@type": "Offer", price: 0 } } : {}),
-    ...(isSitePage ? { isPartOf: { "@type": "WebSite", name: "Vehicle Cost Calculator", url: `${siteUrl}/` } } : {}),
-    ...(schemaType === "CollectionPage" ? { isPartOf: { "@type": "WebSite", name: "Vehicle Cost Calculator", url: `${siteUrl}/` }, mainEntity: { "@type": "ItemList", numberOfItems: collectionItems.length, itemListElement: collectionItems } } : {}),
-  };
+  const schemaType = getRouteSchemaType(path);
+  const schema = createRouteSchema({ path, title, description, collectionPaths: path === "/tools/" ? toolPaths : articlePaths });
   const schemaScript = `<script id="route-schema" type="application/ld+json">${JSON.stringify(schema)}</script>`;
   return template
     .replace(/<title>.*?<\/title>/, `<title>${title}</title>`)
