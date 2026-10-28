@@ -49,7 +49,7 @@ const routeLastModifiedOverrides = new Map([
   ["/", "2026-10-29"],
   ["/calculator/", "2026-10-29"],
   ["/compare/", "2026-10-29"],
-  ["/blog/", "2026-10-28"],
+  ["/blog/", "2026-10-29"],
   ["/blog/1/", "2026-10-28"],
   ["/blog/2/", "2026-10-28"],
   ["/blog/3/", "2026-10-28"],
@@ -73,15 +73,23 @@ const toolListItems = routes
     position: index + 1,
     url: `${siteUrl}${path}`,
   }));
+const articleListItems = routes
+  .filter(([path]) => /^\/blog\/\d+\/$/.test(path))
+  .map(([path], index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    url: `${siteUrl}${path}`,
+  }));
 
 function renderPage(path, title, description) {
   const canonical = `${siteUrl}${path}`;
   const pathname = path === "/" ? path : path.replace(/\/$/, "");
   const appHtml = render(pathname);
+  const collectionItems = path === "/tools/" ? toolListItems : articleListItems;
   const isWebApplication = path === "/" || path === "/calculator/" || path === "/compare/" || (path.startsWith("/tools/") && path !== "/tools/");
   const schemaType = /^\/blog\/\d+\/$/.test(path)
     ? "Article"
-    : path === "/tools/"
+    : path === "/tools/" || path === "/blog/"
       ? "CollectionPage"
       : isWebApplication
         ? "WebApplication"
@@ -96,7 +104,7 @@ function renderPage(path, title, description) {
     isAccessibleForFree: true,
     ...(schemaType === "Article" ? { image: `${siteUrl}/vehicle-cost-social-card.png`, datePublished: "2026-06-23T15:29:03+08:00", dateModified: "2026-10-28T18:02:36+08:00", author: { "@type": "Person", name: "Zhangtianpu", url: "https://github.com/Zhangtianpu" }, publisher: { "@type": "Organization", name: "Vehicle Cost Calculator", url: `${siteUrl}/` }, mainEntityOfPage: canonical } : {}),
     ...(schemaType === "WebApplication" ? { applicationCategory: "FinanceApplication", operatingSystem: "Any", offers: { "@type": "Offer", price: 0 } } : {}),
-    ...(schemaType === "CollectionPage" ? { isPartOf: { "@type": "WebSite", name: "Vehicle Cost Calculator", url: `${siteUrl}/` }, mainEntity: { "@type": "ItemList", numberOfItems: toolListItems.length, itemListElement: toolListItems } } : {}),
+    ...(schemaType === "CollectionPage" ? { isPartOf: { "@type": "WebSite", name: "Vehicle Cost Calculator", url: `${siteUrl}/` }, mainEntity: { "@type": "ItemList", numberOfItems: collectionItems.length, itemListElement: collectionItems } } : {}),
   };
   const schemaScript = `<script id="route-schema" type="application/ld+json">${JSON.stringify(schema)}</script>`;
   return template

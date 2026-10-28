@@ -93,6 +93,7 @@ export default function SeoManager() {
         };
     const canonical = `${SITE_URL}${normalizedPath === "/" ? "/" : `${normalizedPath}/`}`;
     const toolPaths = Object.keys(pages).filter((path) => path.startsWith("/tools/"));
+    const articlePaths = articleSeo.map((_, index) => `/blog/${index + 1}`);
 
     document.documentElement.lang = locale === "zh" ? "zh-CN" : "en";
     document.title = seo.title;
@@ -123,9 +124,11 @@ export default function SeoManager() {
         ? { "@context": "https://schema.org", "@type": "WebApplication", name: seo.title.split("｜")[0].split("|")[0].trim(), description: seo.description, url: canonical, isAccessibleForFree: true, applicationCategory: "FinanceApplication", operatingSystem: "Any", offers: { "@type": "Offer", price: 0 } }
         : normalizedPath === "/tools"
           ? { "@context": "https://schema.org", "@type": "CollectionPage", name: seo.title, description: seo.description, url: canonical, isPartOf: { "@type": "WebSite", name: "Vehicle Cost Calculator", url: `${SITE_URL}/` }, mainEntity: { "@type": "ItemList", numberOfItems: toolPaths.length, itemListElement: toolPaths.map((path, index) => ({ "@type": "ListItem", position: index + 1, url: `${SITE_URL}${path}/` })) } }
-        : isKnownPage
-          ? { "@context": "https://schema.org", "@type": normalizedPath === "/about" ? "AboutPage" : normalizedPath === "/contact" ? "ContactPage" : "WebPage", name: seo.title, description: seo.description, url: canonical, isPartOf: { "@type": "WebSite", name: "Vehicle Cost Calculator", url: `${SITE_URL}/` } }
-          : null;
+          : normalizedPath === "/blog"
+            ? { "@context": "https://schema.org", "@type": "CollectionPage", name: seo.title, description: seo.description, url: canonical, isPartOf: { "@type": "WebSite", name: "Vehicle Cost Calculator", url: `${SITE_URL}/` }, mainEntity: { "@type": "ItemList", numberOfItems: articlePaths.length, itemListElement: articlePaths.map((path, index) => ({ "@type": "ListItem", position: index + 1, url: `${SITE_URL}${path}/` })) } }
+            : isKnownPage
+              ? { "@context": "https://schema.org", "@type": normalizedPath === "/about" ? "AboutPage" : normalizedPath === "/contact" ? "ContactPage" : "WebPage", name: seo.title, description: seo.description, url: canonical, isPartOf: { "@type": "WebSite", name: "Vehicle Cost Calculator", url: `${SITE_URL}/` } }
+              : null;
     document.getElementById("route-schema")?.remove();
     if (schema) {
       const script = document.createElement("script");
