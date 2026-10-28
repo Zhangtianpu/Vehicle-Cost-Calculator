@@ -66,9 +66,14 @@ function renderPage(path, title, description) {
     ? "Article"
     : path === "/tools/" || path === "/blog/"
       ? "CollectionPage"
-      : isWebApplication
-        ? "WebApplication"
-        : "WebPage";
+      : path === "/about/"
+        ? "AboutPage"
+        : path === "/contact/"
+          ? "ContactPage"
+          : isWebApplication
+            ? "WebApplication"
+            : "WebPage";
+  const isSitePage = schemaType === "WebPage" || schemaType === "AboutPage" || schemaType === "ContactPage";
   const schema = {
     "@context": "https://schema.org",
     "@type": schemaType,
@@ -79,6 +84,7 @@ function renderPage(path, title, description) {
     isAccessibleForFree: true,
     ...(schemaType === "Article" ? { image: `${siteUrl}/vehicle-cost-social-card.png`, datePublished: "2026-06-23T15:29:03+08:00", dateModified: "2026-10-28T18:02:36+08:00", author: { "@type": "Person", name: "Zhangtianpu", url: "https://github.com/Zhangtianpu" }, publisher: { "@type": "Organization", name: "Vehicle Cost Calculator", url: `${siteUrl}/` }, mainEntityOfPage: canonical } : {}),
     ...(schemaType === "WebApplication" ? { applicationCategory: "FinanceApplication", operatingSystem: "Any", offers: { "@type": "Offer", price: 0 } } : {}),
+    ...(isSitePage ? { isPartOf: { "@type": "WebSite", name: "Vehicle Cost Calculator", url: `${siteUrl}/` } } : {}),
     ...(schemaType === "CollectionPage" ? { isPartOf: { "@type": "WebSite", name: "Vehicle Cost Calculator", url: `${siteUrl}/` }, mainEntity: { "@type": "ItemList", numberOfItems: collectionItems.length, itemListElement: collectionItems } } : {}),
   };
   const schemaScript = `<script id="route-schema" type="application/ld+json">${JSON.stringify(schema)}</script>`;
