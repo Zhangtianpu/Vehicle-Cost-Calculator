@@ -54,7 +54,7 @@ const routeLastModifiedOverrides = new Map([
   ["/blog/2/", "2026-10-28"],
   ["/blog/3/", "2026-10-28"],
   ["/blog/4/", "2026-10-28"],
-  ["/tools/", "2026-10-28"],
+  ["/tools/", "2026-10-29"],
   ["/tools/cost-per-km/", "2026-10-29"],
   ["/tools/ev-break-even/", "2026-10-29"],
   ["/tools/fuel-cost/", "2026-10-29"],
@@ -65,6 +65,14 @@ const routeLastModifiedOverrides = new Map([
   ["/tools/car-affordability/", "2026-10-29"],
   ["/tools/lease-vs-buy/", "2026-10-29"],
 ]);
+
+const toolListItems = routes
+  .filter(([path]) => path.startsWith("/tools/") && path !== "/tools/")
+  .map(([path], index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    url: `${siteUrl}${path}`,
+  }));
 
 function renderPage(path, title, description) {
   const canonical = `${siteUrl}${path}`;
@@ -88,6 +96,7 @@ function renderPage(path, title, description) {
     isAccessibleForFree: true,
     ...(schemaType === "Article" ? { image: `${siteUrl}/vehicle-cost-social-card.png`, datePublished: "2026-06-23T15:29:03+08:00", dateModified: "2026-10-28T18:02:36+08:00", author: { "@type": "Person", name: "Zhangtianpu", url: "https://github.com/Zhangtianpu" }, publisher: { "@type": "Organization", name: "Vehicle Cost Calculator", url: `${siteUrl}/` }, mainEntityOfPage: canonical } : {}),
     ...(schemaType === "WebApplication" ? { applicationCategory: "FinanceApplication", operatingSystem: "Any", offers: { "@type": "Offer", price: 0 } } : {}),
+    ...(schemaType === "CollectionPage" ? { isPartOf: { "@type": "WebSite", name: "Vehicle Cost Calculator", url: `${siteUrl}/` }, mainEntity: { "@type": "ItemList", numberOfItems: toolListItems.length, itemListElement: toolListItems } } : {}),
   };
   const schemaScript = `<script id="route-schema" type="application/ld+json">${JSON.stringify(schema)}</script>`;
   return template

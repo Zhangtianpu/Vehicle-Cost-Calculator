@@ -92,6 +92,7 @@ export default function SeoManager() {
           description: locale === "zh" ? "请求的页面不存在，请返回首页或浏览免费用车计算工具。" : "The requested page does not exist. Return home or browse the free vehicle cost tools.",
         };
     const canonical = `${SITE_URL}${normalizedPath === "/" ? "/" : `${normalizedPath}/`}`;
+    const toolPaths = Object.keys(pages).filter((path) => path.startsWith("/tools/"));
 
     document.documentElement.lang = locale === "zh" ? "zh-CN" : "en";
     document.title = seo.title;
@@ -121,7 +122,7 @@ export default function SeoManager() {
       : normalizedPath === "/" || normalizedPath === "/calculator" || normalizedPath === "/compare" || normalizedPath.startsWith("/tools/")
         ? { "@context": "https://schema.org", "@type": "WebApplication", name: seo.title.split("｜")[0].split("|")[0].trim(), description: seo.description, url: canonical, isAccessibleForFree: true, applicationCategory: "FinanceApplication", operatingSystem: "Any", offers: { "@type": "Offer", price: 0 } }
         : normalizedPath === "/tools"
-          ? { "@context": "https://schema.org", "@type": "CollectionPage", name: seo.title, description: seo.description, url: canonical, isPartOf: { "@type": "WebSite", name: "Vehicle Cost Calculator", url: `${SITE_URL}/` } }
+          ? { "@context": "https://schema.org", "@type": "CollectionPage", name: seo.title, description: seo.description, url: canonical, isPartOf: { "@type": "WebSite", name: "Vehicle Cost Calculator", url: `${SITE_URL}/` }, mainEntity: { "@type": "ItemList", numberOfItems: toolPaths.length, itemListElement: toolPaths.map((path, index) => ({ "@type": "ListItem", position: index + 1, url: `${SITE_URL}${path}/` })) } }
         : isKnownPage
           ? { "@context": "https://schema.org", "@type": normalizedPath === "/about" ? "AboutPage" : normalizedPath === "/contact" ? "ContactPage" : "WebPage", name: seo.title, description: seo.description, url: canonical, isPartOf: { "@type": "WebSite", name: "Vehicle Cost Calculator", url: `${SITE_URL}/` } }
           : null;
