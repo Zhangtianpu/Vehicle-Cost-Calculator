@@ -5,6 +5,7 @@ import Footer from "@/components/layout/Footer";
 import CookieConsent from "@/components/layout/CookieConsent";
 import SeoManager from "@/components/layout/SeoManager";
 import RouteLoading from "@/components/layout/RouteLoading";
+import Breadcrumbs from "@/components/layout/Breadcrumbs";
 
 const CalculatorPage = lazy(() => import("@/pages/CalculatorPage"));
 const ComparePage = lazy(() => import("@/pages/ComparePage"));
@@ -37,6 +38,7 @@ export default function App() {
         <SeoManager />
         <Header />
         <main className="flex-1">
+          <Breadcrumbs />
           <Suspense fallback={<RouteLoading />}>
             <Routes>
               <Route path="/" element={<FeaturesPage />} />

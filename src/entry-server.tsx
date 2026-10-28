@@ -4,6 +4,7 @@ import { Route, Routes, StaticRouter } from "react-router";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import RouteLoading from "@/components/layout/RouteLoading";
+import Breadcrumbs from "@/components/layout/Breadcrumbs";
 import CalculatorPage from "@/pages/CalculatorPage";
 import ComparePage from "@/pages/ComparePage";
 import FeaturesPage from "@/pages/FeaturesPage";
@@ -34,6 +35,7 @@ export function render(pathname: string) {
       <div className="min-h-screen flex flex-col bg-slate-50">
         <Header />
         <main className="flex-1">
+          <Breadcrumbs />
           <Suspense fallback={<RouteLoading />}>
             <Routes>
               <Route path="/" element={<FeaturesPage />} />
