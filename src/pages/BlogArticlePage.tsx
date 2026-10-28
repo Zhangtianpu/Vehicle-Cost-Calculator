@@ -12,7 +12,7 @@ export default function BlogArticlePage() {
       title: t.blog.article1Title,
       summary: t.blog.article1Summary,
       content: t.blog.article1Content,
-      date: "2026-10-23",
+      date: "2026-10-28",
       readTime: "8 min",
       category: t.blog.categoryEV,
     },
@@ -21,7 +21,7 @@ export default function BlogArticlePage() {
       title: t.blog.article2Title,
       summary: t.blog.article2Summary,
       content: t.blog.article2Content,
-      date: "2026-10-23",
+      date: "2026-10-28",
       readTime: "9 min",
       category: t.blog.categoryCost,
     },
@@ -30,7 +30,7 @@ export default function BlogArticlePage() {
       title: t.blog.article3Title,
       summary: t.blog.article3Summary,
       content: t.blog.article3Content,
-      date: "2026-10-23",
+      date: "2026-10-28",
       readTime: "8 min",
       category: t.blog.categoryTips,
     },
@@ -39,7 +39,7 @@ export default function BlogArticlePage() {
       title: t.blog.article4Title,
       summary: t.blog.article4Summary,
       content: t.blog.article4Content,
-      date: "2026-10-23",
+      date: "2026-10-28",
       readTime: "9 min",
       category: t.blog.categoryInsurance,
     },
@@ -64,6 +64,19 @@ export default function BlogArticlePage() {
       { label: "National Association of Insurance Commissioners — Auto Insurance", href: "https://content.naic.org/consumer/auto-insurance.htm" },
       { label: "NAIC — State Insurance Departments", href: "https://content.naic.org/state-insurance-departments" },
     ],
+  };
+
+  const relatedArticleIds: Record<number, number[]> = {
+    1: [2, 3],
+    2: [1, 4],
+    3: [1, 4],
+    4: [2, 3],
+  };
+  const relatedTool: Record<number, { to: string; en: string; zh: string }> = {
+    1: { to: "/tools/ev-break-even", en: "Estimate EV break-even mileage and time", zh: "估算电动车回本里程与时间" },
+    2: { to: "/tools/depreciation", en: "Calculate depreciation and retained value", zh: "计算车辆折旧与保值率" },
+    3: { to: "/tools/cost-per-km", en: "Calculate full ownership cost per mile or kilometer", zh: "计算每英里或公里的完整持有成本" },
+    4: { to: "/tools/monthly-car-cost", en: "Add insurance to a complete monthly car budget", zh: "把保险加入完整的每月养车预算" },
   };
 
   if (!article) {
@@ -119,7 +132,7 @@ export default function BlogArticlePage() {
               {locale === "zh" ? "Zhangtianpu（本站维护者）" : "Zhangtianpu, site maintainer"}
             </Link>
           </span>
-          <span>{locale === "zh" ? "更新于 2026年10月23日" : "Updated October 23, 2026"}</span>
+          <span>{locale === "zh" ? "更新于 2026年10月28日" : "Updated October 28, 2026"}</span>
         </div>
 
         <p className="text-slate-500 text-sm mb-6 leading-relaxed">
@@ -191,6 +204,29 @@ export default function BlogArticlePage() {
               : locale === "zh" ? "用我的实际数据计算" : "Calculate with my own data"}
           </Link>
         </div>
+
+        <section className="mt-8 border-t border-slate-200 pt-6">
+          <h2 className="mb-3 text-lg font-semibold text-slate-800">
+            {locale === "zh" ? "继续阅读与计算" : "Related guides and calculator"}
+          </h2>
+          <ul className="space-y-2 text-sm">
+            {(relatedArticleIds[article.id] || []).map((relatedId) => {
+              const relatedArticle = articles.find((item) => item.id === relatedId);
+              return relatedArticle ? (
+                <li key={relatedId}>
+                  <Link to={`/blog/${relatedId}`} className="text-emerald-700 underline hover:text-emerald-800">
+                    {relatedArticle.title}
+                  </Link>
+                </li>
+              ) : null;
+            })}
+            <li>
+              <Link to={relatedTool[article.id].to} className="text-emerald-700 underline hover:text-emerald-800">
+                {locale === "zh" ? relatedTool[article.id].zh : relatedTool[article.id].en}
+              </Link>
+            </li>
+          </ul>
+        </section>
       </article>
 
       <div className="mt-8 bg-slate-50 rounded-xl p-6 border border-slate-200">

@@ -46,7 +46,11 @@ const routes = [
 // Google only uses lastmod when it is consistently accurate and verifiable.
 const initialContentLastModified = "2026-10-23";
 const routeLastModifiedOverrides = new Map([
+  ["/blog/", "2026-10-28"],
+  ["/blog/1/", "2026-10-28"],
   ["/blog/2/", "2026-10-28"],
+  ["/blog/3/", "2026-10-28"],
+  ["/blog/4/", "2026-10-28"],
   ["/tools/", "2026-10-28"],
   ["/tools/car-loan/", "2026-10-28"],
   ["/tools/monthly-car-cost/", "2026-10-28"],
@@ -72,7 +76,7 @@ function renderPage(path, title, description) {
     headline: schemaType === "Article" ? title : undefined,
     url: canonical,
     isAccessibleForFree: true,
-    ...(schemaType === "Article" ? { datePublished: "2024-01-15", dateModified: "2026-10-23", author: { "@type": "Person", name: "Zhangtianpu", url: "https://github.com/Zhangtianpu" }, publisher: { "@type": "Organization", name: "Vehicle Cost Calculator", url: `${siteUrl}/` }, mainEntityOfPage: canonical } : {}),
+    ...(schemaType === "Article" ? { datePublished: "2024-01-15", dateModified: "2026-10-28", author: { "@type": "Person", name: "Zhangtianpu", url: "https://github.com/Zhangtianpu" }, publisher: { "@type": "Organization", name: "Vehicle Cost Calculator", url: `${siteUrl}/` }, mainEntityOfPage: canonical } : {}),
     ...(schemaType === "WebApplication" ? { applicationCategory: "FinanceApplication", operatingSystem: "Any", offers: { "@type": "Offer", price: "0", priceCurrency: "USD" } } : {}),
   };
   const schemaScript = `<script id="route-schema" type="application/ld+json">${JSON.stringify(schema)}</script>`;
