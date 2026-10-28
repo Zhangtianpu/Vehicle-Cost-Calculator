@@ -118,8 +118,8 @@ export default function SeoManager() {
 
     const schema = article
       ? { "@context": "https://schema.org", "@type": "Article", name: locale === "zh" ? article.zh : article.en, headline: locale === "zh" ? article.zh : article.en, description: seo.description, image: `${SITE_URL}/vehicle-cost-social-card.png`, url: canonical, isAccessibleForFree: true, datePublished: "2026-06-23T15:29:03+08:00", dateModified: "2026-10-28T18:02:36+08:00", author: { "@type": "Person", name: "Zhangtianpu", url: "https://github.com/Zhangtianpu" }, publisher: { "@type": "Organization", name: "Vehicle Cost Calculator", url: `${SITE_URL}/` }, mainEntityOfPage: canonical }
-      : normalizedPath === "/" || normalizedPath.startsWith("/tools/")
-        ? { "@context": "https://schema.org", "@type": "WebApplication", name: seo.title.split("｜")[0].split("|")[0].trim(), url: canonical, applicationCategory: "FinanceApplication", operatingSystem: "Any", offers: { "@type": "Offer", price: "0", priceCurrency: locale === "zh" ? "CNY" : "USD" } }
+      : normalizedPath === "/" || normalizedPath === "/calculator" || normalizedPath === "/compare" || normalizedPath.startsWith("/tools/")
+        ? { "@context": "https://schema.org", "@type": "WebApplication", name: seo.title.split("｜")[0].split("|")[0].trim(), description: seo.description, url: canonical, isAccessibleForFree: true, applicationCategory: "FinanceApplication", operatingSystem: "Any", offers: { "@type": "Offer", price: 0 } }
         : normalizedPath === "/tools"
           ? { "@context": "https://schema.org", "@type": "CollectionPage", name: seo.title, description: seo.description, url: canonical, isPartOf: { "@type": "WebSite", name: "Vehicle Cost Calculator", url: `${SITE_URL}/` } }
         : isKnownPage

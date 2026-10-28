@@ -46,44 +46,48 @@ const routes = [
 // Google only uses lastmod when it is consistently accurate and verifiable.
 const initialContentLastModified = "2026-10-23";
 const routeLastModifiedOverrides = new Map([
-  ["/", "2026-10-28"],
+  ["/", "2026-10-29"],
+  ["/calculator/", "2026-10-29"],
+  ["/compare/", "2026-10-29"],
   ["/blog/", "2026-10-28"],
   ["/blog/1/", "2026-10-28"],
   ["/blog/2/", "2026-10-28"],
   ["/blog/3/", "2026-10-28"],
   ["/blog/4/", "2026-10-28"],
   ["/tools/", "2026-10-28"],
-  ["/tools/cost-per-km/", "2026-10-28"],
-  ["/tools/ev-break-even/", "2026-10-28"],
-  ["/tools/fuel-cost/", "2026-10-28"],
-  ["/tools/depreciation/", "2026-10-28"],
-  ["/tools/charging-cost/", "2026-10-28"],
-  ["/tools/car-loan/", "2026-10-28"],
-  ["/tools/monthly-car-cost/", "2026-10-28"],
-  ["/tools/car-affordability/", "2026-10-28"],
-  ["/tools/lease-vs-buy/", "2026-10-28"],
+  ["/tools/cost-per-km/", "2026-10-29"],
+  ["/tools/ev-break-even/", "2026-10-29"],
+  ["/tools/fuel-cost/", "2026-10-29"],
+  ["/tools/depreciation/", "2026-10-29"],
+  ["/tools/charging-cost/", "2026-10-29"],
+  ["/tools/car-loan/", "2026-10-29"],
+  ["/tools/monthly-car-cost/", "2026-10-29"],
+  ["/tools/car-affordability/", "2026-10-29"],
+  ["/tools/lease-vs-buy/", "2026-10-29"],
 ]);
 
 function renderPage(path, title, description) {
   const canonical = `${siteUrl}${path}`;
   const pathname = path === "/" ? path : path.replace(/\/$/, "");
   const appHtml = render(pathname);
+  const isWebApplication = path === "/" || path === "/calculator/" || path === "/compare/" || (path.startsWith("/tools/") && path !== "/tools/");
   const schemaType = /^\/blog\/\d+\/$/.test(path)
     ? "Article"
     : path === "/tools/"
       ? "CollectionPage"
-      : path === "/" || path.startsWith("/tools/")
+      : isWebApplication
         ? "WebApplication"
         : "WebPage";
   const schema = {
     "@context": "https://schema.org",
     "@type": schemaType,
     name: title,
+    description,
     headline: schemaType === "Article" ? title : undefined,
     url: canonical,
     isAccessibleForFree: true,
     ...(schemaType === "Article" ? { image: `${siteUrl}/vehicle-cost-social-card.png`, datePublished: "2026-06-23T15:29:03+08:00", dateModified: "2026-10-28T18:02:36+08:00", author: { "@type": "Person", name: "Zhangtianpu", url: "https://github.com/Zhangtianpu" }, publisher: { "@type": "Organization", name: "Vehicle Cost Calculator", url: `${siteUrl}/` }, mainEntityOfPage: canonical } : {}),
-    ...(schemaType === "WebApplication" ? { applicationCategory: "FinanceApplication", operatingSystem: "Any", offers: { "@type": "Offer", price: "0", priceCurrency: "USD" } } : {}),
+    ...(schemaType === "WebApplication" ? { applicationCategory: "FinanceApplication", operatingSystem: "Any", offers: { "@type": "Offer", price: 0 } } : {}),
   };
   const schemaScript = `<script id="route-schema" type="application/ld+json">${JSON.stringify(schema)}</script>`;
   return template
