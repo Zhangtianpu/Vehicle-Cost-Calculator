@@ -1,6 +1,66 @@
 import type { LoanParams, LoanResult } from "@/types";
 import { calculateLoanCost } from "./loanCalc";
 
+export type MonthlyCarEnergyType = "gas" | "electric";
+export type MonthlyCarUnitSystem = "us" | "metric";
+
+export interface MonthlyCarCostInput {
+  unitSystem: MonthlyCarUnitSystem;
+  energyType: MonthlyCarEnergyType;
+  annualDistance: number;
+  efficiency: number;
+  energyPrice: number;
+  annualInsurance: number;
+  monthlyLoanPayment: number;
+  annualLoanInterest: number;
+  annualMaintenance: number;
+  monthlyParkingAndTolls: number;
+  annualRegistration: number;
+  annualDepreciation: number;
+}
+
+export interface MonthlyCarCostResult {
+  monthlyEnergy: number;
+  monthlyInsurance: number;
+  monthlyLoanInterest: number;
+  monthlyMaintenance: number;
+  monthlyRegistration: number;
+  operatingMonthly: number;
+  cashBudgetMonthly: number;
+  ownershipCostMonthly: number;
+  ownershipCostPerDistance: number | null;
+}
+
+export function calculateMonthlyCarCost(input: MonthlyCarCostInput): MonthlyCarCostResult {
+  const annualDistance = Math.max(0, input.annualDistance);
+  const efficiency = Math.max(0, input.efficiency);
+  const energyPrice = Math.max(0, input.energyPrice);
+  const annualEnergy = input.energyType === "gas" && input.unitSystem === "us"
+    ? efficiency > 0 ? annualDistance / efficiency * energyPrice : 0
+    : annualDistance / 100 * efficiency * energyPrice;
+  const monthlyEnergy = annualEnergy / 12;
+  const monthlyInsurance = Math.max(0, input.annualInsurance) / 12;
+  const monthlyLoanInterest = Math.max(0, input.annualLoanInterest) / 12;
+  const monthlyMaintenance = Math.max(0, input.annualMaintenance) / 12;
+  const monthlyRegistration = Math.max(0, input.annualRegistration) / 12;
+  const monthlyParkingAndTolls = Math.max(0, input.monthlyParkingAndTolls);
+  const operatingMonthly = monthlyEnergy + monthlyInsurance + monthlyMaintenance + monthlyParkingAndTolls + monthlyRegistration;
+  const cashBudgetMonthly = operatingMonthly + Math.max(0, input.monthlyLoanPayment);
+  const ownershipCostMonthly = operatingMonthly + monthlyLoanInterest + Math.max(0, input.annualDepreciation) / 12;
+
+  return {
+    monthlyEnergy,
+    monthlyInsurance,
+    monthlyLoanInterest,
+    monthlyMaintenance,
+    monthlyRegistration,
+    operatingMonthly,
+    cashBudgetMonthly,
+    ownershipCostMonthly,
+    ownershipCostPerDistance: annualDistance > 0 ? ownershipCostMonthly * 12 / annualDistance : null,
+  };
+}
+
 export interface CostPerKmInput {
   annualMileage: number;
   energy: number;

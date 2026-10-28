@@ -183,10 +183,12 @@ export default function BlogArticlePage() {
 
         <div className="mt-6">
           <Link
-            to="/calculator"
+            to={article.id === 2 ? "/tools/monthly-car-cost" : "/calculator"}
             className="inline-flex items-center rounded-lg bg-emerald-500 px-5 py-2.5 text-sm font-medium text-white hover:bg-emerald-600"
           >
-            {locale === "zh" ? "用我的实际数据计算" : "Calculate with my own data"}
+            {article.id === 2
+              ? locale === "zh" ? "计算我的每月养车成本" : "Calculate my monthly car cost"
+              : locale === "zh" ? "用我的实际数据计算" : "Calculate with my own data"}
           </Link>
         </div>
       </article>

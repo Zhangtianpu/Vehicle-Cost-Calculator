@@ -21,6 +21,7 @@ import FuelCostPage from "@/pages/FuelCostPage";
 import DepreciationPage from "@/pages/DepreciationPage";
 import ChargingCostPage from "@/pages/ChargingCostPage";
 import CarLoanPage from "@/pages/CarLoanPage";
+import MonthlyCarCostPage from "@/pages/MonthlyCarCostPage";
 import NotFoundPage from "@/pages/NotFoundPage";
 
 export function render(pathname: string) {
@@ -45,6 +46,7 @@ export function render(pathname: string) {
             <Route path="/tools/depreciation" element={<DepreciationPage />} />
             <Route path="/tools/charging-cost" element={<ChargingCostPage />} />
             <Route path="/tools/car-loan" element={<CarLoanPage />} />
+            <Route path="/tools/monthly-car-cost" element={<MonthlyCarCostPage />} />
             <Route path="/privacy" element={<PrivacyPolicyPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/disclaimer" element={<DisclaimerPage />} />

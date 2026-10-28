@@ -1,11 +1,19 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Banknote, BatteryCharging, Fuel, Gauge, Route, TrendingDown, Wrench } from "lucide-react";
+import { ArrowRight, Banknote, BatteryCharging, Fuel, Gauge, Route, TrendingDown, WalletCards, Wrench } from "lucide-react";
 import { useLanguageStore } from "@/store/useLanguageStore";
 
 export default function ToolsHubPage() {
   const { locale } = useLanguageStore();
   const isZh = locale === "zh";
   const tools = [
+    {
+      to: "/tools/monthly-car-cost",
+      icon: WalletCards,
+      title: isZh ? "每月养车成本计算器" : "Monthly Car Cost Calculator",
+      description: isZh
+        ? "分别计算含月供的现金预算，以及用折旧表示车辆价值损失的真实持有成本。"
+        : "Compare monthly cash outflow with economic ownership cost without double-counting loan principal and depreciation.",
+    },
     {
       to: "/tools/cost-per-km",
       icon: Gauge,

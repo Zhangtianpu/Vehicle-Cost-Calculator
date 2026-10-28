@@ -13,7 +13,47 @@ import {
   calculateFuelCost,
   calculateUsFuelCost,
   calculateUsChargingCost,
+  calculateMonthlyCarCost,
 } from "../src/utils/quickTools";
+
+const monthlyGasCost = calculateMonthlyCarCost({
+  unitSystem: "us",
+  energyType: "gas",
+  annualDistance: 12000,
+  efficiency: 25,
+  energyPrice: 3.5,
+  annualInsurance: 1500,
+  monthlyLoanPayment: 500,
+  annualLoanInterest: 1200,
+  annualMaintenance: 800,
+  monthlyParkingAndTolls: 150,
+  annualRegistration: 200,
+  annualDepreciation: 5000,
+});
+assert.equal(monthlyGasCost.monthlyEnergy, 140);
+assert.ok(Math.abs(monthlyGasCost.operatingMonthly - 498.3333333333) < 0.000001);
+assert.ok(Math.abs(monthlyGasCost.cashBudgetMonthly - 998.3333333333) < 0.000001);
+assert.equal(monthlyGasCost.monthlyLoanInterest, 100);
+assert.equal(monthlyGasCost.ownershipCostMonthly, 1015);
+assert.equal(monthlyGasCost.ownershipCostPerDistance, 1.015);
+
+const monthlyEvCost = calculateMonthlyCarCost({
+  ...monthlyGasCost,
+  unitSystem: "us",
+  energyType: "electric",
+  annualDistance: 12000,
+  efficiency: 30,
+  energyPrice: 0.18,
+  annualInsurance: 1500,
+  monthlyLoanPayment: 500,
+  annualLoanInterest: 1200,
+  annualMaintenance: 800,
+  monthlyParkingAndTolls: 150,
+  annualRegistration: 200,
+  annualDepreciation: 5000,
+});
+assert.equal(monthlyEvCost.monthlyEnergy, 54);
+assert.equal(calculateMonthlyCarCost({ ...monthlyEvCost, unitSystem: "metric", energyType: "gas", annualDistance: 0, efficiency: 0, energyPrice: 0, annualInsurance: 0, monthlyLoanPayment: 0, annualLoanInterest: 0, annualMaintenance: 0, monthlyParkingAndTolls: 0, annualRegistration: 0, annualDepreciation: 0 }).ownershipCostPerDistance, null);
 
 const equalPrincipal = calculateLoanCost({
   vehiclePrice: 120000,

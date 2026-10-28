@@ -33,6 +33,7 @@ const routes = [
   ["/tools/depreciation/", "Car Depreciation Calculator | Cost per Mile and Resale Value", "Use purchase price, current value, years and mileage to calculate depreciation per mile or kilometer and retained value.", "monthly", "0.9"],
   ["/tools/charging-cost/", "EV Charging Cost Calculator | Cost per Mile", "Use miles and kWh per 100 miles, electricity price and charging loss to calculate EV charging cost; metric mode included.", "monthly", "0.9"],
   ["/tools/car-loan/", "Car Loan Calculator | Monthly Payment and Total Interest", "Estimate a car loan payment, principal, total interest and total cash outlay from price, down payment, term and APR.", "monthly", "0.9"],
+  ["/tools/monthly-car-cost/", "Monthly Car Cost Calculator | True Ownership Budget", "Calculate monthly car cash flow and ownership cost from mileage, energy, insurance, payments, loan interest, maintenance, parking and depreciation.", "monthly", "0.9"],
   ["/about/", "About | Vehicle Cost Calculator", "Learn about the Vehicle Cost Calculator's purpose, calculation scope, data handling and editorial principles.", "yearly", "0.5"],
   ["/privacy/", "Privacy Policy | Vehicle Cost Calculator", "Learn how this site handles local calculator inputs, cookies, analytics and advertising-related data.", "yearly", "0.4"],
   ["/disclaimer/", "Disclaimer | Vehicle Cost Calculator", "Review the scope and limitations of our estimates and your responsibility when making financial decisions.", "yearly", "0.4"],
