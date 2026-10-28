@@ -4,6 +4,93 @@ import { calculateLoanCost } from "./loanCalc";
 export type MonthlyCarEnergyType = "gas" | "electric";
 export type MonthlyCarUnitSystem = "us" | "metric";
 
+export interface LeaseVsBuyInput {
+  purchasePrice: number;
+  buyDownPayment: number;
+  buyTaxAndFees: number;
+  loanAnnualRate: number;
+  loanTermMonths: number;
+  comparisonMonths: number;
+  estimatedResaleValue: number;
+  buyOtherCosts: number;
+  leaseMonthlyPayment: number;
+  leaseDueAtSigning: number;
+  leaseAcquisitionFee: number;
+  leaseDispositionFee: number;
+  leaseEndCharges: number;
+}
+
+export type LeaseVsBuyChoice = "buy" | "lease" | "equal";
+
+export interface LeaseVsBuyResult {
+  buyLoanAmount: number;
+  buyMonthlyPayment: number;
+  buyPaymentsMade: number;
+  buyInterestPaid: number;
+  remainingLoanBalance: number;
+  buyerEquity: number;
+  buyCashPaid: number;
+  buyNetCost: number;
+  leaseTotalCost: number;
+  buyMonthlyEquivalent: number;
+  leaseMonthlyEquivalent: number;
+  difference: number;
+  lowerCostChoice: LeaseVsBuyChoice;
+}
+
+export function calculateLeaseVsBuy(input: LeaseVsBuyInput): LeaseVsBuyResult {
+  const purchasePrice = Math.max(0, input.purchasePrice);
+  const buyDownPayment = Math.min(purchasePrice, Math.max(0, input.buyDownPayment));
+  const buyLoanAmount = Math.max(0, purchasePrice - buyDownPayment);
+  const loanTermMonths = Math.max(0, Math.round(input.loanTermMonths));
+  const comparisonMonths = Math.max(0, Math.round(input.comparisonMonths));
+  const monthlyRate = Math.max(0, input.loanAnnualRate) / 100 / 12;
+  const buyMonthlyPayment = buyLoanAmount === 0 || loanTermMonths === 0
+    ? 0
+    : monthlyRate === 0
+      ? buyLoanAmount / loanTermMonths
+      : buyLoanAmount * monthlyRate / (1 - (1 + monthlyRate) ** -loanTermMonths);
+  const buyPaymentsMade = Math.min(comparisonMonths, loanTermMonths);
+  const remainingLoanBalance = buyLoanAmount === 0 || buyPaymentsMade >= loanTermMonths
+    ? 0
+    : monthlyRate === 0
+      ? Math.max(0, buyLoanAmount - buyMonthlyPayment * buyPaymentsMade)
+      : Math.max(0, buyLoanAmount * (1 + monthlyRate) ** buyPaymentsMade - buyMonthlyPayment * (((1 + monthlyRate) ** buyPaymentsMade - 1) / monthlyRate));
+  const principalPaid = buyLoanAmount - remainingLoanBalance;
+  const buyInterestPaid = Math.max(0, buyMonthlyPayment * buyPaymentsMade - principalPaid);
+  const buyerEquity = Math.max(0, input.estimatedResaleValue) - remainingLoanBalance;
+  const buyCashPaid = buyDownPayment
+    + Math.max(0, input.buyTaxAndFees)
+    + buyMonthlyPayment * buyPaymentsMade
+    + Math.max(0, input.buyOtherCosts);
+  const buyNetCost = buyCashPaid - buyerEquity;
+  const leaseTotalCost = Math.max(0, input.leaseDueAtSigning)
+    + Math.max(0, input.leaseAcquisitionFee)
+    + Math.max(0, input.leaseMonthlyPayment) * comparisonMonths
+    + Math.max(0, input.leaseDispositionFee)
+    + Math.max(0, input.leaseEndCharges);
+  const difference = Math.abs(buyNetCost - leaseTotalCost);
+  const lowerCostChoice: LeaseVsBuyChoice = difference < 0.01
+    ? "equal"
+    : buyNetCost < leaseTotalCost ? "buy" : "lease";
+
+  return {
+    buyLoanAmount,
+    buyMonthlyPayment,
+    buyPaymentsMade,
+    buyInterestPaid,
+    remainingLoanBalance,
+    buyerEquity,
+    buyCashPaid,
+    buyNetCost,
+    leaseTotalCost,
+    buyMonthlyEquivalent: comparisonMonths > 0 ? buyNetCost / comparisonMonths : 0,
+    leaseMonthlyEquivalent: comparisonMonths > 0 ? leaseTotalCost / comparisonMonths : 0,
+    difference,
+    lowerCostChoice,
+  };
+}
+
 export interface CarAffordabilityInput {
   monthlyTakeHomeIncome: number;
   transportationBudgetPercent: number;

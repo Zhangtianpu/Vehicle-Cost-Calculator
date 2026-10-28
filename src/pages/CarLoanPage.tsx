@@ -149,6 +149,7 @@ export default function CarLoanPage() {
 
         <div className="flex flex-wrap gap-3 border-t border-slate-100 pt-5">
           <Link to="/tools/car-affordability" className="rounded-lg bg-emerald-500 px-4 py-2 font-medium text-white hover:bg-emerald-600">{isZh ? "先算我能买多少钱的车" : "See how much car I can afford"}</Link>
+          <Link to="/tools/lease-vs-buy" className="rounded-lg border border-slate-300 px-4 py-2 font-medium text-slate-700 hover:bg-slate-50">{isZh ? "比较租赁与购买" : "Compare lease vs buy"}</Link>
           <Link to="/calculator" className="rounded-lg border border-slate-300 px-4 py-2 font-medium text-slate-700 hover:bg-slate-50">{isZh ? "把月供加入完整用车预算" : "Add payments to full ownership budget"}</Link>
           <Link to="/tools/depreciation" className="rounded-lg border border-slate-300 px-4 py-2 font-medium text-slate-700 hover:bg-slate-50">{isZh ? "计算车辆折旧" : "Calculate vehicle depreciation"}</Link>
         </div>

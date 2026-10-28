@@ -1,11 +1,19 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, BadgeDollarSign, Banknote, BatteryCharging, Fuel, Gauge, Route, TrendingDown, WalletCards, Wrench } from "lucide-react";
+import { ArrowLeftRight, ArrowRight, BadgeDollarSign, Banknote, BatteryCharging, Fuel, Gauge, Route, TrendingDown, WalletCards, Wrench } from "lucide-react";
 import { useLanguageStore } from "@/store/useLanguageStore";
 
 export default function ToolsHubPage() {
   const { locale } = useLanguageStore();
   const isZh = locale === "zh";
   const tools = [
+    {
+      to: "/tools/lease-vs-buy",
+      icon: ArrowLeftRight,
+      title: isZh ? "汽车租赁还是购买计算器" : "Lease vs Buy Car Calculator",
+      description: isZh
+        ? "在相同周期内比较租赁总支出与购买净成本，并计入期末车辆净值、剩余贷款和返还费用。"
+        : "Compare lease total cost with buying net cost over the same period, including equity, remaining debt and return charges.",
+    },
     {
       to: "/tools/car-affordability",
       icon: BadgeDollarSign,

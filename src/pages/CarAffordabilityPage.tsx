@@ -191,6 +191,7 @@ export default function CarAffordabilityPage() {
 
         <div className="flex flex-wrap gap-3 border-t border-slate-100 pt-5">
           <Link to="/tools/car-loan" className="rounded-lg bg-emerald-500 px-4 py-2 font-medium text-white hover:bg-emerald-600">{isZh ? "按具体车价计算月供" : "Calculate payment for a specific price"}</Link>
+          <Link to="/tools/lease-vs-buy" className="rounded-lg border border-slate-300 px-4 py-2 font-medium text-slate-700 hover:bg-slate-50">{isZh ? "比较租赁与购买" : "Compare leasing with buying"}</Link>
           <Link to="/tools/monthly-car-cost" className="rounded-lg border border-slate-300 px-4 py-2 font-medium text-slate-700 hover:bg-slate-50">{isZh ? "核对完整每月养车成本" : "Check complete monthly car cost"}</Link>
         </div>
       </article>

@@ -24,6 +24,7 @@ import ChargingCostPage from "@/pages/ChargingCostPage";
 import CarLoanPage from "@/pages/CarLoanPage";
 import MonthlyCarCostPage from "@/pages/MonthlyCarCostPage";
 import CarAffordabilityPage from "@/pages/CarAffordabilityPage";
+import LeaseVsBuyPage from "@/pages/LeaseVsBuyPage";
 import NotFoundPage from "@/pages/NotFoundPage";
 
 export default function App() {
@@ -51,6 +52,7 @@ export default function App() {
             <Route path="/tools/car-loan" element={<CarLoanPage />} />
             <Route path="/tools/monthly-car-cost" element={<MonthlyCarCostPage />} />
             <Route path="/tools/car-affordability" element={<CarAffordabilityPage />} />
+            <Route path="/tools/lease-vs-buy" element={<LeaseVsBuyPage />} />
             <Route path="/privacy" element={<PrivacyPolicyPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/disclaimer" element={<DisclaimerPage />} />

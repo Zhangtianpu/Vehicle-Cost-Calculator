@@ -15,7 +15,52 @@ import {
   calculateUsChargingCost,
   calculateMonthlyCarCost,
   calculateCarAffordability,
+  calculateLeaseVsBuy,
 } from "../src/utils/quickTools";
+
+const leaseVsBuy = calculateLeaseVsBuy({
+  purchasePrice: 40000,
+  buyDownPayment: 5000,
+  buyTaxAndFees: 3500,
+  loanAnnualRate: 6,
+  loanTermMonths: 60,
+  comparisonMonths: 36,
+  estimatedResaleValue: 25000,
+  buyOtherCosts: 500,
+  leaseMonthlyPayment: 500,
+  leaseDueAtSigning: 3000,
+  leaseAcquisitionFee: 695,
+  leaseDispositionFee: 395,
+  leaseEndCharges: 500,
+});
+assert.ok(Math.abs(leaseVsBuy.buyMonthlyPayment - 676.6481) < 0.01);
+assert.ok(Math.abs(leaseVsBuy.remainingLoanBalance - 15267.1195) < 0.01);
+assert.ok(Math.abs(leaseVsBuy.buyerEquity - 9732.8805) < 0.01);
+assert.ok(Math.abs(leaseVsBuy.buyNetCost - 23626.4494) < 0.01);
+assert.equal(leaseVsBuy.leaseTotalCost, 22590);
+assert.equal(leaseVsBuy.lowerCostChoice, "lease");
+assert.ok(Math.abs(leaseVsBuy.difference - 1036.4494) < 0.01);
+
+const zeroRatePurchase = calculateLeaseVsBuy({
+  ...leaseVsBuy,
+  purchasePrice: 12000,
+  buyDownPayment: 0,
+  buyTaxAndFees: 0,
+  loanAnnualRate: 0,
+  loanTermMonths: 24,
+  comparisonMonths: 12,
+  estimatedResaleValue: 9000,
+  buyOtherCosts: 0,
+  leaseMonthlyPayment: 0,
+  leaseDueAtSigning: 0,
+  leaseAcquisitionFee: 0,
+  leaseDispositionFee: 0,
+  leaseEndCharges: 0,
+});
+assert.equal(zeroRatePurchase.buyMonthlyPayment, 500);
+assert.equal(zeroRatePurchase.remainingLoanBalance, 6000);
+assert.equal(zeroRatePurchase.buyInterestPaid, 0);
+assert.equal(zeroRatePurchase.buyNetCost, 3000);
 
 const affordability = calculateCarAffordability({
   monthlyTakeHomeIncome: 6000,
