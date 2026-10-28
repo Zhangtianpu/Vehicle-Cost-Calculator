@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useLanguageStore } from "@/store/useLanguageStore";
+import { enSeoRoutes } from "@/data/seoRoutes.js";
 
 const SITE_URL = "https://sidehustle.top";
 
@@ -30,29 +31,7 @@ const zhPages: Record<string, SeoEntry> = {
   "/contact": { title: "联系我们｜用车成本计算器", description: "就计算方法、内容纠错、隐私或合作问题联系用车成本计算器。" },
 };
 
-const enPages: Record<string, SeoEntry> = {
-  "/": { title: "Vehicle Cost Calculator | Fuel Car vs EV Cost", description: "Calculate fuel or charging, insurance, loan, maintenance, parking and depreciation costs, then compare multi-year ownership totals." },
-  "/calculator": { title: "Vehicle Cost Calculator | MPG, EV & Ownership Cost", description: "Use miles, MPG and price per gallon or metric units to estimate fuel or EV energy, insurance, financing, maintenance, parking and depreciation." },
-  "/compare": { title: "Fuel Car vs EV Cost Comparison | 1–10 Years", description: "Compare energy, insurance, maintenance, depreciation and total ownership cost for fuel cars and EVs over 1 to 10 years." },
-  "/blog": { title: "Vehicle Ownership Cost Guides | Fuel Cars & EVs", description: "Practical guides to fuel and EV costs, insurance choices, hidden ownership expenses and saving strategies." },
-  "/faq": { title: "Vehicle Cost Calculator FAQ", description: "Answers about energy cost, insurance, depreciation, multi-year forecasts and how the calculator works." },
-  "/methodology": { title: "Vehicle Cost Methodology | Formulas & Assumptions", description: "Review the formulas, default assumptions and limitations used for energy, insurance, loans, depreciation and multi-year ownership costs." },
-  "/editorial-policy": { title: "Editorial & Content Policy | Vehicle Cost Calculator", description: "Learn who maintains this site and how its calculators, articles, sources, corrections, AI assistance and commercial independence are handled." },
-  "/tools": { title: "Free Car Cost Calculators | US & Metric Units", description: "Calculate gas, EV charging, loans, depreciation, cost per mile or kilometer and EV break-even. Inputs stay in your browser." },
-  "/tools/cost-per-km": { title: "Vehicle Cost per Mile Calculator | Full Ownership Cost", description: "Enter annual energy, insurance, maintenance, parking and depreciation to calculate cash and full ownership cost per mile or kilometer." },
-  "/tools/ev-break-even": { title: "EV Break-even Calculator | Miles, MPG & Payback", description: "Use miles, MPG, charging consumption, prices and purchase premium to estimate EV break-even distance and years; metric mode included." },
-  "/tools/fuel-cost": { title: "Gas Cost Calculator | Miles, MPG & Trip Cost", description: "Calculate trip gas cost from miles, MPG and price per gallon, or use kilometers, L/100 km and price per liter." },
-  "/tools/depreciation": { title: "Car Depreciation Calculator | Cost per Mile & Resale Value", description: "Use purchase price, current value, years and mileage to calculate depreciation per mile or kilometer and retained value." },
-  "/tools/charging-cost": { title: "EV Charging Cost Calculator | Cost per Mile", description: "Use miles and kWh/100 miles, electricity price and charging loss to calculate EV charging cost; metric mode included." },
-  "/tools/car-loan": { title: "Car Loan Payment Calculator | Down Payment & Interest", description: "Use vehicle price, down payment, term, annual rate and repayment method to estimate car-loan payments and total interest." },
-  "/tools/monthly-car-cost": { title: "Monthly Car Cost Calculator | True Ownership Budget", description: "Calculate monthly car cash flow and ownership cost from mileage, energy, insurance, payments, loan interest, maintenance, parking and depreciation." },
-  "/tools/car-affordability": { title: "Car Affordability Calculator | How Much Car Can I Afford?", description: "Estimate a maximum car price and payment from take-home income, total vehicle costs, down payment, trade-in, APR, term, tax and fees." },
-  "/tools/lease-vs-buy": { title: "Lease vs Buy Car Calculator | Compare True Net Cost", description: "Compare leasing with buying over the same term using payments, fees, remaining loan balance, estimated resale value and lease-return charges." },
-  "/about": { title: "About | Vehicle Cost Calculator", description: "Learn about our calculator, methodology, data handling and editorial purpose." },
-  "/privacy": { title: "Privacy Policy | Vehicle Cost Calculator", description: "How this site handles local calculator data, cookies, analytics and advertising information." },
-  "/disclaimer": { title: "Disclaimer | Vehicle Cost Calculator", description: "Scope and limitations of vehicle cost estimates and user decision responsibilities." },
-  "/contact": { title: "Contact | Vehicle Cost Calculator", description: "Contact us about calculation methods, corrections, privacy or partnerships." },
-};
+const enPages: Record<string, SeoEntry> = Object.fromEntries(enSeoRoutes.map(({ path, title, description }) => [path === "/" ? path : path.replace(/\/$/, ""), { title, description }]));
 
 const articleSeo = [
   { zh: "电车真的比油车省钱吗？5年成本对比", en: "Are EVs Cheaper Than Gas Cars? 5-Year Comparison" },

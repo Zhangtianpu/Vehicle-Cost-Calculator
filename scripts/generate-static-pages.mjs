@@ -1,5 +1,6 @@
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
+import { enSeoRoutes } from "../src/data/seoRoutes.js";
 
 const siteUrl = "https://sidehustle.top";
 const distDir = new URL("../dist/", import.meta.url);
@@ -14,33 +15,7 @@ const adsenseHead = hasAdsense
   : "";
 const template = rawTemplate.replace("  </head>", `${adsenseHead}  </head>`);
 
-const routes = [
-  ["/", "Vehicle Cost Calculator | Gas Car vs EV Ownership Cost", "Free vehicle cost calculator for fuel, charging, insurance, loans, maintenance, parking and depreciation. Compare gas cars and EVs over 1–10 years.", "weekly", "1.0"],
-  ["/calculator/", "Vehicle Cost Calculator | MPG, EV and Ownership Cost", "Use miles, MPG and price per gallon or metric units to estimate fuel or EV energy, insurance, financing, maintenance, parking and depreciation.", "weekly", "0.9"],
-  ["/compare/", "Gas Car vs EV Cost Comparison | 1–10 Year Total Cost", "Compare gas-car and electric-vehicle energy, insurance, maintenance, depreciation and cumulative ownership costs over 1–10 years.", "weekly", "0.9"],
-  ["/blog/", "Vehicle Ownership Cost Guides | Gas Cars and EVs", "Practical guides to vehicle ownership costs, EV savings, insurance, depreciation and ways to spend less on driving.", "weekly", "0.8"],
-  ["/blog/1/", "Are EVs Cheaper Than Gas Cars? Build a 5-Year Comparison", "Compare an EV and gas car with the same mileage, local energy prices, insurance quotes, maintenance, financing and resale scenarios.", "monthly", "0.8"],
-  ["/blog/2/", "The True Cost of Car Ownership: Complete Budget Checklist", "Build a complete vehicle budget covering upfront, recurring, usage-based and resale costs without double-counting financing or depreciation.", "monthly", "0.8"],
-  ["/blog/3/", "10 Practical Ways to Lower Car Ownership Costs", "Lower vehicle expenses with measurable changes to insurance, efficiency, maintenance, financing, subscriptions, parking and replacement timing.", "monthly", "0.8"],
-  ["/blog/4/", "How to Choose Car Insurance Coverage Without Guessing", "Compare liability, collision, comprehensive, deductibles and optional protection using consistent local quotes and a practical checklist.", "monthly", "0.8"],
-  ["/faq/", "Vehicle Cost Calculator FAQ | Methods and Assumptions", "Answers about fuel and charging costs, insurance, depreciation, multi-year forecasts and calculator use.", "monthly", "0.7"],
-  ["/methodology/", "Vehicle Cost Methodology | Formulas, Assumptions and Limits", "Review the formulas, default assumptions and limitations behind our energy, insurance, loan, depreciation and total-cost estimates.", "monthly", "0.8"],
-  ["/editorial-policy/", "Editorial & Content Policy | Vehicle Cost Calculator", "Learn who maintains this site and how its calculators, articles, sources, corrections, AI assistance and commercial independence are handled.", "yearly", "0.6"],
-  ["/tools/", "Free Car Cost Calculators | US and Metric Units", "Calculate gas, EV charging, loans, depreciation, cost per mile or kilometer and EV break-even. Free, private and no sign-up required.", "weekly", "0.9"],
-  ["/tools/cost-per-km/", "Vehicle Cost per Mile Calculator | Full Ownership Cost", "Enter annual energy, insurance, maintenance, parking and depreciation to calculate cash and full ownership cost per mile or kilometer.", "monthly", "0.9"],
-  ["/tools/ev-break-even/", "EV Break-Even Calculator | Miles, MPG and Payback", "Use miles, MPG, charging consumption, local prices and purchase premium to estimate EV break-even distance and years; metric mode included.", "monthly", "0.9"],
-  ["/tools/fuel-cost/", "Gas Cost Calculator | Miles, MPG and Trip Cost", "Calculate trip gas cost from miles, MPG and price per gallon, or use kilometers, L/100 km and price per liter.", "monthly", "0.9"],
-  ["/tools/depreciation/", "Car Depreciation Calculator | Cost per Mile and Resale Value", "Use purchase price, current value, years and mileage to calculate depreciation per mile or kilometer and retained value.", "monthly", "0.9"],
-  ["/tools/charging-cost/", "EV Charging Cost Calculator | Cost per Mile", "Use miles and kWh per 100 miles, electricity price and charging loss to calculate EV charging cost; metric mode included.", "monthly", "0.9"],
-  ["/tools/car-loan/", "Car Loan Calculator | Monthly Payment and Total Interest", "Estimate a car loan payment, principal, total interest and total cash outlay from price, down payment, term and APR.", "monthly", "0.9"],
-  ["/tools/monthly-car-cost/", "Monthly Car Cost Calculator | True Ownership Budget", "Calculate monthly car cash flow and ownership cost from mileage, energy, insurance, payments, loan interest, maintenance, parking and depreciation.", "monthly", "0.9"],
-  ["/tools/car-affordability/", "Car Affordability Calculator | How Much Car Can I Afford?", "Estimate a maximum car price and payment from take-home income, total vehicle costs, down payment, trade-in, APR, term, tax and fees.", "monthly", "0.9"],
-  ["/tools/lease-vs-buy/", "Lease vs Buy Car Calculator | Compare True Net Cost", "Compare leasing with buying over the same term using payments, fees, remaining loan balance, estimated resale value and lease-return charges.", "monthly", "0.9"],
-  ["/about/", "About | Vehicle Cost Calculator", "Learn about the Vehicle Cost Calculator's purpose, calculation scope, data handling and editorial principles.", "yearly", "0.5"],
-  ["/privacy/", "Privacy Policy | Vehicle Cost Calculator", "Learn how this site handles local calculator inputs, cookies, analytics and advertising-related data.", "yearly", "0.4"],
-  ["/disclaimer/", "Disclaimer | Vehicle Cost Calculator", "Review the scope and limitations of our estimates and your responsibility when making financial decisions.", "yearly", "0.4"],
-  ["/contact/", "Contact | Vehicle Cost Calculator", "Contact us about calculation methods, corrections, privacy questions or partnerships.", "yearly", "0.4"],
-];
+const routes = enSeoRoutes.map(({ path, title, description, changefreq, priority }) => [path, title, description, changefreq, priority]);
 
 // Keep sitemap dates tied to meaningful content changes rather than deployment time.
 // Google only uses lastmod when it is consistently accurate and verifiable.
