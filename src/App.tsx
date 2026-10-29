@@ -3,11 +3,11 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import CookieConsent from "@/components/layout/CookieConsent";
-import SeoManager from "@/components/layout/SeoManager";
 import RouteLoading from "@/components/layout/RouteLoading";
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
 import SiteIdentitySchema from "@/components/layout/SiteIdentitySchema";
 
+const SeoManager = lazy(() => import("@/components/layout/SeoManager"));
 const CalculatorPage = lazy(() => import("@/pages/CalculatorPage"));
 const ComparePage = lazy(() => import("@/pages/ComparePage"));
 const FeaturesPage = lazy(() => import("@/pages/FeaturesPage"));
@@ -36,7 +36,9 @@ export default function App() {
   return (
     <Router>
       <div className="min-h-screen flex flex-col bg-slate-50">
-        <SeoManager />
+        <Suspense fallback={null}>
+          <SeoManager />
+        </Suspense>
         <SiteIdentitySchema />
         <Header />
         <main className="flex-1">
