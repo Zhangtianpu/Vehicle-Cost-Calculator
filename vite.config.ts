@@ -5,7 +5,7 @@ import tsconfigPaths from "vite-tsconfig-paths";
 export default defineConfig(({ isSsrBuild, mode }) => ({
   base: '/',
   build: {
-    sourcemap: 'hidden',
+    sourcemap: false,
     modulePreload: {
       resolveDependencies: (_filename, dependencies, context) =>
         context.hostType === 'html'
